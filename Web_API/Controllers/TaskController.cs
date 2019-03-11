@@ -1,35 +1,37 @@
-﻿using BLL.DTO;
-using BLL.Services;
+﻿using BLL.Services;
 using DAL.EF;
 using DAL.Repositories;
 using System.Collections.Generic;
 using System.Web.Http;
 using BLL.Interfaces;
+using Web_API.Models;
+using BLL.DTO;
+using System;
 
 namespace Web_API.Controllers
 {
     public class TaskController : ApiController
     {
-        private IProjectService _service;
+        private ITaskService _service;
 
-        public TaskController(IProjectService service)
+        public TaskController(ITaskService service)
         {
             _service = service;
         }
 
         [HttpPost]
         [Route("api/Task/Create")]
-        public void Create()
+        public void Create(TaskModel task)
         {
-            _service.Create("project2", "DEV-2");
+            _service.Create(task.Name, task.Description, 0, Convert.ToInt32(task.Priority), task.Deadline);
         }
 
-        [HttpGet]
-        [Route("api/Task/Get")]
-        public IEnumerable<ProjectDTO> Get()
-        {
-            return _service.GetAll();
-        }
+        //[HttpGet]
+        //[Route("api/Task/Get")]
+        //public IEnumerable<ProjectDTO> Get()
+        //{
+        //    return _service.GetAll();
+        //}
 
         // GET: api/Task/5
         public string Get(int id)

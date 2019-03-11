@@ -81,3 +81,6 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\System.ValueT
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\AutoMapper.pdb
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\AutoMapper.xml
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\System.ValueTuple.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\System.Web.Cors.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\System.Web.Http.Cors.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\System.Web.Http.Cors.xml
