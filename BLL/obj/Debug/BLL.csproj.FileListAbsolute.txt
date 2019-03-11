@@ -10,3 +10,8 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\DAL.pdb
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\DAL.dll.config
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\EntityFramework.xml
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\obj\Debug\BLL.csproj.CopyComplete
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\AutoMapper.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\System.ValueTuple.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\AutoMapper.pdb
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\AutoMapper.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\BLL\bin\Debug\System.ValueTuple.xml

@@ -1,18 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class Comment
+    public class Comment : BaseEntity
     {
-        /// <summary>
-        /// Get and set comment id
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Get and set comment author id
         /// </summary>

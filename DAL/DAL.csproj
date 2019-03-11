@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EF\CompanyContext.cs" />
+    <Compile Include="Entities\BaseEntity.cs" />
     <Compile Include="Entities\Chat.cs" />
     <Compile Include="Entities\Comment.cs" />
     <Compile Include="Entities\Company.cs" />
@@ -57,6 +58,7 @@
     <Compile Include="Entities\Task.cs" />
     <Compile Include="Entities\User.cs" />
     <Compile Include="Entities\UserProfile.cs" />
+    <Compile Include="Interfaces\IContext.cs" />
     <Compile Include="Interfaces\IRepository.cs" />
     <Compile Include="Interfaces\IUnitOfWork.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

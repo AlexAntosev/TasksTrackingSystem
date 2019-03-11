@@ -1,18 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace DAL.Entities
+﻿namespace DAL.Entities
 {
-    public class UserProfile
+    public class UserProfile : BaseEntity
     {
-        /// <summary>
-        /// Get and set user profile id
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Get and set user firstname
         /// </summary>

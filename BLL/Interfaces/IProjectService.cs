@@ -1,14 +1,15 @@
-﻿using System;
+﻿using BLL.DTO;
+using DAL.Entities;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BLL.DTO;
 
 namespace BLL.Interfaces
 {
     public interface IProjectService
     {
-        void Create(ProjectDTO project);
+        Project Create(string name, string tag);
+        Project Delete(int id);
+        Project Edit(int id, string name, string tag);
+        ProjectDTO Get(int id);
+        IEnumerable<ProjectDTO> GetAll();
     }
 }

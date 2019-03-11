@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using BLL.Mapper;
 using System.Web.Http;
-using System.Web.Routing;
+using Web_API.App_Start;
 
 namespace Web_API
 {
@@ -12,6 +9,8 @@ namespace Web_API
         protected void Application_Start()
         {
             GlobalConfiguration.Configure(WebApiConfig.Register);
+            NinjectWebCommon.CreateKernel();
+            AutoMapperConfig.Configure();
         }
     }
 }

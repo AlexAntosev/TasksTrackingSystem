@@ -1,35 +1,34 @@
-﻿using BLL.Services;
-using DAL.Repositories;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using BLL.DTO;
+﻿using BLL.DTO;
+using BLL.Services;
 using DAL.EF;
-using Web_API.Models;
+using DAL.Repositories;
+using System.Collections.Generic;
+using System.Web.Http;
+using BLL.Interfaces;
 
 namespace Web_API.Controllers
 {
     public class TaskController : ApiController
     {
+        private IProjectService _service;
+
+        public TaskController(IProjectService service)
+        {
+            _service = service;
+        }
+
         [HttpPost]
         [Route("api/Task/Create")]
         public void Create()
         {
-            ProjectService service = new ProjectService(new UnitOfWork(new CompanyContext()));
-            service.Create(new ProjectDTO()
-            {
-                Name = "project1",
-                Tag = "PR-1"
-            });
+            _service.Create("project2", "DEV-2");
         }
 
-        // GET: api/Task
-        public IEnumerable<string> Get()
+        [HttpGet]
+        [Route("api/Task/Get")]
+        public IEnumerable<ProjectDTO> Get()
         {
-            return new string[] { "value1", "value2" };
+            return _service.GetAll();
         }
 
         // GET: api/Task/5

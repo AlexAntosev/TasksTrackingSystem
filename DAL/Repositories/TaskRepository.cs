@@ -14,12 +14,12 @@ namespace DAL.Repositories
     /// </summary>
     public class TaskRepository : IRepository<Task>
     {
-        private readonly CompanyContext _context;
+        private readonly IContext _context;
 
         /// <summary>
         /// Initialize a new instance of repository
         /// </summary>
-        public TaskRepository(CompanyContext context)
+        public TaskRepository(IContext context)
         {
             _context = context;
         }

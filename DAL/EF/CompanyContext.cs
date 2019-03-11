@@ -1,16 +1,15 @@
-﻿using DAL.Entities;
-using System;
-using System.Collections.Generic;
+﻿using System;
+using DAL.Entities;
+using DAL.Interfaces;
 using System.Data.Entity;
-using System.Linq;
-using System.Text;
+using System.Data.Entity.Infrastructure;
 
 namespace DAL.EF
 {
     /// <summary>
     /// Database context
     /// </summary>
-    public class CompanyContext : DbContext
+    public class CompanyContext : DbContext, IContext, IDisposable
     {
         /// <summary>
         /// Get and set tasks entities
@@ -37,15 +36,25 @@ namespace DAL.EF
         /// </summary>
         public DbSet<UserProfile> UserProfiles { get; set; }
 
-        public static CompanyContext Context()
-        {
-            return new CompanyContext();
-        }
-
         public CompanyContext() : base("CompanyDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
+        }
+
+        public void Save()
+        {
+            SaveChanges();
+        }
+
+        DbEntityEntry IContext.Entry(object entity)
+        {
+            return Entry(entity);
+        }
+
+        DbEntityEntry<TEntity> IContext.Entry<TEntity>(TEntity entity)
+        {
+            return Entry<TEntity>(entity);
         }
     }
 }

@@ -1,18 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
 namespace DAL.Entities
 {
-    public class Project
+    public class Project : BaseEntity
     {
-        /// <summary>
-        /// Get and set project id
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Get and set project name
         /// </summary>

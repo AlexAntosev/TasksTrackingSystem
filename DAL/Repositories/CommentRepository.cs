@@ -12,9 +12,9 @@ namespace DAL.Repositories
 {
     public class CommentRepository : IRepository<Comment>
     {
-        private readonly CompanyContext _context;
+        private readonly IContext _context;
 
-        public CommentRepository(CompanyContext context)
+        public CommentRepository(IContext context)
         {
             _context = context;
         }

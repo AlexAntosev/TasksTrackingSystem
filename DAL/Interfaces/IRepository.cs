@@ -1,4 +1,5 @@
-﻿using System;
+﻿using DAL.Entities;
+using System;
 using System.Collections.Generic;
 
 namespace DAL.Interfaces
@@ -6,7 +7,7 @@ namespace DAL.Interfaces
     /// <summary>
     /// Interface for database repository
     /// </summary>
-    public interface IRepository<T> where T : class
+    public interface IRepository<T> where T : BaseEntity
     {
         /// <summary>
         /// Method for getting all data from table

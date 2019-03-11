@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using DAL.EF;
+﻿using DAL.EF;
 using DAL.Entities;
 using DAL.Interfaces;
+using System;
 
 namespace DAL.Repositories
 {
@@ -14,7 +11,7 @@ namespace DAL.Repositories
     /// </summary>
     public class UnitOfWork : IUnitOfWork
     {
-        private readonly CompanyContext _context;
+        private readonly IContext _context;
 
         private IRepository<Task> _taskRepository;
         private IRepository<Project> _projectRepository;
@@ -49,7 +46,7 @@ namespace DAL.Repositories
         public IRepository<Comment> Comments =>
             _commentRepository ?? (_commentRepository = new CommentRepository(_context));
 
-        public UnitOfWork(CompanyContext context)
+        public UnitOfWork(IContext context)
         {
             _context = context;
         }
@@ -59,7 +56,7 @@ namespace DAL.Repositories
         /// </summary>
         public void Save()
         {
-            _context.SaveChanges();
+            _context.Save();
         }
 
         private bool disposed = false;
@@ -80,11 +77,6 @@ namespace DAL.Repositories
         {
             Dispose(true);
             GC.SuppressFinalize(this);
-        }
-
-        ~UnitOfWork()
-        {
-            Dispose(false);
         }
     }
 }

@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace BLL.DTO
 {
@@ -11,6 +8,11 @@ namespace BLL.DTO
     /// </summary>
     public class TaskDTO
     {
+        /// <summary>
+        /// Get and set task id
+        /// </summary>
+        public int Id { get; set; }
+
         /// <summary>
         /// Get and set task name
         /// </summary>
@@ -37,24 +39,9 @@ namespace BLL.DTO
         public DateTime Deadline { get; set; }
 
         /// <summary>
-        /// Get and set user who create task
-        /// </summary>
-        public virtual UserDTO Creator { get; set; }
-
-        /// <summary>
-        /// Get and set user who execute task
-        /// </summary>
-        public virtual UserDTO Executor { get; set; }
-
-        /// <summary>
         /// Get and set comments collection
         /// </summary>
-        public virtual ICollection<CommentDTO> Comments { get; set; }
-
-        /// <summary>
-        /// Get and set users collection who subscribe this task
-        /// </summary>
-        public virtual ICollection<UserDTO> Subscribers { get; set; }
+        public IEnumerable<CommentDTO> Comments { get; set; }
     }
 
     /// <summary>

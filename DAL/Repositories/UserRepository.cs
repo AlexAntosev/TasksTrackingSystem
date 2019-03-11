@@ -12,9 +12,9 @@ namespace DAL.Repositories
 {
     public class UserRepository : IRepository<User>
     {
-        private readonly CompanyContext _context;
+        private readonly IContext _context;
 
-        public UserRepository(CompanyContext context)
+        public UserRepository(IContext context)
         {
             _context = context;
         }

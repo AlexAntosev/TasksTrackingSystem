@@ -73,3 +73,11 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\DAL.dll.confi
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\EntityFramework.xml
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\EntityFramework.SqlServer.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\EntityFramework.SqlServer.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\Ninject.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\Ninject.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\WebApiContrib.IoC.Ninject.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\AutoMapper.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\System.ValueTuple.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\AutoMapper.pdb
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\AutoMapper.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\Web_API\bin\System.ValueTuple.xml

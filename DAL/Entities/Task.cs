@@ -1,18 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace DAL.Entities
 {
-    public class Task
+    public class Task : BaseEntity
     {
-        /// <summary>
-        /// Get and set task id
-        /// </summary>
-        public int Id { get; set; }
-
         /// <summary>
         /// Get and set task name
         /// </summary>
