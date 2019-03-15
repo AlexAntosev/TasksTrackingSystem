@@ -1,0 +1,41 @@
+<form #form="ngForm" (submit)="onSubmit(form)" autocomplete="off">
+  <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLabel">{{projectProcessingHeader}}</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" name="Id" #Id="ngModel" [(ngModel)]="service.formData.Id">
+          <div class="form-group">
+            <label>Name:</label>
+            <input name="Name" #Name="ngModel" [(ngModel)]="service.formData.Name" class="form-control" required>
+            <div class="validation-error" *ngIf="Name.invalid && Name.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <label>Description:</label>
+            <input name="Description" #Description="ngModel" [(ngModel)]="service.formData.Description" class="form-control" required>
+            <div class="validation-error" *ngIf="Description.invalid && Description.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <label>Priority:</label>
+            <input name="Priority" #Priority="ngModel" [(ngModel)]="service.formData.Priority" class="form-control" required>
+            <div class="validation-error" *ngIf="Priority.invalid && Priority.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <label>Deadline:</label>
+            <input name="Deadline" #Deadline="ngModel" [(ngModel)]="service.formData.Deadline" class="form-control" required>
+            <div class="validation-error" *ngIf="Deadline.invalid && Deadline.touched">This field is required</div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="resetForm(form)">Close</button>
+          <button type="submit" [disabled]="form.invalid" class="btn btn-primary">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</form>

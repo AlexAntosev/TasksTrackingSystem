@@ -26,32 +26,40 @@ namespace Web_API.Controllers
             _service.Create(task.Name, task.Description, 0, Convert.ToInt32(task.Priority), task.Deadline);
         }
 
-        //[HttpGet]
-        //[Route("api/Task/Get")]
-        //public IEnumerable<ProjectDTO> Get()
-        //{
-        //    return _service.GetAll();
-        //}
-
-        // GET: api/Task/5
-        public string Get(int id)
+        [HttpGet]
+        [Route("api/Task/Get")]
+        public IEnumerable<TaskDTO> Get()
         {
-            return "value";
+            return _service.GetAll();
         }
 
-        // POST: api/Task
-        public void Post([FromBody]string value)
+        [HttpGet]
+        [Route("api/Project/{id}/Task/Get")]
+        public IEnumerable<TaskDTO> GetByProject(int id)
         {
+            return _service.GetByProject(id);
         }
 
-        // PUT: api/Task/5
-        public void Put(int id, [FromBody]string value)
+        [HttpGet]
+        [Route("api/Task/Get/{id}")]
+        public TaskDTO Get(int id)
         {
+            return _service.Get(id);
         }
 
-        // DELETE: api/Task/5
+        [HttpPut]
+        [Route("api/Task/Update/{id}")]
+        public void Update(int id, TaskModel task)
+        {
+            _service.Update(id, task.Name, task.Description, task.ProjectId, Convert.ToInt32(task.Priority),
+                task.Deadline);
+        }
+
+        [HttpDelete]
+        [Route("api/Task/Delete/{id}")]
         public void Delete(int id)
         {
+            _service.Delete(id);
         }
     }
 }

@@ -2,7 +2,9 @@
 using DAL.Entities;
 using DAL.Interfaces;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using BLL.DTO;
 
 namespace BLL.Services
 {
@@ -42,6 +44,40 @@ namespace BLL.Services
             if (task != null)
             {
                 _unitOfWork.Tasks.Delete(id);
+                _unitOfWork.Save();
+            }
+
+            return task;
+        }
+
+        public TaskDTO Get(int id)
+        {
+            return Mapper.AutoMapperConfig.Mapper.Map<Task, TaskDTO>(_unitOfWork.Tasks.Get(id));
+        }
+
+        public IEnumerable<TaskDTO> GetAll()
+        {
+            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Task>, IEnumerable<TaskDTO>>(_unitOfWork.Tasks.GetAll());
+        }
+
+        public IEnumerable<TaskDTO> GetByProject(int id)
+        {
+            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Task>, IEnumerable<TaskDTO>>(_unitOfWork.Tasks.Find(t => t.ProjectId == id));
+        }
+
+        public Task Update(int id, string name, string description, int projectId, int priorityId, DateTime deadline)
+        {
+            var task = _unitOfWork.Tasks.Get(id);
+
+            if (task != null)
+            {
+                task.Name = name;
+                task.Description = description;
+                task.ProjectId = projectId;
+                task.PriorityId = priorityId;
+                task.Deadline = deadline;
+
+                _unitOfWork.Tasks.Update(task);
                 _unitOfWork.Save();
             }
 

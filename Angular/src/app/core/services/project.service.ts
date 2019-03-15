@@ -8,6 +8,7 @@ import { HttpClient } from '@angular/common/http';
 export class ProjectService {
 
   formData : Project;
+  selectedProject : Project;
   list : Project[];
   readonly rootURL = "http://localhost:60708/api";
 
@@ -17,7 +18,7 @@ export class ProjectService {
     return this.http.post(this.rootURL+'/Project/Create', formData);
   }
 
-  refreshProjectList(){
+  getProjects(){
     this.http.get(this.rootURL+'/Project/Get')
     .toPromise().then(res => this.list = res as Project[]);
   }
@@ -28,5 +29,9 @@ export class ProjectService {
 
   deleteProject(projectId : number){
     return this.http.delete(this.rootURL+'/Project/Delete/'+projectId)
+  }
+
+  getProject(projectId : number){
+    this.http.get(this.rootURL+'/Project/Get/'+projectId).toPromise().then(res => this.selectedProject = res as Project);;
   }
 }

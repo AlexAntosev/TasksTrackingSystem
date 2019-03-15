@@ -14,9 +14,7 @@ namespace Web_API.App_Start
         {
             var kernel = new StandardKernel();
             RegisterServices(kernel);
-
             System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver = new NinjectResolver(kernel);
-
             return kernel;
         }
 

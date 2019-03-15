@@ -1,3 +1,22 @@
 <div class="container">
-  <app-projects></app-projects>
+  <header>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">        
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto">
+          <li class="nav-item active">
+            <button class="btn btn-dark btn-lg" (click)="openProjectLayout()"> Projects <span class="sr-only">(current)</span></button>
+          </li>
+          <li class="nav-item">
+            <button class="btn btn-dark btn-lg" (click)="openTaskLayout()"> Tasks </button>
+          </li>              
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+          <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+        </form>
+      </div>
+    </nav>
+</header>
+  <app-projects *ngIf="projectLayout"></app-projects>
+  <app-tasks *ngIf="taskLayout"></app-tasks>
 </div>

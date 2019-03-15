@@ -23,26 +23,26 @@ namespace Web_API.Controllers
         [Route("api/Project/Get")]
         public IEnumerable<ProjectDTO> Get()
         {
-            
             return _service.GetAll();
         }
 
-        // GET: api/Project/5
-        public string Get(int id)
+        [HttpGet]
+        [Route("api/Project/Get/{id}")]
+        public ProjectDTO Get(int id)
         {
-            return "value";
+            return _service.Get(id);
         }
 
         [HttpPost]
         [Route("api/Project/Create")]
-        public void Create(Project project)
+        public void Create(ProjectDTO project)
         {
             _service.Create(project.Name, project.Tag);
         }
 
         [HttpPut]
         [Route("api/Project/Update/{id}")]
-        public void Update(int id, Project project)
+        public void Update(int id, ProjectDTO project)
         {
             _service.Edit(id, project.Name, project.Tag);
         }

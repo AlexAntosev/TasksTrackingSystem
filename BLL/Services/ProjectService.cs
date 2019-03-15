@@ -55,10 +55,10 @@ namespace BLL.Services
                     project.Name = name;
                 if (tag != null && tag != project.Tag)
                     project.Tag = tag;
-            }
 
-            _unitOfWork.Projects.Update(project);
-            _unitOfWork.Save();
+                _unitOfWork.Projects.Update(project);
+                _unitOfWork.Save();
+            }
 
             return project;
         }

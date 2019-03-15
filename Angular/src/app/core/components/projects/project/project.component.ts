@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ProjectService } from 'src/app/core/services/project.service';
 import { NgForm } from '@angular/forms/src/directives/ng_form';
 
@@ -9,42 +9,43 @@ import { NgForm } from '@angular/forms/src/directives/ng_form';
 })
 export class ProjectComponent implements OnInit {
 
-  constructor(private service : ProjectService) { }
+  constructor(private service: ProjectService) { }
 
   ngOnInit() {
     this.resetForm();
   }
 
-  resetForm(form? : NgForm){
-    if(form != null)
+  resetForm(form?: NgForm) {
+    if (form != null)
       form.resetForm();
     this.service.formData = {
-      Id : null,
-      Name : '',
-      Tag : ''
+      Id: null,
+      Name: '',
+      Tag: ''
     }
   }
 
-  onSubmit(form : NgForm){
-    if(form.value.Id == null)
-      this.insertRecord(form);
+  onSubmit(form: NgForm) {
+    if (form.value.Id == null)
+      this.createProject(form);
     else
-      this.updateRecord(form);
-    
+      this.updateProject(form);
+
   }
 
-  insertRecord(form : NgForm){
+  createProject(form: NgForm) {
     this.service.createProject(form.value).subscribe(res => {
       this.resetForm(form);
-      this.service.refreshProjectList();
+      this.service.getProjects();
     })
   }
 
-  updateRecord(form : NgForm){
+  updateProject(form: NgForm) {
     this.service.updateProject(form.value).subscribe(res => {
       this.resetForm(form);
-      this.service.refreshProjectList();
+      this.service.getProjects();
     })
   }
 
+  
 }
