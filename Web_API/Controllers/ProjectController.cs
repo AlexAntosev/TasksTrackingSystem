@@ -37,14 +37,14 @@ namespace Web_API.Controllers
         [Route("api/Project/Create")]
         public void Create(ProjectDTO project)
         {
-            _service.Create(project.Name, project.Tag);
+            _service.Create(project);
         }
 
         [HttpPut]
         [Route("api/Project/Update/{id}")]
         public void Update(int id, ProjectDTO project)
         {
-            _service.Edit(id, project.Name, project.Tag);
+            _service.Edit(id, project);
         }
 
         [HttpDelete]

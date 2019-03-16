@@ -1,9 +1,11 @@
 export class Task {
-    Id : number;    
-    Name : string;
-    Description : string;
-    Priority : string;
-    CreatorName : string;
-    DeveloperName : string;
-    Deadline : string;
+    constructor(
+        public Id : number,   
+        public Name : string,
+        public Description : string){}
+    
+    //Priority : string;
+    //CreatorName : string;
+    //DeveloperName : string;
+    //Deadline : string;
 }

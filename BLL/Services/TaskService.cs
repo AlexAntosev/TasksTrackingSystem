@@ -17,16 +17,16 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task Create(string name, string description, int projectId, int priorityId, DateTime deadline)
+        public Task Create(TaskDTO taskDTO, int projectId)
         {
             Task task = new Task()
             {
-                Id = _unitOfWork.Tasks.Find(t => t.Name == name).FirstOrDefault().Id,
-                Name = name,
-                Description = description,
-                PriorityId = priorityId,
+                ///Id = _unitOfWork.Tasks.Find(t => t.Name == taskDTO.Name).FirstOrDefault().Id,
+                Name = taskDTO.Name,
+                Description = taskDTO.Description,
+                PriorityId = Convert.ToInt32(taskDTO.Priority),
                 ProjectId = projectId,
-                Deadline = deadline,
+                Deadline = DateTime.Now,
                 Date = DateTime.Now,
                 Comments = null
             };
@@ -65,17 +65,17 @@ namespace BLL.Services
             return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Task>, IEnumerable<TaskDTO>>(_unitOfWork.Tasks.Find(t => t.ProjectId == id));
         }
 
-        public Task Update(int id, string name, string description, int projectId, int priorityId, DateTime deadline)
+        public Task Update(int id, TaskDTO taskDTO, int projectId)
         {
             var task = _unitOfWork.Tasks.Get(id);
 
             if (task != null)
             {
-                task.Name = name;
-                task.Description = description;
+                task.Name = taskDTO.Name;
+                task.Description = taskDTO.Description;
                 task.ProjectId = projectId;
-                task.PriorityId = priorityId;
-                task.Deadline = deadline;
+                task.PriorityId = Convert.ToInt32(taskDTO.Priority);
+                task.Deadline = taskDTO.Deadline;
 
                 _unitOfWork.Tasks.Update(task);
                 _unitOfWork.Save();

@@ -16,12 +16,12 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Project Create(string name, string tag)
+        public Project Create(ProjectDTO projectDTO)
         {
             Project project = new Project()
             {
-                Name = name,
-                Tag = tag,
+                Name = projectDTO.Name,
+                Tag = projectDTO.Tag,
                 Tasks = null,
                 Team = null
             };
@@ -45,16 +45,16 @@ namespace BLL.Services
             return project;
         }
 
-        public Project Edit(int id, string name, string tag)
+        public Project Edit(int id, ProjectDTO projectDTO)
         {
             var project = _unitOfWork.Projects.Get(id);
 
             if (project != null)
             {
-                if (name != null && name != project.Name)
-                    project.Name = name;
-                if (tag != null && tag != project.Tag)
-                    project.Tag = tag;
+                if (projectDTO.Name != null && projectDTO.Name != project.Name)
+                    project.Name = projectDTO.Name;
+                if (projectDTO.Tag != null && projectDTO.Tag != project.Tag)
+                    project.Tag = projectDTO.Tag;
 
                 _unitOfWork.Projects.Update(project);
                 _unitOfWork.Save();

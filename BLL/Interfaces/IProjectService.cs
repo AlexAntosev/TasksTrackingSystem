@@ -6,9 +6,9 @@ namespace BLL.Interfaces
 {
     public interface IProjectService
     {
-        Project Create(string name, string tag);
+        Project Create(ProjectDTO projectDTO);
         Project Delete(int id);
-        Project Edit(int id, string name, string tag);
+        Project Edit(int id, ProjectDTO projectDTO);
         ProjectDTO Get(int id);
         IEnumerable<ProjectDTO> GetAll();
     }

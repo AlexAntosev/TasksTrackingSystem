@@ -21,9 +21,9 @@ namespace Web_API.Controllers
 
         [HttpPost]
         [Route("api/Task/Create")]
-        public void Create(TaskModel task)
+        public void Create(TaskDTO task, int projectId)
         {
-            _service.Create(task.Name, task.Description, 0, Convert.ToInt32(task.Priority), task.Deadline);
+            _service.Create(task, projectId);
         }
 
         [HttpGet]
@@ -49,10 +49,9 @@ namespace Web_API.Controllers
 
         [HttpPut]
         [Route("api/Task/Update/{id}")]
-        public void Update(int id, TaskModel task)
+        public void Update(int id, TaskDTO task, int projectId)
         {
-            _service.Update(id, task.Name, task.Description, task.ProjectId, Convert.ToInt32(task.Priority),
-                task.Deadline);
+            _service.Update(id, task, projectId);
         }
 
         [HttpDelete]

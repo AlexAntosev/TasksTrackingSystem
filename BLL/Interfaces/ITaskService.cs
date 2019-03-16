@@ -7,9 +7,9 @@ namespace BLL.Interfaces
 {
     public interface ITaskService
     {
-        Task Create(string name, string description, int projectId, int priorityId, DateTime deadline);
+        Task Create(TaskDTO taskDTO, int projectId);
         Task Delete(int id);
-        Task Update(int id, string name, string description, int projectId, int priorityId, DateTime deadline);
+        Task Update(int id, TaskDTO taskDTO, int projectId);
         TaskDTO Get(int id);
         IEnumerable<TaskDTO> GetAll();
         IEnumerable<TaskDTO> GetByProject(int id);
