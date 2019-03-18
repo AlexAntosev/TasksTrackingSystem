@@ -9,7 +9,9 @@ export class ProjectService {
 
   formData: Project;
   list: Project[];
-  readonly rootURL = "http://localhost:60708/api/Project";
+  //readonly rootURL = "http://localhost:60708/api/Project";
+  readonly rootURL = "http://localhost:60542/api/Project";
+  
 
   constructor(private http: HttpClient) { }
 

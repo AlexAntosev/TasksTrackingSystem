@@ -8,7 +8,10 @@
           </li>
           <li class="nav-item">
             <button class="btn btn-dark btn-lg" (click)="openTaskLayout()"> Tasks </button>
-          </li>              
+          </li>    
+          <li class="nav-item">
+            <button class="btn btn-dark btn-lg" (click)="openAccountLayout()"> Account </button>
+          </li>            
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -19,4 +22,5 @@
 </header>
   <app-projects *ngIf="projectLayout"></app-projects>
   <app-tasks *ngIf="taskLayout"></app-tasks>
+  <app-account *ngIf="accountLayout"></app-account>
 </div>

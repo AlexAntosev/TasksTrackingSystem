@@ -11,7 +11,8 @@ export class TaskService {
   currentProject: Project;
   formData: Task;
   list: Task[];
-  readonly rootURL = "http://localhost:60708/api";
+  //readonly rootURL = "http://localhost:60708/api";
+  readonly rootURL = "http://localhost:60542/api";  
 
   constructor(private http: HttpClient) { }
 

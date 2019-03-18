@@ -13,6 +13,8 @@ import { ProjectsComponent } from './core/components/projects/projects.component
 import { ProjectService } from 'src/app/core/services/project.service';
 import { TaskService } from 'src/app/core/services/task.service';
 import { TasksComponent } from 'src/app/core/components/tasks/tasks.component';
+import { AccountComponent } from './core/components/account/account.component';
+import { AccountService } from 'src/app/core/services/account.service';
 
 
 
@@ -20,7 +22,8 @@ import { TasksComponent } from 'src/app/core/components/tasks/tasks.component';
   declarations: [
     AppComponent,
     ProjectsComponent,
-    TasksComponent
+    TasksComponent,
+    AccountComponent
   ],
   imports: [
     BrowserModule,
@@ -30,7 +33,7 @@ import { TasksComponent } from 'src/app/core/components/tasks/tasks.component';
     MatInputModule,
     BrowserAnimationsModule
   ],
-  providers: [ProjectService, TaskService],
+  providers: [ProjectService, TaskService, AccountService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
