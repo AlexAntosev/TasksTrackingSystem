@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
-using System.Net.Http;
-using System.Web.Http;
-using BLL.DTO;
+﻿using BLL.DTO;
 using BLL.Interfaces;
-using Web_API.Models;
+using System.Collections.Generic;
+using System.Web.Http;
 
 namespace Web_API.Controllers
 {
@@ -21,37 +16,67 @@ namespace Web_API.Controllers
 
         [HttpGet]
         [Route("api/Project/Get")]
-        public IEnumerable<ProjectDTO> Get()
+        public IHttpActionResult Get()
         {
-            return _service.GetAll();
+            IEnumerable<ProjectDTO> projects = _service.GetAll();
+            if (projects == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(projects);
         }
 
         [HttpGet]
         [Route("api/Project/Get/{id}")]
-        public ProjectDTO Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return _service.Get(id);
+            ProjectDTO project = _service.Get(id);
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(project);
         }
 
         [HttpPost]
         [Route("api/Project/Create")]
-        public void Create(ProjectDTO project)
+        public IHttpActionResult Create(ProjectDTO project)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Create(project);
+
+            return Ok();
         }
 
         [HttpPut]
         [Route("api/Project/Update/{id}")]
-        public void Update(int id, ProjectDTO project)
+        public IHttpActionResult Update(int id, ProjectDTO project)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Edit(id, project);
+
+            return Ok();
         }
 
         [HttpDelete]
         [Route("api/Project/Delete/{id}")]
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Delete(id);
+
+            return Ok();
         }
     }
 }

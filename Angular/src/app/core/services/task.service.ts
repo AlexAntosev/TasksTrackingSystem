@@ -16,9 +16,6 @@ export class TaskService {
   constructor(private http: HttpClient) { }
 
   createTask(formData: Task, projectId: number) {
-    console.log(formData);
-    debugger;
-    //this.currentProject.Tasks.push(formData);
     let projectIdParam = new HttpParams().set('projectId', ''+projectId);
     return this.http.post(this.rootURL + '/Task/Create', formData, {params: projectIdParam});
   }

@@ -1,12 +1,7 @@
-﻿using BLL.Services;
-using DAL.EF;
-using DAL.Repositories;
+﻿using BLL.DTO;
+using BLL.Interfaces;
 using System.Collections.Generic;
 using System.Web.Http;
-using BLL.Interfaces;
-using Web_API.Models;
-using BLL.DTO;
-using System;
 
 namespace Web_API.Controllers
 {
@@ -21,44 +16,80 @@ namespace Web_API.Controllers
 
         [HttpPost]
         [Route("api/Task/Create")]
-        public void Create(TaskDTO task, int projectId)
+        public IHttpActionResult Create(TaskDTO task, int projectId)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Create(task, projectId);
+
+            return Ok();
         }
 
         [HttpGet]
         [Route("api/Task/Get")]
-        public IEnumerable<TaskDTO> Get()
+        public IHttpActionResult Get()
         {
-            return _service.GetAll();
+            IEnumerable<TaskDTO> tasks = _service.GetAll();
+            if (tasks == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(tasks);
         }
 
         [HttpGet]
         [Route("api/Project/{id}/Task/Get")]
-        public IEnumerable<TaskDTO> GetByProject(int id)
+        public IHttpActionResult GetByProject(int id)
         {
-            return _service.GetByProject(id);
+            IEnumerable<TaskDTO> tasks = _service.GetByProject(id);
+            if (tasks == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(tasks);
         }
 
         [HttpGet]
         [Route("api/Task/Get/{id}")]
-        public TaskDTO Get(int id)
+        public IHttpActionResult Get(int id)
         {
-            return _service.Get(id);
+            TaskDTO task = _service.Get(id);
+            if (task == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(task);
         }
 
         [HttpPut]
         [Route("api/Task/Update/{id}")]
-        public void Update(int id, TaskDTO task, int projectId)
+        public IHttpActionResult Update(int id, TaskDTO task, int projectId)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Update(id, task, projectId);
+
+            return Ok();
         }
 
         [HttpDelete]
         [Route("api/Task/Delete/{id}")]
-        public void Delete(int id)
+        public IHttpActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest();
+            }
             _service.Delete(id);
+
+            return Ok();
         }
     }
 }
