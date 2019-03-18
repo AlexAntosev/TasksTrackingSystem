@@ -70,7 +70,11 @@ namespace BLL.Services
 
         public ProjectDTO Get(int id)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<Project, ProjectDTO>(_unitOfWork.Projects.Get(id));
+            var project = _unitOfWork.Projects.Get(id);
+            //var tasks = project.Tasks;
+            var projectDTO = Mapper.AutoMapperConfig.Mapper.Map<Project, ProjectDTO>(_unitOfWork.Projects.Get(id));
+            var tasksDTO = projectDTO.Tasks;
+            return projectDTO;
         }
     }
 }

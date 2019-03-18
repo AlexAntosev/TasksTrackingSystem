@@ -40,6 +40,7 @@ namespace DAL.EF
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
+            //Configuration.LazyLoadingEnabled = false;
         }
 
         public void Save()

@@ -1,37 +1,57 @@
-<table class="table table-hover">
-  <thead>
-    <tr>
-      <th scope="col">Name</th>
-      <th scope="col">Description</th>
-      <th scope="col"></th>
-      <th scope="col"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr *ngFor="let task of service.list">
-      <td (click)="onSelect(task)">{{task.Name}}</td>
-      <td>{{task.Description}}</td>
-      <td>
-        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onUpdate(task)">Update</button>
-      </td>
-      <td>
-        <button class="btn btn-sm btn-outline-danger" (click)="onDelete(task.Id)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
+<ng-template #listTemplate>
+  <table class="table table-hover">
+    <thead>
+      <tr>
+        <th scope="col">Name</th>
+        <th scope="col">Description</th>
+        <th scope="col">Priority</th>
+        <th scope="col"></th>>
+        <th scope="col"></th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let task of service.list">
+        <td (click)="onSelect(task)">{{task.Name}}</td>
+        <td>{{task.Description}}</td>
+        <td>
+          <div *ngIf="task.Priority === 0">
+            <div class="bg-primary" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          <div *ngIf="task.Priority === 1">
+            <div class="bg-success" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          <div *ngIf="task.Priority === 2">
+            <div class="bg-warning" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          <div *ngIf="task.Priority === 3">
+              <div class="bg-danger" style="width: 25px; height: 25px;">
+              </div>
+            </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-sm btn-outline-primary" (click)="onUpdate(task)">Update</button>
+        </td>
+        <td>
+          <button class="btn btn-sm btn-outline-danger" (click)="onDelete(task.Id)">Delete</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</ng-template>
 
 
 <button type="button" class="btn btn-lg btn-outline-primary my-2 my-sm-0" (click)="onCreate()">Create new task</button>
 <ng-template [ngTemplateOutlet]="loadTemplate()">
-  </ng-template>
+</ng-template>
 
 <!--шаблон для редактирования-->
 <ng-template #editTemplate>
-<form #form="ngForm">
+  <form #form="ngForm">
     <div>
-      <h5></h5>
+      <h5>{{currentTemplate}}</h5>
     </div>
     <div>
       <input type="hidden" name="Id" #Id="ngModel" [(ngModel)]="selectedTask.Id">
@@ -45,6 +65,17 @@
         <input name="Description" #Description="ngModel" [(ngModel)]="selectedTask.Description" class="form-control" required>
         <div class="validation-error" *ngIf="Description.invalid && Description.touched">This field is required</div>
       </div>
+    </div>
+    <div class="form-group">
+      <h4>Select priority</h4>
+      <mat-form-field>
+        <mat-select [(value)]="selectedTask.Priority">
+          <mat-option [value]=0>Low</mat-option>
+          <mat-option [value]=1>Middle</mat-option>
+          <mat-option [value]=2>High</mat-option>
+          <mat-option [value]=3>Ultra-High</mat-option>
+        </mat-select>
+      </mat-form-field>
     </div>
     <div>
       <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">Close</button>

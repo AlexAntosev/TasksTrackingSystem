@@ -43,7 +43,8 @@ namespace DAL.Repositories
 
         public Project Get(int id)
         {
-            return _context.Projects.Find(id);
+            var project = _context.Projects.Find(id);
+            return project;
         }
 
         public IEnumerable<Project> GetAll()

@@ -48,7 +48,7 @@
       <h5>{{currentTemplate}}</h5>
     </div>
     <div>
-      <input  name="Id" #Id="ngModel" [(ngModel)]="selectedProject.Id">
+      <input hidden name="Id" #Id="ngModel" [(ngModel)]="selectedProject.Id">
       <div class="form-group">
         <label>Name:</label>
         <input name="Name" #Name="ngModel" [(ngModel)]="selectedProject.Name" class="form-control" required>
@@ -72,7 +72,7 @@
   <div>
     <h1>{{selectedProject.Name}} Details:</h1>
     <h3>Tasks:</h3>
-    <app-tasks [projectId]="selectedProject.Id"></app-tasks>
+    <app-tasks [project]="selectedProject"></app-tasks>
     <h3>Stuff:</h3>
     <button (click)="cancel()">Close</button>
   </div>

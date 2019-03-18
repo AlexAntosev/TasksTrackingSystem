@@ -18,7 +18,7 @@ namespace DAL.Entities
         /// <summary>
         /// Get and set foreign key to project by id 
         /// </summary>
-        public int ProjectId { get; set; }
+        public int? ProjectId { get; set; }
 
         /// <summary>
         /// Get and set project by foreign key
@@ -28,7 +28,7 @@ namespace DAL.Entities
         /// <summary>
         /// Get and set foreign key to task priority by id 
         /// </summary>
-        public int PriorityId { get; set; }
+        public int Priority { get; set; }
 
         /// <summary>
         /// Get and set date when task was created

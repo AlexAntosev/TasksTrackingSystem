@@ -6,5 +6,5 @@ export class Project {
         public Name : string,    
         public Tag : string,
     ){}
-    Tasks : Task[];
+    Tasks: Task[];
 }

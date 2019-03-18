@@ -24,7 +24,7 @@ namespace BLL.Services
                 ///Id = _unitOfWork.Tasks.Find(t => t.Name == taskDTO.Name).FirstOrDefault().Id,
                 Name = taskDTO.Name,
                 Description = taskDTO.Description,
-                PriorityId = Convert.ToInt32(taskDTO.Priority),
+                Priority = Convert.ToInt32(taskDTO.Priority),
                 ProjectId = projectId,
                 Deadline = DateTime.Now,
                 Date = DateTime.Now,
@@ -74,7 +74,7 @@ namespace BLL.Services
                 task.Name = taskDTO.Name;
                 task.Description = taskDTO.Description;
                 task.ProjectId = projectId;
-                task.PriorityId = Convert.ToInt32(taskDTO.Priority);
+                task.Priority = Convert.ToInt32(taskDTO.Priority);
                 task.Deadline = taskDTO.Deadline;
 
                 _unitOfWork.Tasks.Update(task);

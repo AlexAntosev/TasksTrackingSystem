@@ -65,7 +65,8 @@ namespace DAL.Repositories
         /// </summary>
         public IEnumerable<Task> GetAll()
         {
-            return _context.Tasks.OrderBy(t => t.Name);
+            var tasks = _context.Tasks.OrderBy(t => t.Name);;
+            return tasks;
         }
 
         /// <summary>
