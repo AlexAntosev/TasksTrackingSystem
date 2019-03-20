@@ -147,3 +147,5 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\obj\Debug\WebAPI.c
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\obj\Debug\WebAPI.csproj.CopyComplete
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\obj\Debug\WebAPI.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\obj\Debug\WebAPI.pdb
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\Microsoft.Owin.Cors.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\Microsoft.Owin.Cors.xml

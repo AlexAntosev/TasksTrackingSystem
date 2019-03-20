@@ -53,6 +53,7 @@ namespace WebAPI.Controllers
             return Ok();
         }
 
+        [Authorize]
         [HttpPut]
         [Route("api/Project/Update/{id}")]
         public IHttpActionResult Update(int id, ProjectDTO project)

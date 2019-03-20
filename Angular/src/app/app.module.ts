@@ -15,6 +15,8 @@ import { TaskService } from 'src/app/core/services/task.service';
 import { TasksComponent } from 'src/app/core/components/tasks/tasks.component';
 import { AccountComponent } from './core/components/account/account.component';
 import { AccountService } from 'src/app/core/services/account.service';
+import { LoginComponent } from './core/components/account/login/login.component';
+import { RegisterComponent } from './core/components/account/register/register.component';
 
 
 
@@ -23,7 +25,9 @@ import { AccountService } from 'src/app/core/services/account.service';
     AppComponent,
     ProjectsComponent,
     TasksComponent,
-    AccountComponent
+    AccountComponent,
+    LoginComponent,
+    RegisterComponent
   ],
   imports: [
     BrowserModule,
