@@ -3,78 +3,13 @@
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <h6 class="display-4 text-center navbar-nav mr-auto">Projects:</h6>
       <form class="form-inline my-1 my-lg-2">
-        <button type="button" class="btn btn-lg btn-outline-primary my-1 my-sm-2" (click)="getProjects()">Project list</button>
+        <button type="button" class="btn btn-lg btn-outline-primary my-1 my-sm-2" (click)="onList()">Project list</button>
       </form>
       <form class="form-inline my-2 my-lg-0">
         <button type="button" class="btn btn-lg btn-outline-primary my-2 my-sm-0" (click)="onCreate()">Create new project</button>
       </form>
     </div>
   </nav>
-  <ng-template [ngTemplateOutlet]="loadTemplate()">
-  </ng-template>
+  
 </div>
-
-<!--шаблон для чтения-->
-<ng-template #listTemplate>
-  <table class="table table-hover">
-    <thead>
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">Tag</th>
-        <th scope="col"></th>
-        <th scope="col"></th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr *ngFor="let project of service.list">
-        <td (click)="onSelect(project)">{{project.Name}}</td>
-        <td>{{project.Tag}}</td>
-        <td>
-          <button type="button" class="btn btn-sm btn-outline-primary" (click)="onUpdate(project)">Update</button>
-        </td>
-        <td>
-          <button class="btn btn-sm btn-outline-danger" (click)="onDelete(project.Id)">Delete</button>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-</ng-template>
-
-<!--шаблон для редактирования-->
-<ng-template #editTemplate>
-  <form #form="ngForm">
-    <div>
-      <h5>{{currentTemplate}}</h5>
-    </div>
-    <div>
-      <input hidden name="Id" #Id="ngModel" [(ngModel)]="selectedProject.Id">
-      <div class="form-group">
-        <label>Name:</label>
-        <input name="Name" #Name="ngModel" [(ngModel)]="selectedProject.Name" class="form-control" required>
-        <div class="validation-error" *ngIf="Name.invalid && Name.touched">This field is required</div>
-      </div>
-      <div class="form-group">
-        <label>Tag:</label>
-        <input name="Tag" #Tag="ngModel" [(ngModel)]="selectedProject.Tag" class="form-control" required>
-        <div class="validation-error" *ngIf="Tag.invalid && Tag.touched">This field is required</div>
-      </div>
-    </div>
-    <div>
-      <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">Close</button>
-      <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="saveProject()">Submit</button>
-    </div>
-  </form>
-</ng-template>
-
-<!--шаблон для проекта-->
-<ng-template #selectedTemplate>
-  <div>
-    <h1>{{selectedProject.Name}} Details:</h1>
-    <h3>Tasks:</h3>
-    <app-tasks [project]="selectedProject"></app-tasks>
-    <h3>Stuff:</h3>
-    <button (click)="cancel()">Close</button>
-  </div>
-
-</ng-template>
+<router-outlet></router-outlet>

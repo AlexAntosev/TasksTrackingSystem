@@ -4,14 +4,17 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item active">
-            <button class="btn btn-dark btn-lg" (click)="openProjectLayout()"> Projects <span class="sr-only">(current)</span></button>
+            <button class="btn btn-dark btn-lg" routerLink="/projects" routerLinkActive="active"> Projects <span class="sr-only">(current)</span></button>
           </li>
           <li class="nav-item">
-            <button class="btn btn-dark btn-lg" (click)="openTaskLayout()"> Tasks </button>
+            <button class="btn btn-dark btn-lg" routerLink="/tasks" routerLinkActive="active"> Tasks </button>
           </li>    
           <li class="nav-item">
-            <button class="btn btn-dark btn-lg" (click)="openAccountLayout()"> Account </button>
-          </li>            
+            <button class="btn btn-dark btn-lg" routerLink="/login" routerLinkActive="active"> Login </button>
+          </li>    
+          <li class="nav-item">
+            <button class="btn btn-dark btn-lg" routerLink="/register" routerLinkActive="active"> Register </button>
+          </li>         
         </ul>
         <form class="form-inline my-2 my-lg-0">
           <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
@@ -19,8 +22,7 @@
         </form>
       </div>
     </nav>
-</header>
-  <app-projects *ngIf="projectLayout"></app-projects>
-  <app-tasks *ngIf="taskLayout"></app-tasks>
-  <app-account *ngIf="accountLayout"></app-account>
+</header>  
+<router-outlet></router-outlet>
 </div>
+

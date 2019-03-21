@@ -10,11 +10,11 @@ export class ProjectService {
 
   formData: Project;
   list: Project[];
-  //readonly rootURL = "http://localhost:60708/api/Project";
   readonly rootURL = "http://localhost:60542/api/Project";
-  
+  tokenKey: string = "tokenInfo";
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient) { 
+  }
 
   createProject(formData: Project) {
     return this.http.post(this.rootURL + '/Create', formData);
@@ -26,7 +26,7 @@ export class ProjectService {
   }
 
   updateProject(formData: Project) {
-    var token = sessionStorage.getItem("tokenInfo");
+    var token = sessionStorage.getItem(this.tokenKey);
     var myHeaders : any = {};
     if (token) {
         myHeaders.Authorization = 'Bearer ' + token;

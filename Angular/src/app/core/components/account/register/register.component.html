@@ -1,3 +1,14 @@
-<p>
-  register works!
-</p>
+<form #form="ngForm">
+  <div>
+    <label>Enter email</label><br />
+    <input name="Email" #Email="ngModel" [(ngModel)]="account.Email" class="form-control" required>
+    <div class="validation-error" *ngIf="Email.invalid && Email.touched">This field is required</div>
+    <label>Enter password</label><br />
+    <input type="password" name="Password" #Password="ngModel" [(ngModel)]="account.Password" class="form-control" required>
+    <div class="validation-error" *ngIf="Password.invalid && Password.touched">This field is required</div>
+    <label>Submit password</label><br />
+    <input type="password" name="ConfirmPassword" #ConfirmPassword="ngModel" [(ngModel)]="account.ConfirmPassword" class="form-control" required>
+    <div class="validation-error" *ngIf="ConfirmPassword.invalid && ConfirmPassword.touched">This field is required</div>
+    <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="onRegister()">Submit</button>
+  </div>
+</form>

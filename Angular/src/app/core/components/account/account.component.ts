@@ -9,16 +9,8 @@ import { Account } from 'src/app/core/models/account.model';
 })
 export class AccountComponent implements OnInit {
 
-  account: Account;
-
-  constructor(private service : AccountService) { }
+  constructor() { }
 
   ngOnInit() {
-    this.account = new Account();
   }
-
-  onRegister(){
-    this.service.Register(this.account);
-  }
-
 }

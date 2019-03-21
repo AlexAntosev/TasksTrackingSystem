@@ -1,0 +1,22 @@
+<form #form="ngForm">
+  <div>
+    <h5>{{template}}</h5>
+  </div>
+  <div>
+    <input hidden name="Id" #Id="ngModel" [(ngModel)]="selectedProject.Id">
+    <div class="form-group">
+      <label>Name:</label>
+      <input name="Name" #Name="ngModel" [(ngModel)]="selectedProject.Name" class="form-control" required>
+      <div class="validation-error" *ngIf="Name.invalid && Name.touched">This field is required</div>
+    </div>
+    <div class="form-group">
+      <label>Tag:</label>
+      <input name="Tag" #Tag="ngModel" [(ngModel)]="selectedProject.Tag" class="form-control" required>
+      <div class="validation-error" *ngIf="Tag.invalid && Tag.touched">This field is required</div>
+    </div>
+  </div>
+  <div>
+    <button type="button" class="btn btn-secondary" data-dismiss="modal" (click)="cancel()">Close</button>
+    <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="saveProject()">Submit</button>
+  </div>
+</form>
