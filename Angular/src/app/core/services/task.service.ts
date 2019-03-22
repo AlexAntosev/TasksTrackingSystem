@@ -11,7 +11,6 @@ export class TaskService {
   currentProject: Project;
   formData: Task;
   list: Task[];
-  //readonly rootURL = "http://localhost:60708/api";
   readonly rootURL = "http://localhost:60542/api";  
 
   constructor(private http: HttpClient) { }
@@ -35,6 +34,7 @@ export class TaskService {
   }
 
   getByProject(project: Project) {
+    console.log(project);
     this.currentProject = project;
     this.list = this.currentProject.Tasks;
     //this.http.get(this.rootURL + '/Project/' + this.currentProject.Id + '/Task/Get')

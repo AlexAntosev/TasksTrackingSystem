@@ -12,23 +12,25 @@ export class ProjectListComponent implements OnInit {
 
   projects: Project[];
   
-  constructor(private service : ProjectService, private router: Router) { }
+  constructor(private service : ProjectService, private router: Router) { 
+    
+  }
 
   ngOnInit() {
     this.getProjects();
   }
 
   getProjects() {
-    this.service.getProjects();
+    this.service.getProjects().subscribe(data =>
+      this.projects = data);
   }
 
-  onSelect(project: Project){
-    this.service.getProject(project.Id);
-    this.router.navigate(['/projects/details/'+project.Id, {proj: project}]);
+  onSelect(projectId: number){
+    this.router.navigate(['/projects/details/'+projectId, {id: projectId}]);
   }
 
-  onUpdate(project: Project) {
-    this.router.navigate(['/projects/'+project.Id, {id: project.Id}]);
+  onUpdate(projectId: number) {    
+    this.router.navigate(['/projects/'+projectId, {id: projectId}]);
   }
 
   onDelete(projectId: number) {

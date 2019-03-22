@@ -16,13 +16,14 @@ export class ProjectDetailsComponent implements OnInit {
   selectedId : number;
 
   constructor(private service : ProjectService, private route: ActivatedRoute) {
-    this.selectedId = +this.route.snapshot.paramMap.get("id");
-    this.service.getProject(this.selectedId);
-    this.selectedProject = this.service.formData;
+    
    }
 
   ngOnInit() {
-    
+    this.selectedId = +this.route.snapshot.paramMap.get("id");
+    this.service.getProject(this.selectedId).subscribe(data => {
+      this.selectedProject = data;
+    });
   }
 
 }

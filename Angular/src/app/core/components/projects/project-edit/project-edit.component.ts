@@ -13,42 +13,49 @@ import { switchMap } from 'rxjs/operators';
 })
 export class ProjectEditComponent implements OnInit {
 
-  isNewProject : boolean;
+  isNewProject: boolean;
   selectedProject: Project;
-  selectedId : number;
+  selectedId: number;
 
-  constructor(private service : ProjectService, private router: Router, private route : ActivatedRoute) { 
-    
+
+  constructor(private service: ProjectService, private router: Router, private route: ActivatedRoute) {
+
   }
 
   ngOnInit() {
     this.route.data
-    .subscribe((data => {
-      this.isNewProject = data.isNewProject;
-    }));
-    if(!this.isNewProject){
-        this.selectedId = +this.route.snapshot.paramMap.get("id");
-        this.service.getProject(this.selectedId);
-        this.selectedProject = this.service.formData;
+      .subscribe((data => {
+        this.isNewProject = data.isNewProject;
+      }));
+    if (!this.isNewProject) {
+      this.selectedId = +this.route.snapshot.paramMap.get("id");
+      this.service.getProject(this.selectedId).subscribe(data => this.selectedProject = data);
     }
     else
-      this.selectedProject = new Project(0,"","");
+      this.selectedProject = new Project(0, "", "");
   }
 
   saveProject() {
     if (this.isNewProject) {
-      
-      this.service.createProject(this.selectedProject).subscribe(data => {
-          
+
+      this.service.createProject(this.selectedProject).subscribe(res => {
+        //this.service.getProjects();
+
       });
       this.isNewProject = false;
       this.selectedProject = null;
     } else {
       this.service.updateProject(this.selectedProject).subscribe(data => {
-       this.router.navigate(['/projects']);
+        this.router.navigate(['/projects']);
       });
       this.selectedProject = null;
     }
+
+  }
+
+  RedirectToProjectList() {
+    this.service.getProjects();
+    this.router.navigate(['/projects']);
   }
 
   cancel() {

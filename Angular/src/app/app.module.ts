@@ -22,6 +22,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { ProjectListComponent } from './core/components/projects/project-list/project-list.component';
 import { ProjectDetailsComponent } from './core/components/projects/project-details/project-details.component';
 import { ProjectEditComponent } from './core/components/projects/project-edit/project-edit.component';
+import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
 
 const appRoutes: Routes = [
   {
@@ -52,7 +53,8 @@ const appRoutes: Routes = [
     RegisterComponent,
     ProjectListComponent,
     ProjectDetailsComponent,
-    ProjectEditComponent
+    ProjectEditComponent,
+    PageNotFoundComponent
   ],
   imports: [
     BrowserModule,

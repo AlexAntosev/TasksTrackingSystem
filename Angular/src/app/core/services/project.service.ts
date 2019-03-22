@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Project } from 'src/app/core/models/project.model';
 import { HttpClient } from '@angular/common/http';
 import { HttpHeaders } from '@angular/common/http/src/headers';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
@@ -21,8 +22,7 @@ export class ProjectService {
   }
 
   getProjects() {
-    this.http.get(this.rootURL + '/Get')
-      .toPromise().then(res => this.list = res as Project[]);
+    return this.http.get<Project[]>(this.rootURL + '/Get');
   }
 
   updateProject(formData: Project) {
@@ -39,7 +39,6 @@ export class ProjectService {
   }
 
   getProject(projectId: number) {
-    this.http.get(this.rootURL + '/Get/' + projectId)
-      .toPromise().then(res => this.formData = res as Project);
+    return this.http.get<Project>(this.rootURL + '/Get/' + projectId);
   }
 }
