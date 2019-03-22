@@ -29,26 +29,25 @@ export class ProjectEditComponent implements OnInit {
       }));
     if (!this.isNewProject) {
       this.selectedId = +this.route.snapshot.paramMap.get("id");
-      this.service.getProject(this.selectedId).subscribe(data => this.selectedProject = data);
+      this.service.getProject(this.selectedId);
     }
     else
-      this.selectedProject = new Project(0, "", "");
+      this.service.formData = new Project(0, "", "");
   }
 
   saveProject() {
     if (this.isNewProject) {
 
-      this.service.createProject(this.selectedProject).subscribe(res => {
-        //this.service.getProjects();
-
-      });
-      this.isNewProject = false;
-      this.selectedProject = null;
-    } else {
-      this.service.updateProject(this.selectedProject).subscribe(data => {
+      this.service.createProject(this.service.formData).subscribe(data => {
         this.router.navigate(['/projects']);
       });
-      this.selectedProject = null;
+      this.isNewProject = false;
+      this.service.formData = null;
+    } else {
+      this.service.updateProject(this.service.formData).subscribe(data => {
+        this.router.navigate(['/projects']);
+      });
+      this.service.formData = null;
     }
 
   }

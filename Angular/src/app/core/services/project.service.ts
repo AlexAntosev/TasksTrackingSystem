@@ -22,7 +22,7 @@ export class ProjectService {
   }
 
   getProjects() {
-    return this.http.get<Project[]>(this.rootURL + '/Get');
+    return this.http.get<Project[]>(this.rootURL + '/Get').subscribe(data => this.list = data);
   }
 
   updateProject(formData: Project) {
@@ -39,6 +39,6 @@ export class ProjectService {
   }
 
   getProject(projectId: number) {
-    return this.http.get<Project>(this.rootURL + '/Get/' + projectId);
+    return this.http.get<Project>(this.rootURL + '/Get/' + projectId).subscribe(data => this.formData = data);
   }
 }

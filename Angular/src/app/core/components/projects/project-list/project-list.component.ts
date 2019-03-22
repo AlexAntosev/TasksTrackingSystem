@@ -10,7 +10,7 @@ import { Router } from '@angular/router';
 })
 export class ProjectListComponent implements OnInit {
 
-  projects: Project[];
+  //projects: Project[];
   
   constructor(private service : ProjectService, private router: Router) { 
     
@@ -21,8 +21,7 @@ export class ProjectListComponent implements OnInit {
   }
 
   getProjects() {
-    this.service.getProjects().subscribe(data =>
-      this.projects = data);
+    this.service.getProjects()
   }
 
   onSelect(projectId: number){
