@@ -1,0 +1,41 @@
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Description</th>
+      <th scope="col">Priority</th>
+      <th scope="col"></th>>
+      <th scope="col"></th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let task of service.list">
+      <td (click)="onSelect(task)">{{task.Name}}</td>
+      <td>{{task.Description}}</td>
+      <td>
+        <div *ngIf="task.Priority === 0">
+          <div class="bg-primary" style="width: 25px; height: 25px;">
+          </div>
+        </div>
+        <div *ngIf="task.Priority === 1">
+          <div class="bg-success" style="width: 25px; height: 25px;">
+          </div>
+        </div>
+        <div *ngIf="task.Priority === 2">
+          <div class="bg-warning" style="width: 25px; height: 25px;">
+          </div>
+        </div>
+        <div *ngIf="task.Priority === 3">
+            <div class="bg-danger" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+      </td>
+      <td>
+        <button type="button" class="btn btn-sm btn-outline-primary" (click)="onUpdate(task)">Update</button>
+      </td>
+      <td>
+        <button class="btn btn-sm btn-outline-danger" (click)="onDelete(task.Id)">Delete</button>
+      </td>
+    </tr>
+  </tbody>
+</table>

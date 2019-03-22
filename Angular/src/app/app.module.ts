@@ -23,6 +23,9 @@ import { ProjectListComponent } from './core/components/projects/project-list/pr
 import { ProjectDetailsComponent } from './core/components/projects/project-details/project-details.component';
 import { ProjectEditComponent } from './core/components/projects/project-edit/project-edit.component';
 import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
+import { TaskListComponent } from './core/components/tasks/task-list/task-list.component';
+import { TaskCreateComponent } from './core/components/tasks/task-create/task-create.component';
+import { TaskDetailsComponent } from 'src/app/core/components/tasks/task-details/task-details.component';
 
 const appRoutes: Routes = [
   {
@@ -31,15 +34,18 @@ const appRoutes: Routes = [
       { path: '', component: ProjectListComponent },
       { path: 'create', component: ProjectEditComponent, data: { isNewProject: true } },
       { path: ':id', component: ProjectEditComponent, data: { isNewProject: false }  },
-      { path: 'details/:id', component: ProjectDetailsComponent, }
+      { path: 'details/:id', component: ProjectDetailsComponent, 
+      children: [
+        { path: '', component: ProjectDetailsComponent },
+        { path: 'create', component: TaskCreateComponent },
+        { path: ':id', component: TaskDetailsComponent }
+      ]}
     ]
   },
-  { path: 'tasks', component: TasksComponent },
-  //{ path: 'projects/:id',      component: HeroDetailComponent },
   { path: 'login', component: LoginComponent },
   { path: 'register', component: RegisterComponent },
   { path: '', redirectTo: '/projects', pathMatch: 'full' },
-  //{ path: '**', component: PageNotFoundComponent }
+  { path: '**', component: PageNotFoundComponent }
 ];
 
 
@@ -54,7 +60,10 @@ const appRoutes: Routes = [
     ProjectListComponent,
     ProjectDetailsComponent,
     ProjectEditComponent,
-    PageNotFoundComponent
+    PageNotFoundComponent,
+    TaskListComponent,
+    TaskCreateComponent,
+    TaskDetailsComponent
   ],
   imports: [
     BrowserModule,

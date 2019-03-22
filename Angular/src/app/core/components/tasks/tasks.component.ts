@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewChild, TemplateRef } from '@angular/core'
 import { TaskService } from 'src/app/core/services/task.service';
 import { Task } from 'src/app/core/models/task.model';
 import { Project } from 'src/app/core/models/project.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-tasks',
@@ -10,41 +11,35 @@ import { Project } from 'src/app/core/models/project.model';
 })
 export class TasksComponent implements OnInit {
 
-  @Input() project: Project;
+  @Input() projectId: number;
   selectedTask : Task;
   isNewTask :boolean;
-  currentTemplate: string;
 
-  @ViewChild("editTemplate") editTemplate: TemplateRef<any>;
-  @ViewChild("listTemplate") listTemplate: TemplateRef<any>;
-
-  constructor(private service: TaskService) { }
+  constructor(private service: TaskService, private router : Router) { }
 
   ngOnInit() {
-    this.getByProject(this.project);
+    this.getByProject();
+    //this.router.navigate(['/projects/details/'+this.projectId, {id: this.projectId}]);
   }
 
-  getByProject(project: Project) {
-    this.currentTemplate = "list";
-    this.service.getByProject(project);
-    
+  getByProject() {
+    this.service.refreshTaskList(this.projectId);    
   }
 
   onCreate() {
     this.selectedTask = new Task(0, "", "", 1);
     //this.service.createTask(this.selectedTask);
     this.isNewTask = true;
-    this.currentTemplate = "create";
   }
 
   onDelete(taskId : number){
-      this.service.deleteTask(taskId).subscribe(res => this.service.getByProject(this.project));
+      this.service.deleteTask(taskId).subscribe(res => this.service.refreshTaskList(this.projectId));
   }
 
   saveTask() {
     if (this.isNewTask) {
-      this.service.createTask(this.selectedTask, this.project.Id).subscribe(res => {
-          this.getByProject(this.project);
+      this.service.createTask(this.selectedTask, this.projectId).subscribe(res => {
+          this.getByProject();
       });
       this.isNewTask = false;
       this.selectedTask = null;
@@ -59,14 +54,7 @@ export class TasksComponent implements OnInit {
 
   cancel() {
     this.selectedTask = null;
-    this.getByProject(this.project);
-  }
-
-  loadTemplate() {
-    if (this.currentTemplate === "update" || this.currentTemplate === "create") {
-      return this.editTemplate;
-    } else if(this.currentTemplate === "list")
-    return this.listTemplate;
+    this.getByProject();
   }
 
 }

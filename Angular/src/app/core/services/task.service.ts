@@ -28,13 +28,11 @@ export class TaskService {
     return this.http.delete(this.rootURL + '/Task/Delete/' + id);
   }
 
-  refreshTaskList() {
-    this.http.get(this.rootURL + '/Task/Get')
-      .toPromise().then(res => this.list = res as Task[]);
+  refreshTaskList(projectId : number) {
+    return this.http.get<Task[]>(this.rootURL + '/Project/' + projectId + '/Task/Get').subscribe(data => this.list = data);
   }
 
   getByProject(project: Project) {
-    console.log(project);
     this.currentProject = project;
     this.list = this.currentProject.Tasks;
     //this.http.get(this.rootURL + '/Project/' + this.currentProject.Id + '/Task/Get')
