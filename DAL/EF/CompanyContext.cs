@@ -40,12 +40,6 @@ namespace DAL.EF
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
-            //Configuration.LazyLoadingEnabled = false;
-        }
-
-        public void Save()
-        {
-            SaveChanges();
         }
 
         DbEntityEntry IContext.Entry(object entity)
@@ -56,6 +50,11 @@ namespace DAL.EF
         DbEntityEntry<TEntity> IContext.Entry<TEntity>(TEntity entity)
         {
             return Entry<TEntity>(entity);
+        }
+
+        public void Save()
+        {
+            SaveChanges();
         }
     }
 }

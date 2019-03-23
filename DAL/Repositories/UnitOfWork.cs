@@ -1,5 +1,4 @@
-﻿using DAL.EF;
-using DAL.Entities;
+﻿using DAL.Entities;
 using DAL.Interfaces;
 using System;
 
@@ -13,37 +12,37 @@ namespace DAL.Repositories
     {
         private readonly IContext _context;
 
-        private IRepository<Task> _taskRepository;
-        private IRepository<Project> _projectRepository;
-        private IRepository<User> _userRepository;
-        private IRepository<UserProfile> _userProfileRepository;
-        private IRepository<Comment> _commentRepository;
+        private IGenericRepository<Task> _taskRepository;
+        private IGenericRepository<Project> _projectRepository;
+        private IGenericRepository<User> _userRepository;
+        private IGenericRepository<UserProfile> _userProfileRepository;
+        private IGenericRepository<Comment> _commentRepository;
 
         /// <summary>
         /// Get task repository
         /// </summary>
-        IRepository<Task> IUnitOfWork.Tasks => _taskRepository ?? (_taskRepository = new TaskRepository(_context));
+        IGenericRepository<Task> IUnitOfWork.Tasks => _taskRepository ?? (_taskRepository = new TaskRepository(_context));
 
         /// <summary>
         /// Get task repository
         /// </summary>
-        IRepository<Project> IUnitOfWork.Projects => _projectRepository ?? (_projectRepository = new ProjectRepository(_context));
+        IGenericRepository<Project> IUnitOfWork.Projects => _projectRepository ?? (_projectRepository = new ProjectRepository(_context));
 
         /// <summary>
         /// Get user repository
         /// </summary>
-        public IRepository<User> Users => _userRepository ?? (_userRepository = new UserRepository(_context));
+        public IGenericRepository<User> Users => _userRepository ?? (_userRepository = new UserRepository(_context));
 
         /// <summary>
         /// Get user profile repository
         /// </summary>
-        public IRepository<UserProfile> UserProfiles =>
+        public IGenericRepository<UserProfile> UserProfiles =>
             _userProfileRepository ?? (_userProfileRepository = new UserProfileRepository(_context));
 
         /// <summary>
         /// Get comment repository
         /// </summary>
-        public IRepository<Comment> Comments =>
+        public IGenericRepository<Comment> Comments =>
             _commentRepository ?? (_commentRepository = new CommentRepository(_context));
 
         public UnitOfWork(IContext context)

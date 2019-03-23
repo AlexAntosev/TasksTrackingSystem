@@ -2,7 +2,7 @@
 
 namespace BLL.DTO
 {
-    public class UserDTO
+    public sealed class UserDTO
     {
         /// <summary>
         /// Get and set user id

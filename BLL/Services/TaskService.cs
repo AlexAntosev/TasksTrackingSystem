@@ -1,14 +1,13 @@
-﻿using BLL.Interfaces;
+﻿using BLL.DTO;
+using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using BLL.DTO;
 
 namespace BLL.Services
 {
-    public class TaskService : ITaskService
+    public sealed class TaskService : ITaskService
     {
         private IUnitOfWork _unitOfWork;
 
@@ -21,7 +20,6 @@ namespace BLL.Services
         {
             Task task = new Task()
             {
-                ///Id = _unitOfWork.Tasks.Find(t => t.Name == taskDTO.Name).FirstOrDefault().Id,
                 Name = taskDTO.Name,
                 Description = taskDTO.Description,
                 Priority = Convert.ToInt32(taskDTO.Priority),
@@ -39,13 +37,8 @@ namespace BLL.Services
 
         public Task Delete(int id)
         {
-            var task = _unitOfWork.Tasks.Get(id);
-
-            if (task != null)
-            {
-                _unitOfWork.Tasks.Delete(id);
-                _unitOfWork.Save();
-            }
+            Task task = _unitOfWork.Tasks.Delete(id);
+            _unitOfWork.Save();
 
             return task;
         }
@@ -75,6 +68,7 @@ namespace BLL.Services
                 task.Description = taskDTO.Description;
                 task.ProjectId = projectId;
                 task.Priority = Convert.ToInt32(taskDTO.Priority);
+                task.Date = taskDTO.Date;
                 task.Deadline = taskDTO.Deadline;
 
                 _unitOfWork.Tasks.Update(task);

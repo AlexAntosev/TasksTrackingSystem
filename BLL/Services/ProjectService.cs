@@ -3,11 +3,10 @@ using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace BLL.Services
 {
-    public class ProjectService : IProjectService
+    public sealed class ProjectService : IProjectService
     {
         private IUnitOfWork _unitOfWork;
 
@@ -34,13 +33,8 @@ namespace BLL.Services
 
         public Project Delete(int id)
         {
-            var project = _unitOfWork.Projects.Get(id);
-
-            if (project != null)
-            {
-                _unitOfWork.Projects.Delete(id);
-                _unitOfWork.Save();
-            }
+            Project project = _unitOfWork.Projects.Delete(id); //????return Project
+            _unitOfWork.Save();
 
             return project;
         }
@@ -65,16 +59,12 @@ namespace BLL.Services
 
         public IEnumerable<ProjectDTO> GetAll()
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<List<Project>, List<ProjectDTO>>(_unitOfWork.Projects.GetAll().ToList());
+            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(_unitOfWork.Projects.GetAll());
         }
 
         public ProjectDTO Get(int id)
         {
-            var project = _unitOfWork.Projects.Get(id);
-            //var tasks = project.Tasks;
-            var projectDTO = Mapper.AutoMapperConfig.Mapper.Map<Project, ProjectDTO>(_unitOfWork.Projects.Get(id));
-            var tasksDTO = projectDTO.Tasks;
-            return projectDTO;
+            return Mapper.AutoMapperConfig.Mapper.Map<Project, ProjectDTO>(_unitOfWork.Projects.Get(id)); ;
         }
     }
 }

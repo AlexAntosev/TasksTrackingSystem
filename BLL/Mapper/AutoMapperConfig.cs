@@ -4,7 +4,7 @@ using DAL.Entities;
 
 namespace BLL.Mapper
 {
-    public class AutoMapperConfig
+    public sealed class AutoMapperConfig
     {
         public static IMapper Mapper;
 

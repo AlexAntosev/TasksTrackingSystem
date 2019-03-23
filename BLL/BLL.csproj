@@ -58,9 +58,7 @@
     <Compile Include="Services\ProjectService.cs" />
     <Compile Include="Services\TaskService.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Infrastructure\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\DAL\DAL.csproj">
       <Project>{BF12D240-00AF-48A7-A05A-BAEC51594586}</Project>

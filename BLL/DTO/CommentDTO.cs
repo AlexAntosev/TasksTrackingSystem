@@ -2,7 +2,7 @@
 
 namespace BLL.DTO
 {
-    public class CommentDTO
+    public sealed class CommentDTO
     {
         /// <summary>
         /// Get and set comment id

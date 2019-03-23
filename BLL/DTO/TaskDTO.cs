@@ -6,7 +6,7 @@ namespace BLL.DTO
     /// <summary>
     /// Data transfer object for task
     /// </summary>
-    public class TaskDTO
+    public sealed class TaskDTO
     {
         /// <summary>
         /// Get and set task id

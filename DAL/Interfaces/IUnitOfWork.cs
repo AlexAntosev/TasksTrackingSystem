@@ -11,27 +11,27 @@ namespace DAL.Interfaces
         /// <summary>
         /// Get tasks repository from database
         /// </summary>
-        IRepository<Task> Tasks { get; }
+        IGenericRepository<Task> Tasks { get; }
 
         /// <summary>
         /// Get projects repository from database
         /// </summary>
-        IRepository<Project> Projects { get; }
+        IGenericRepository<Project> Projects { get; }
 
         /// <summary>
         /// Get users repository from database
         /// </summary>
-        IRepository<User> Users { get; }
+        IGenericRepository<User> Users { get; }
 
         /// <summary>
         /// Get users profiles repository from database
         /// </summary>
-        IRepository<UserProfile> UserProfiles { get; }
+        IGenericRepository<UserProfile> UserProfiles { get; }
 
         /// <summary>
         /// Get comments repository from database
         /// </summary>
-        IRepository<Comment> Comments { get; }
+        IGenericRepository<Comment> Comments { get; }
 
         /// <summary>
         /// Method for saving data

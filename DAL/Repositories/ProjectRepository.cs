@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace DAL.Repositories
 {
-    public class ProjectRepository : IRepository<Project>
+    public class ProjectRepository : IGenericRepository<Project>
     {
         private readonly IContext _context;
 

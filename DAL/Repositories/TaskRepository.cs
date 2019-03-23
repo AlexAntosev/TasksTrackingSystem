@@ -1,18 +1,16 @@
-﻿using System;
+﻿using DAL.Entities;
+using DAL.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Text;
-using DAL.EF;
-using DAL.Entities;
-using DAL.Interfaces;
 
 namespace DAL.Repositories
 {
     /// <summary>
     /// Processing with database in Tasks table
     /// </summary>
-    public class TaskRepository : IRepository<Task>
+    public class TaskRepository : IGenericRepository<Task>
     {
         private readonly IContext _context;
 

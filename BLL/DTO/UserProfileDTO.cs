@@ -1,6 +1,6 @@
 ﻿namespace BLL.DTO
 {
-    public class UserProfileDTO
+    public sealed class UserProfileDTO
     {
         /// <summary>
         /// Get and set user profile id

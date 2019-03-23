@@ -2,7 +2,7 @@
 
 namespace BLL.DTO
 {
-    public class ProjectDTO
+    public sealed class ProjectDTO
     {
         /// <summary>
         /// Get and set project id
