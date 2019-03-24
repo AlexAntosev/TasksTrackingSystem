@@ -17,19 +17,19 @@ export class TaskService {
 
   createTask(formData: Task, projectId: number) {
     let projectIdParam = new HttpParams().set('projectId', ''+projectId);
-    return this.http.post(this.rootURL + '/Task/Create', formData, {params: projectIdParam});
+    return this.http.post(this.rootURL + '/Tasks', formData, {params: projectIdParam});
   }
 
   updateTask(formData: Task) {
-    return this.http.put(this.rootURL + '/Task/Update/' + formData.Id, formData);
+    return this.http.put(this.rootURL + '/Tasks/' + formData.Id, formData);
   }
 
   deleteTask(id: number) {
-    return this.http.delete(this.rootURL + '/Task/Delete/' + id);
+    return this.http.delete(this.rootURL + '/Tasks/' + id);
   }
 
   refreshTaskList(projectId : number) {
-    return this.http.get<Task[]>(this.rootURL + '/Project/' + projectId + '/Task/Get').subscribe(data => this.list = data);
+    return this.http.get<Task[]>(this.rootURL + '/Projects/' + projectId + '/Tasks').subscribe(data => this.list = data);
   }
 
   getByProject(project: Project) {

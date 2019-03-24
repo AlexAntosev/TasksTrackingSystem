@@ -149,3 +149,4 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\obj\Debug\WebAPI.d
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\obj\Debug\WebAPI.pdb
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\Microsoft.Owin.Cors.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\Microsoft.Owin.Cors.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\BLL.dll.config

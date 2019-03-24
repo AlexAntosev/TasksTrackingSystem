@@ -10,3 +10,7 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\obj\Debug\DAL.csproj.
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\obj\Debug\DAL.csproj.CopyComplete
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\obj\Debug\DAL.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\obj\Debug\DAL.pdb
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\bin\Debug\Microsoft.AspNet.Identity.Core.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\bin\Debug\Microsoft.AspNet.Identity.Core.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\DAL\bin\Debug\Microsoft.AspNet.Identity.EntityFramework.xml

@@ -10,6 +10,9 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using WebAPI.Providers;
 using WebAPI.Models;
+using DAL.EF;
+using BLL.Infrastructure;
+using BLL.Services;
 
 namespace WebAPI
 {
