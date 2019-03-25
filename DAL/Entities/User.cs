@@ -12,7 +12,7 @@ namespace DAL.Entities
         /// <summary>
         /// Get and set foreign key for user profile by id
         /// </summary>
-        public int ProfileId { get; set; }
+        public int? ProfileId { get; set; }
 
         /// <summary>
         /// Get and set user profile by foreign key
@@ -23,5 +23,9 @@ namespace DAL.Entities
         /// Get and set collection of projects
         /// </summary>
         public virtual ICollection<Project> Projects { get; set; }
+
+        //public string ApplicationUserId { get; set; }
+
+        //public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

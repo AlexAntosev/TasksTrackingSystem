@@ -9,8 +9,14 @@ import { Account } from 'src/app/core/models/account.model';
 })
 export class AccountComponent implements OnInit {
 
-  constructor() { }
+  
+
+  constructor(private service : AccountService) { }
 
   ngOnInit() {
+  }
+
+  onLogout(){
+    this.service.Logout();
   }
 }

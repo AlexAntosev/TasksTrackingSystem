@@ -13,4 +13,11 @@ export class TaskListComponent implements OnInit {
   ngOnInit() {
   }
 
+  onDelete(taskId : number){
+    this.service.deleteTask(taskId).subscribe(res => this.service.getByProject(this.service.projectId));
+  }
+
+  onSelect(taskId : number){
+    
+  }
 }

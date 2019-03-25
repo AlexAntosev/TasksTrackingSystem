@@ -8,10 +8,10 @@ import { Project } from 'src/app/core/models/project.model';
 })
 export class TaskService {
 
-  currentProject: Project;
   formData: Task;
   list: Task[];
   readonly rootURL = "http://localhost:60542/api";  
+  projectId : number;
 
   constructor(private http: HttpClient) { }
 
@@ -28,15 +28,7 @@ export class TaskService {
     return this.http.delete(this.rootURL + '/Tasks/' + id);
   }
 
-  refreshTaskList(projectId : number) {
+  getByProject(projectId : number) {
     return this.http.get<Task[]>(this.rootURL + '/Projects/' + projectId + '/Tasks').subscribe(data => this.list = data);
-  }
-
-  getByProject(project: Project) {
-    this.currentProject = project;
-    this.list = this.currentProject.Tasks;
-    //this.http.get(this.rootURL + '/Project/' + this.currentProject.Id + '/Task/Get')
-    // .toPromise().then(res => this.list = res as Task[]);
-    console.log(this.list);
   }
 }

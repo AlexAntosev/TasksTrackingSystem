@@ -13,6 +13,8 @@ export class AccountService {
   registerHeaders = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
   loginHeaders = new HttpHeaders({ 'Content-Type': 'x-www-form-urlencoded' });
   tokenKey: string = "tokenInfo";
+  isLogin: boolean = false;
+  userName: string;
 
   constructor(private http: HttpClient) { }
 
@@ -30,8 +32,15 @@ export class AccountService {
       .subscribe(data => {
         sessionStorage.setItem(this.tokenKey, data.access_token);
         console.log(data.access_token);
+        this.isLogin = true;
+        this.userName = formData.Email;
       }
       );
+  }
+
+  Logout(){
+    sessionStorage.removeItem(this.tokenKey);
+    this.isLogin = false;
   }
 }
 

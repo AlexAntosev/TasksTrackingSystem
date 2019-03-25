@@ -12,49 +12,15 @@ import { Router } from '@angular/router';
 export class TasksComponent implements OnInit {
 
   @Input() projectId: number;
-  selectedTask : Task;
-  isNewTask :boolean;
 
   constructor(private service: TaskService, private router : Router) { }
 
   ngOnInit() {
-    this.getByProject();
-    //this.router.navigate(['/projects/details/'+this.projectId, {id: this.projectId}]);
-  }
-
-  getByProject() {
-    this.service.refreshTaskList(this.projectId);    
-  }
+    this.service.getByProject(this.projectId);
+    this.service.projectId = this.projectId;
+  } 
 
   onCreate() {
-    this.selectedTask = new Task(0, "", "", 1);
-    //this.service.createTask(this.selectedTask);
-    this.isNewTask = true;
+    this.service.createTask(new Task(0,"","",0), this.projectId);
   }
-
-  onDelete(taskId : number){
-      this.service.deleteTask(taskId).subscribe(res => this.service.refreshTaskList(this.projectId));
-  }
-
-  saveTask() {
-    if (this.isNewTask) {
-      this.service.createTask(this.selectedTask, this.projectId).subscribe(res => {
-          this.getByProject();
-      });
-      this.isNewTask = false;
-      this.selectedTask = null;
-      
-    } else {
-      //this.service.updateProject(this.selectedProject).subscribe(data => {
-          //this.getProjects();
-      ;
-      this.selectedTask = null;
-    }
-  }
-
-  cancel() {
-    this.selectedTask = null;
-    this.getByProject();
-  }
-
 }
