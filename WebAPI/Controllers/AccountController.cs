@@ -9,12 +9,15 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
 using System.Security.Cryptography;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Http;
+using BLL.DTO;
+using BLL.Interfaces;
 using WebAPI.Models;
 using WebAPI.Results;
 
@@ -26,16 +29,22 @@ namespace WebAPI.Controllers
     {
         private const string LocalLoginProvider = "Local";
         private ApplicationUserManager _userManager;
+        private IUserService _userService;
+        private IProjectService _projectService;
 
-        public AccountController()
+        public AccountController(IUserService userService, IProjectService projectService)
         {
+            _userService = userService;
+            _projectService = projectService;
         }
 
         public AccountController(ApplicationUserManager userManager,
-            ISecureDataFormat<AuthenticationTicket> accessTokenFormat)
+            ISecureDataFormat<AuthenticationTicket> accessTokenFormat, IUserService userService, IProjectService projectService)
         {
             UserManager = userManager;
             AccessTokenFormat = accessTokenFormat;
+            _userService = userService;
+            _projectService = projectService;
         }
 
         public ApplicationUserManager UserManager
@@ -333,6 +342,14 @@ namespace WebAPI.Controllers
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
+            UserDTO userDTO = new UserDTO()
+            {
+                UserName = model.Email,
+                ApplicationUser = user
+            };
+
+            var myUser = _userService.Create(userDTO);
+
             if (!result.Succeeded)
             {
                 return GetErrorResult(result);
@@ -383,6 +400,20 @@ namespace WebAPI.Controllers
             }
 
             base.Dispose(disposing);
+        }
+
+        // GET api/Account/ManageInfo?returnUrl=%2F&generateState=true
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("api/Project/{projectId}/AddUser")]
+        public IHttpActionResult AddToProject(int projectId, int userId)
+        {
+            var project = _projectService.Get(projectId);
+
+            _userService.AddProject(userId, project);
+            
+            
+            return Ok();
         }
 
         #region Helpers

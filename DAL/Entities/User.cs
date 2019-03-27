@@ -24,8 +24,8 @@ namespace DAL.Entities
         /// </summary>
         public virtual ICollection<Project> Projects { get; set; }
 
-        //public string ApplicationUserId { get; set; }
+        public string ApplicationUserId { get; set; }
 
-        //public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

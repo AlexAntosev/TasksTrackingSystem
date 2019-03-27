@@ -3,13 +3,14 @@ using DAL.Entities;
 using DAL.Interfaces;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DAL.EF
 {
     /// <summary>
     /// Database context
     /// </summary>
-    public class CompanyContext : DbContext, IContext, IDisposable
+    public class CompanyContext : IdentityDbContext<ApplicationUser>, IContext, IDisposable
     {
         /// <summary>
         /// Get and set tasks entities
@@ -55,6 +56,22 @@ namespace DAL.EF
         public void Save()
         {
             SaveChanges();
+        }
+
+        protected override void OnModelCreating(DbModelBuilder builder)
+        {
+            base.OnModelCreating(builder);
+
+            builder.Entity<ApplicationUser>().ToTable("ApplicationUsers");
+            builder.Entity<IdentityUserRole>().ToTable("UserRoles");
+            builder.Entity<IdentityRole>().ToTable("Roles");
+            builder.Entity<IdentityUserLogin>().ToTable("UserLogins");
+            builder.Entity<IdentityUserClaim>().ToTable("UserClaims");
+        }
+
+        public static CompanyContext Create()
+        {
+            return new CompanyContext();
         }
     }
 }

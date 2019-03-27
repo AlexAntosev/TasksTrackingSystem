@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild, TemplateRef } from '@angular/core';
 import { ProjectService } from 'src/app/core/services/project.service';
 import { Project } from 'src/app/core/models/project.model';
 import { Router } from '@angular/router';
+import { debug } from 'util';
 
 @Component({
   selector: 'app-projects',

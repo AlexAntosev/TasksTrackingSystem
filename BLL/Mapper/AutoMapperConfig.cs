@@ -16,6 +16,8 @@ namespace BLL.Mapper
                 cfg.CreateMap<ProjectDTO, Project>().ReverseMap();
                 cfg.CreateMap<TaskDTO, Task>();
                 cfg.CreateMap<TaskDTO, Task>().ReverseMap();
+                cfg.CreateMap<UserDTO, User>();
+                cfg.CreateMap<UserDTO, User>().ReverseMap();
             });
             Mapper = config.CreateMapper();
         }

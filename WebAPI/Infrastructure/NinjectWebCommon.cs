@@ -24,6 +24,7 @@ namespace WebAPI.Infrastructure
             kernel.Bind<IUnitOfWork>().To<UnitOfWork>();
             kernel.Bind<IProjectService>().To<ProjectService>();
             kernel.Bind<ITaskService>().To<TaskService>();
+            kernel.Bind<IUserService>().To<UserService>();
         }
     }
 }

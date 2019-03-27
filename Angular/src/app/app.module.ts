@@ -19,51 +19,25 @@ import { LoginComponent } from './core/components/account/login/login.component'
 import { RegisterComponent } from './core/components/account/register/register.component';
 
 import { RouterModule, Routes } from '@angular/router';
-import { ProjectListComponent } from './core/components/projects/project-list/project-list.component';
-import { ProjectDetailsComponent } from './core/components/projects/project-details/project-details.component';
-import { ProjectEditComponent } from './core/components/projects/project-edit/project-edit.component';
-import { PageNotFoundComponent } from './core/components/page-not-found/page-not-found.component';
-import { TaskListComponent } from './core/components/tasks/task-list/task-list.component';
-import { TaskCreateComponent } from './core/components/tasks/task-create/task-create.component';
+import { ProjectListComponent } from 'src/app/core/components/projects/project-list/project-list.component';
+import { ProjectDetailsComponent } from 'src/app/core/components/projects/project-details/project-details.component';
+import { ProjectEditComponent } from 'src/app/core/components/projects/project-edit/project-edit.component';
+import { PageNotFoundComponent } from 'src/app/core/components/page-not-found/page-not-found.component';
+import { TaskListComponent } from 'src/app/core/components/tasks/task-list/task-list.component';
+import { TaskCreateComponent } from 'src/app/core/components/tasks/task-create/task-create.component';
 import { TaskDetailsComponent } from 'src/app/core/components/tasks/task-details/task-details.component';
+import { ProjectsModule } from 'src/app/core/components/projects/projects.module';
+import { TasksModule } from 'src/app/core/components/tasks/tasks.module';
+import { AccountModule } from 'src/app/core/components/account/account.module';
+import { AppRoutingModule } from 'src/app/app-routing/app-routing.module';
 
-const appRoutes: Routes = [
-  {
-    path: 'projects', component: ProjectsComponent,
-    children: [
-      { path: '', component: ProjectListComponent },
-      { path: 'create', component: ProjectEditComponent, data: { isNewProject: true } },
-      { path: ':id', component: ProjectEditComponent, data: { isNewProject: false }  },
-      { path: 'details/:id', component: ProjectDetailsComponent, 
-      children: [
-        { path: '', component: ProjectDetailsComponent },
-        { path: 'create', component: TaskCreateComponent },
-        { path: ':id', component: TaskDetailsComponent }
-      ]}
-    ]
-  },
-  { path: 'login', component: LoginComponent },
-  { path: 'register', component: RegisterComponent },
-  { path: '', redirectTo: '/projects', pathMatch: 'full' },
-  { path: '**', component: PageNotFoundComponent }
-];
+
 
 
 @NgModule({
   declarations: [
     AppComponent,
-    ProjectsComponent,
-    TasksComponent,
-    AccountComponent,
-    LoginComponent,
-    RegisterComponent,
-    ProjectListComponent,
-    ProjectDetailsComponent,
-    ProjectEditComponent,
     PageNotFoundComponent,
-    TaskListComponent,
-    TaskCreateComponent,
-    TaskDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -72,10 +46,10 @@ const appRoutes: Routes = [
     MatSelectModule,
     MatInputModule,
     BrowserAnimationsModule,
-    RouterModule.forRoot(
-      appRoutes,
-      { enableTracing: true } // <-- debugging purposes only
-    )
+    ProjectsModule,
+    TasksModule,
+    AccountModule,
+    AppRoutingModule
   ],
   providers: [ProjectService, TaskService, AccountService],
   bootstrap: [AppComponent]

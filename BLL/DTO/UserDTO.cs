@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using DAL.Entities;
 
 namespace BLL.DTO
 {
@@ -23,5 +24,7 @@ namespace BLL.DTO
         /// Get and set collection of projects
         /// </summary>
         public IEnumerable<ProjectDTO> Projects { get; set; }
+
+        public ApplicationUser ApplicationUser { get; set; }
     }
 }
