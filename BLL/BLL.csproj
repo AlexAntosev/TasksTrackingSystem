@@ -84,8 +84,7 @@
     <Compile Include="DTO\ProjectDTO.cs" />
     <Compile Include="DTO\TaskDTO.cs" />
     <Compile Include="DTO\UserDTO.cs" />
-    <Compile Include="DTO\UserProfileDTO.cs" />
-    <Compile Include="Infrastructure\IdentityConfig.cs" />
+    <Compile Include="Infrastructure\ApplicationUserManager.cs" />
     <Compile Include="Interfaces\IProjectService.cs" />
     <Compile Include="Interfaces\ITaskService.cs" />
     <Compile Include="Interfaces\IUserService.cs" />

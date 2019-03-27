@@ -5,27 +5,26 @@ namespace DAL.Entities
     public class User : BaseEntity
     {
         /// <summary>
-        /// Get and set user name like key for application user
+        /// Get and set user firstname
         /// </summary>
-        public string UserName { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
-        /// Get and set foreign key for user profile by id
+        /// Get and set user lastname
         /// </summary>
-        public int? ProfileId { get; set; }
+        public string LastName { get; set; }
 
         /// <summary>
-        /// Get and set user profile by foreign key
+        /// Get and set user position
         /// </summary>
-        public virtual UserProfile Profile { get; set; }
+        public string Position { get; set; }
+
+        public string ApplicationUserId { get; set; }
+        public virtual ApplicationUser ApplicationUser { get; set; }
 
         /// <summary>
         /// Get and set collection of projects
         /// </summary>
         public virtual ICollection<Project> Projects { get; set; }
-
-        public string ApplicationUserId { get; set; }
-
-        public virtual ApplicationUser ApplicationUser { get; set; }
     }
 }

@@ -15,7 +15,6 @@ namespace DAL.Repositories
         private IGenericRepository<Task> _taskRepository;
         private IGenericRepository<Project> _projectRepository;
         private IGenericRepository<User> _userRepository;
-        private IGenericRepository<UserProfile> _userProfileRepository;
         private IGenericRepository<Comment> _commentRepository;
 
         /// <summary>
@@ -32,13 +31,7 @@ namespace DAL.Repositories
         /// Get user repository
         /// </summary>
         public IGenericRepository<User> Users => _userRepository ?? (_userRepository = new UserRepository(_context));
-
-        /// <summary>
-        /// Get user profile repository
-        /// </summary>
-        public IGenericRepository<UserProfile> UserProfiles =>
-            _userProfileRepository ?? (_userProfileRepository = new UserProfileRepository(_context));
-
+        
         /// <summary>
         /// Get comment repository
         /// </summary>

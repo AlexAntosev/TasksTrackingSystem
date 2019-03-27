@@ -31,16 +31,11 @@ namespace DAL.EF
         /// Get and set comment entities
         /// </summary>
         public DbSet<Comment> Comments { get; set; }
-
-        /// <summary>
-        /// Get and set user profile entities
-        /// </summary>
-        public DbSet<UserProfile> UserProfiles { get; set; }
-
+        
         public CompanyContext() : base("CompanyDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<CompanyContext>());
         }
 
         DbEntityEntry IContext.Entry(object entity)

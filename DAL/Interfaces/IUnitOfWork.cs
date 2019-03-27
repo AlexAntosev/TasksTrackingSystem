@@ -22,12 +22,7 @@ namespace DAL.Interfaces
         /// Get users repository from database
         /// </summary>
         IGenericRepository<User> Users { get; }
-
-        /// <summary>
-        /// Get users profiles repository from database
-        /// </summary>
-        IGenericRepository<UserProfile> UserProfiles { get; }
-
+        
         /// <summary>
         /// Get comments repository from database
         /// </summary>

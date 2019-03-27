@@ -45,7 +45,7 @@ namespace DAL.Repositories
 
         public IEnumerable<User> GetAll()
         {
-            return _context.Users.OrderBy(u => u.UserName);
+            return _context.Users.OrderBy(u => u.Id);
         }
 
         public bool Update(User item)

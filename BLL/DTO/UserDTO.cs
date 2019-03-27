@@ -11,20 +11,25 @@ namespace BLL.DTO
         public int Id { get; set; }
 
         /// <summary>
-        /// Get and set user name like key for application user
+        /// Get and set user first name 
         /// </summary>
-        public string UserName { get; set; }
+        public string FirstName { get; set; }
 
         /// <summary>
-        /// Get and set user profile by foreign key
+        /// Get and set user last name 
         /// </summary>
-        public UserProfileDTO Profile { get; set; }
+        public string LastName { get; set; }
+
+        /// <summary>
+        /// Get and set user position
+        /// </summary>
+        public string Position { get; set; }
 
         /// <summary>
         /// Get and set collection of projects
         /// </summary>
         public IEnumerable<ProjectDTO> Projects { get; set; }
 
-        public ApplicationUser ApplicationUser { get; set; }
+        public string ApplicationUserId { get; set; }
     }
 }

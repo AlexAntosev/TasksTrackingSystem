@@ -1,99 +1,86 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Net;
-//using System.Net.Http;
-//using System.Web.Http;
-//using BLL.DTO;
-//using BLL.Interfaces;
-//using DAL.Entities;
-//using Microsoft.AspNet.Identity;
+﻿using BLL.DTO;
+using BLL.Interfaces;
+using System.Collections.Generic;
+using System.Net;
+using System.Web.Http;
 
-//namespace WebAPI.Controllers
-//{
-//    public class UsersController : ApiController
-//    {
-//        private IUserService _service;
+namespace WebAPI.Controllers
+{
+    public class UsersController : ApiController
+    {
+        private IUserService _userService;
+        private IProjectService _projectService;
 
-//        public UsersController(IUserService service)
-//        {
-//            _service = service;
-//        }
+        public UsersController(IUserService userService, IProjectService projectService)
+        {
+            _userService = userService;
+            _projectService = projectService;
+        }
 
-//        [HttpPost]
-//        public IHttpActionResult AddToProject(int userid, int projectId)
-//        {
-//            //ApplicationUser user = UserManager.FindByIdAsync(User.Identity.GetUserId());
+        [HttpGet]
+        public IHttpActionResult GetUsers()
+        {
+            IEnumerable<UserDTO> users = _userService.GetAll();
+            if (users == null)
+            {
+                return NotFound();
+            }
 
-//            return Ok(); //Created();
-//        }
+            return Ok(users);
+        }
 
-//        [HttpGet]
-//        public IHttpActionResult GetTasks()
-//        {
-//            IEnumerable<TaskDTO> tasks = _service.GetAll();
-//            if (tasks == null)
-//            {
-//                return NotFound();
-//            }
+        [HttpGet]
+        public IHttpActionResult GetUserById(int id)
+        {
+            UserDTO user = _userService.Get(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
 
-//            return Ok(tasks);
-//        }
+            return Ok(user);
+        }
 
-//        [HttpGet]
-//        [Route("api/Projects/{projectId}/Tasks")]
-//        public IHttpActionResult GetTasksByProjectId(int projectId)
-//        {
-//            IEnumerable<TaskDTO> tasks = _service.GetByProject(projectId);
-//            if (tasks == null)
-//            {
-//                return NotFound();
-//            }
+        [HttpPut]
+        public IHttpActionResult Update(int id, UserDTO user)
+        {
+            if (!ModelState.IsValid)
+            {
+                return BadRequest("Model is not valid.");
+            }
 
-//            return Ok(tasks);
-//        }
+            UserDTO currentUser = _userService.Get(id);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            _userService.Edit(id, user);
 
-//        [HttpGet]
-//        public IHttpActionResult GetTaskById(int id)
-//        {
-//            TaskDTO task = _service.Get(id);
-//            if (task == null)
-//            {
-//                return NotFound();
-//            }
+            return Ok();
+        }
 
-//            return Ok(task);
-//        }
+        [HttpDelete]
+        public IHttpActionResult Delete(int id)
+        {
+            UserDTO currentUser = _userService.Get(id);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            _userService.Delete(id);
 
-//        [HttpPut]
-//        public IHttpActionResult Update(int id, TaskDTO task, int projectId)
-//        {
-//            if (!ModelState.IsValid)
-//            {
-//                return BadRequest("Model is not valid.");
-//            }
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+        
+        [HttpPost]
+        [Route("api/Projects/{projectId}/Users")]
+        public IHttpActionResult AddToProject(int projectId, int userId)
+        {
+            var project = _projectService.Get(projectId);
 
-//            TaskDTO currentTask = _service.Get(id);
-//            if (currentTask == null)
-//            {
-//                return NotFound();
-//            }
-//            _service.Update(id, task, projectId);
+            _userService.AddProject(userId, project);
 
-//            return Ok();
-//        }
-
-//        [HttpDelete]
-//        public IHttpActionResult Delete(int id)
-//        {
-//            TaskDTO currentTask = _service.Get(id);
-//            if (currentTask == null)
-//            {
-//                return NotFound();
-//            }
-//            _service.Delete(id);
-
-//            return StatusCode(HttpStatusCode.NoContent);
-//        }
-//    }
-//}
+            return Ok();
+        }
+    }
+}

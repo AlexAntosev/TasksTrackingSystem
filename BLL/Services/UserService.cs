@@ -22,13 +22,16 @@ namespace BLL.Services
         public User AddProject(int userId, ProjectDTO projectDTO)
         {
             User user = _unitOfWork.Users.Get(userId);
-
+            var project = Mapper.AutoMapperConfig.Mapper.Map<ProjectDTO, Project>(projectDTO);
             if (user != null)
             {
-                user.Projects.Add(Mapper.AutoMapperConfig.Mapper.Map<ProjectDTO, Project>(projectDTO));
+                if (!user.Projects.Contains(project))
+                {
+                    user.Projects.Add(project);
 
-                _unitOfWork.Users.Update(user);
-                _unitOfWork.Save();
+                    _unitOfWork.Users.Update(user);
+                    _unitOfWork.Save();
+                }
             }
 
             return user;
@@ -38,10 +41,8 @@ namespace BLL.Services
         {
             User user = new User()
             {
-                UserName = userDTO.UserName,
                 Projects = null,
-                Profile = null,
-                ApplicationUserId = userDTO.ApplicationUser.Id
+                ApplicationUserId = userDTO.ApplicationUserId
             };
 
             _unitOfWork.Users.Create(user);
@@ -64,7 +65,7 @@ namespace BLL.Services
 
             if (user != null)
             {
-                user.UserName = userDTO.UserName;
+                user.FirstName = userDTO.FirstName;
 
                 _unitOfWork.Users.Update(user);
                 _unitOfWork.Save();
