@@ -72,15 +72,32 @@ namespace WebAPI.Controllers
             return StatusCode(HttpStatusCode.NoContent);
         }
         
-        [HttpPost]
+        [HttpPut]
         [Route("api/Projects/{projectId}/Users")]
         public IHttpActionResult AddToProject(int projectId, int userId)
         {
-            var project = _projectService.Get(projectId);
-
-            _userService.AddProject(userId, project);
+            _userService.AddProject(userId, projectId);
 
             return Ok();
+        }
+
+        [HttpDelete]
+        [Route("api/Projects/{projectId}/Users")]
+        public IHttpActionResult RemoveFromProject(int projectId, int userId)
+        {
+            UserDTO currentUser = _userService.Get(userId);
+            if (currentUser == null)
+            {
+                return NotFound();
+            }
+            ProjectDTO currentProject = _projectService.Get(projectId);
+            if (currentProject == null)
+            {
+                return NotFound();
+            }
+            _userService.RemoveProject(userId, projectId);
+
+            return NotFound();
         }
     }
 }

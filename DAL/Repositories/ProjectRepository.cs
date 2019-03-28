@@ -52,7 +52,7 @@ namespace DAL.Repositories
         public bool Update(Project item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            return true;
+            return true;    
         }
     }
 }

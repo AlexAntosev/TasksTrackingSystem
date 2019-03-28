@@ -33,7 +33,7 @@ export class AccountService {
         sessionStorage.setItem(this.tokenKey, data.access_token);
         console.log(data.access_token);
         this.isLogin = true;
-        this.userName = formData.Email;
+        this.userName = formData.LastName+ ' ' + formData.FirstName;
       }
       );
   }

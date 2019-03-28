@@ -340,7 +340,9 @@ namespace WebAPI.Controllers
 
             UserDTO userDTO = new UserDTO()
             {
-                FirstName = model.Email,
+                FirstName = model.FirstName,
+                LastName = model.LastName,
+                Position = model.Position,
                 ApplicationUserId = user.Id
             };
 
@@ -351,7 +353,7 @@ namespace WebAPI.Controllers
                 return GetErrorResult(result);
             }
 
-            return Ok();
+            return Ok(myUser);
         }
 
         // POST api/Account/RegisterExternal
