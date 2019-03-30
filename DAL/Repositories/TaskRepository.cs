@@ -67,6 +67,11 @@ namespace DAL.Repositories
             return tasks;
         }
 
+        public System.Threading.Tasks.Task<List<Project>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         /// <summary>
         /// Update task entity in database
         /// </summary>

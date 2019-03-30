@@ -15,6 +15,7 @@ namespace BLL.Interfaces
         User Delete(int id);
         UserDTO Get(int id);
         IEnumerable<UserDTO> GetAll();
+        IEnumerable<UserDTO> GetByProject(int id);
         UserDTO GetByApplicationUserId(string id);
         User AddProject(int userId, int projectId);
         User RemoveProject(int userId, int projectId);

@@ -259,6 +259,9 @@ namespace WebAPI.Controllers
             ApplicationUser user = await UserManager.FindAsync(new UserLoginInfo(externalLogin.LoginProvider,
                 externalLogin.ProviderKey));
 
+            //CustomUserData
+            UserDTO userDTO = _userService.GetByApplicationUserId(user.Id);
+
             bool hasRegistered = user != null;
 
             if (hasRegistered)
@@ -270,7 +273,7 @@ namespace WebAPI.Controllers
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.UserName);
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.Email);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else

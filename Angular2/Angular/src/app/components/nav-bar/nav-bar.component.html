@@ -1,0 +1,14 @@
+<mat-toolbar class="navbar navbar-expand-lg navbar-dark bg-dark">
+  <mat-toolbar-row>
+    <button mat-button class="btn btn-dark btn-lg" [routerLink]="['projects']" routerLinkActive="active"> Projects </button>
+    <ng-content *ngIf="isUserSignedIn$ | async; then signedIn; else signedOut">
+    </ng-content>
+    <ng-template #signedIn>
+      <button mat-button (click)="signOut()">Sign out</button>
+    </ng-template>
+    <ng-template #signedOut>
+      <button mat-button routerLink="/sign-in">Sign in</button>
+      <button mat-button routerLink="/sign-up">Sign up</button>
+    </ng-template>
+  </mat-toolbar-row>
+</mat-toolbar>

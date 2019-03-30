@@ -3,6 +3,7 @@ using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BLL.Services
 {
@@ -60,6 +61,11 @@ namespace BLL.Services
         public IEnumerable<ProjectDTO> GetAll()
         {
             return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(_unitOfWork.Projects.GetAll());
+        }
+
+        public async Task<List<Project>> GetAllAsync()
+        {
+            return await _unitOfWork.Projects.GetAllAsync();
         }
 
         public ProjectDTO Get(int id)

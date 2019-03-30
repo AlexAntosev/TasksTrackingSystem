@@ -48,6 +48,11 @@ namespace DAL.Repositories
             return _context.Comments.OrderBy(c => c.Time);
         }
 
+        public System.Threading.Tasks.Task<List<Project>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Update(Comment item)
         {
             _context.Entry(item).State = EntityState.Modified;

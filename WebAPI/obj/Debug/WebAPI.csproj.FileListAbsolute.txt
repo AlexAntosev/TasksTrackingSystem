@@ -96,7 +96,6 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\System.Web.Web
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\System.Web.WebPages.Razor.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\WebApiContrib.IoC.Ninject.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\WebGrease.dll
-C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\AutoMapper.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\System.ValueTuple.dll
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\BLL.pdb
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\DAL.pdb

@@ -48,6 +48,11 @@ namespace DAL.Repositories
             return _context.Users.OrderBy(u => u.Id);
         }
 
+        public System.Threading.Tasks.Task<List<Project>> GetAllAsync()
+        {
+            throw new NotImplementedException();
+        }
+
         public bool Update(User item)
         {
             _context.Entry(item).State = EntityState.Modified;

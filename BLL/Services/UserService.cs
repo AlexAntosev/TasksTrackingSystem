@@ -59,6 +59,9 @@ namespace BLL.Services
         {
             User user = new User()
             {
+                FirstName = userDTO.FirstName,
+                LastName = userDTO.LastName,
+                Position = userDTO.Position,
                 Projects = null,
                 ApplicationUserId = userDTO.ApplicationUserId
             };
@@ -100,6 +103,12 @@ namespace BLL.Services
         public IEnumerable<UserDTO> GetAll()
         {
             return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unitOfWork.Users.GetAll());
+        }
+
+        public IEnumerable<UserDTO> GetByProject(int id)
+        {
+            var project = _unitOfWork.Projects.Find(p => p.Id == id).FirstOrDefault();
+            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unitOfWork.Users.Find(user => user.Projects.Contains(project)));
         }
 
         public UserDTO GetByApplicationUserId(string id)

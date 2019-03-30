@@ -1,6 +1,7 @@
 ﻿using DAL.Entities;
 using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
@@ -38,5 +39,7 @@ namespace DAL.Interfaces
         /// Method for finding a collection of item by current predicate
         /// </summary>
         IEnumerable<T> Find(Func<T, bool> predicate);
+
+        Task<List<Project>> GetAllAsync();
     }
 }

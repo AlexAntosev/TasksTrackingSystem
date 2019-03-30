@@ -1,0 +1,12 @@
+<form #form="ngForm">
+  <div>
+    <label>Enter email</label><br />
+    <input type="email" name="Email" #Email="ngModel" [(ngModel)]="newEmail" class="form-control" required>
+    <div class="validation-error" *ngIf="Email.invalid && Email.touched">This field is required</div>
+    <label>Enter password</label><br />
+    <input type="password" name="Password" #Password="ngModel" [(ngModel)]="newPassword" class="form-control" required>
+    <div class="validation-error" *ngIf="Password.invalid && Password.touched">This field is required</div>    
+    <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="signIn()">Submit</button>
+  </div>
+</form>
+

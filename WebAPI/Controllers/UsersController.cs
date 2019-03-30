@@ -18,6 +18,19 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
+        [Route("api/Projects/{projectId}/Users")]
+        public IHttpActionResult GetUsersByProjectId(int projectId)
+        {
+            IEnumerable<UserDTO> users = _userService.GetByProject(projectId);
+            if (users == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(users);
+        }
+
+        [HttpGet]
         public IHttpActionResult GetUsers()
         {
             IEnumerable<UserDTO> users = _userService.GetAll();

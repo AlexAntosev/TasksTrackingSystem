@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
@@ -47,6 +48,11 @@ namespace DAL.Repositories
         public IEnumerable<Project> GetAll()
         {
             return _context.Projects.OrderBy(p => p.Name);
+        }
+
+        public async Task<List<Project>> GetAllAsync()
+        {
+            return await _context.Projects.ToListAsync();
         }
 
         public bool Update(Project item)

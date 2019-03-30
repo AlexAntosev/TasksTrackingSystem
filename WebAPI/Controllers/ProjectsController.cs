@@ -1,7 +1,9 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
+using DAL.Entities;
 using System.Collections.Generic;
 using System.Net;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace WebAPI.Controllers
@@ -18,12 +20,13 @@ namespace WebAPI.Controllers
         [HttpGet]
         public IHttpActionResult GetProjects()
         {
-            IEnumerable<ProjectDTO> projects = _service.GetAll();
+            IEnumerable<ProjectDTO> projects =  _service.GetAll();
             if (projects == null)
             {
                 return NotFound();
             }
 
+            //var projectList = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Project>, List<ProjectDTO>>(projects);
             return Ok(projects);
         }
 
