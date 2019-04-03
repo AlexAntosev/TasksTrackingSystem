@@ -273,7 +273,7 @@ namespace WebAPI.Controllers
                 ClaimsIdentity cookieIdentity = await user.GenerateUserIdentityAsync(UserManager,
                     CookieAuthenticationDefaults.AuthenticationType);
 
-                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.Email);
+                AuthenticationProperties properties = ApplicationOAuthProvider.CreateProperties(user.Email, userDTO.UserName);
                 Authentication.SignIn(properties, oAuthIdentity, cookieIdentity);
             }
             else
@@ -341,8 +341,14 @@ namespace WebAPI.Controllers
 
             IdentityResult result = await UserManager.CreateAsync(user, model.Password);
 
+            if (!result.Succeeded)
+            {
+                return GetErrorResult(result);
+            }
+
             UserDTO userDTO = new UserDTO()
             {
+                UserName = model.UserName,
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Position = model.Position,
@@ -350,11 +356,6 @@ namespace WebAPI.Controllers
             };
 
             var myUser = _userService.Create(userDTO);
-
-            if (!result.Succeeded)
-            {
-                return GetErrorResult(result);
-            }
 
             return Ok(myUser);
         }

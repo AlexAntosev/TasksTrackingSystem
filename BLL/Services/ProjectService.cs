@@ -3,6 +3,7 @@ using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace BLL.Services
@@ -61,6 +62,12 @@ namespace BLL.Services
         public IEnumerable<ProjectDTO> GetAll()
         {
             return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(_unitOfWork.Projects.GetAll());
+        }
+        
+        public IEnumerable<ProjectDTO> GetByUserName(string userName)
+        {
+            var user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
+            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(user.Projects);
         }
 
         public async Task<List<Project>> GetAllAsync()

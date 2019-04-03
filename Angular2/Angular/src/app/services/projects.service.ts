@@ -10,7 +10,7 @@ export class ProjectsService {
   
   constructor(private http: HttpClient) { }
 
-  public getProjects(): Observable<Project[]> {
+  public getAllProjects(): Observable<Project[]> {
     return this.http.get<Project[]>(this.url);
   }
 
@@ -25,4 +25,9 @@ export class ProjectsService {
   public getProject(projectId: number): Observable<Project> {
     return this.http.get<Project>(this.url + '/' + projectId);
   }
+
+  public GetCurrentUserProjects(userName: string): Observable<Project[]> {
+    return this.http.get<Project[]>('http://localhost:60542/api/Users/' + userName + '/Projects');
+  }
+
 }

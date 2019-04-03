@@ -12,6 +12,7 @@ import { Observable } from 'rxjs/internal/Observable';
 export class UsersComponent implements OnInit {
 
   public userList: User[];
+  public allUsers: User[];
   public newUserId: number;
   @Input()
   public projectId: number;
@@ -21,15 +22,34 @@ export class UsersComponent implements OnInit {
   ngOnInit() {
     this.service.getUsersByProjectId(this.projectId).subscribe(
       users => this.userList = users
-    )
+    );
+    
+    //all users
+    this.service.getAllUsers().subscribe(
+      users => this.allUsers = users
+    );
   }
 
   public addUserToProject(){
-    return this.service.addUserToProject(this.newUserId, this.projectId).subscribe();
+    this.service.addUserToProject(this.newUserId, this.projectId)
+    .subscribe(
+      user => {
+        this.service.getUsersByProjectId(this.projectId).subscribe(
+          users => this.userList = users
+        );
+      }
+    );
   }
 
-  public removeUser(userId: number){
-    return this.service.removeUserFromProject(userId, this.projectId).subscribe();
+  public removeUser(userId: number) {
+    debugger;
+    this.service.removeUserFromProject(userId, this.projectId)
+    .subscribe(
+      () => {
+        debugger;
+        this.userList = this.userList.filter(u => u.Id !== userId)
+      }
+    );
   }
 
 }

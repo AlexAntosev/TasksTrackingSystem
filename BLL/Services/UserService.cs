@@ -57,8 +57,14 @@ namespace BLL.Services
 
         public User Create(UserDTO userDTO)
         {
+            if (_unitOfWork.Users.Find(u => u.UserName == userDTO.UserName).FirstOrDefault() != null) 
+            {
+                throw new Exception("User with same username is exist");
+            }
+
             User user = new User()
             {
+                UserName = userDTO.UserName,
                 FirstName = userDTO.FirstName,
                 LastName = userDTO.LastName,
                 Position = userDTO.Position,
@@ -114,6 +120,11 @@ namespace BLL.Services
         public UserDTO GetByApplicationUserId(string id)
         {
             return Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(_unitOfWork.Users.Find(u => u.ApplicationUserId == id).FirstOrDefault());
+        }
+
+        public UserDTO GetByUserName(string userName)
+        {
+            return Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(_unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault());
         }
     }
 }

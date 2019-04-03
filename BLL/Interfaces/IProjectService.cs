@@ -12,6 +12,7 @@ namespace BLL.Interfaces
         Project Edit(int id, ProjectDTO projectDTO);
         ProjectDTO Get(int id);
         IEnumerable<ProjectDTO> GetAll();
+        IEnumerable<ProjectDTO> GetByUserName(string userName);
         Task<List<Project>> GetAllAsync();
     }
 }

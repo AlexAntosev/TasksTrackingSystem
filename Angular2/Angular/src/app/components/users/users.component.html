@@ -9,6 +9,7 @@
       <thead>
         <tr>
           <th scope="col">FirstName</th>
+          <th scope="col">FirstName</th>
           <th scope="col">LastName</th>
           <th scope="col">Email</th>
           <th scope="col">Position</th>
@@ -17,6 +18,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let user of userList">
+          <td> {{user.UserName}} </td>
           <td> {{user.FirstName}} </td>
           <td> {{user.LastName}} </td>
           <td> {{user.Email}} </td>
@@ -39,9 +41,12 @@
       </div>
       <div class="modal-body">
           <div class="form-group">
-            <label>Id:</label>
-            <input name="Name" #Name="ngModel" [(ngModel)]="newUserId" class="form-control" required>
-            <div class="validation-error" *ngIf="Name.invalid && Name.touched">This field is required</div>
+            <h4>Select user</h4>
+            <mat-form-field>
+              <mat-select [(value)]="newUserId">
+                <mat-option *ngFor="let user of allUsers" [value]=user.Id>{{user.UserName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
           </div>
       </div>
       <div class="modal-footer">

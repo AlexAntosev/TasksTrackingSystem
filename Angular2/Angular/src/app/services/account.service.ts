@@ -3,6 +3,8 @@ import { HttpClient } from '@angular/common/http';
 import { SignUp } from 'src/app/models/sign-up';
 import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
+import { tap } from 'rxjs/operators';
+import { User } from 'src/app/models/user';
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +12,9 @@ import { Observable } from 'rxjs/internal/Observable';
 export class AccountService {
 
   public readonly rootURL = "http://localhost:60542";
+  public tokenKey: string = "tokenInfo";
+  public isSignIn: boolean;
+  public signInUser: User;
 
   constructor(private http: HttpClient) { }
 
@@ -24,6 +29,24 @@ export class AccountService {
       "userName=" + email +
       "&password=" + password +
       "&grant_type=password",
-      { headers: loginHeaders });
+      { headers: loginHeaders })
+      .pipe(
+        tap((user)=> {
+          debugger;
+          this.signInUser = user as User;          
+        })
+      );
+  }
+
+  public signOut(): Observable<any>{
+    sessionStorage.removeItem(this.tokenKey);    
+    this.isSignIn = false;
+    this.signInUser = null;
+    return this.http.post(this.rootURL + '/api/Account/Logout', {});
+  }
+
+  public profile(userName: string): Observable<User>{
+    debugger;
+    return this.http.get<User>(this.rootURL + '/api/Users/'+ userName, {params: {userName:userName}});
   }
 }

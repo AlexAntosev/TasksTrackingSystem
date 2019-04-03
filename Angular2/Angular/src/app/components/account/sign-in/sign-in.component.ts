@@ -10,7 +10,7 @@ export class SignInComponent implements OnInit {
 
   public newEmail: string;
   public newPassword: string;
-  public tokenKey: string = "tokenInfo";
+  
 
   constructor(private service: AccountService) { }
 
@@ -20,7 +20,8 @@ export class SignInComponent implements OnInit {
   public signIn() {
     this.service.signIn(this.newEmail, this.newPassword)
     .subscribe(data => {
-      sessionStorage.setItem(this.tokenKey, data.access_token);
+      sessionStorage.setItem(this.service.tokenKey, data.access_token);
+      this.service.isSignIn = true;
       console.log(data.access_token);
     });
   }

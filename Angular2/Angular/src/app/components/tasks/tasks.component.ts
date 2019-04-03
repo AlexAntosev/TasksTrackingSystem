@@ -31,19 +31,15 @@ export class TasksComponent implements OnInit {
     this.service.createTask(this.newTaskName, this.newTaskDescription, this.newTaskPriority,this.projectId)
       .subscribe(
       createdTask => {
-        const task = <Task>{
-          Id: createdTask.Id,
-          Name: createdTask.Name,
-          Description: createdTask.Description,
-          Priority: createdTask.Priority
-        };
-        this.taskList.push(task);
+        this.service.getTasksByProjectId(this.projectId).subscribe(
+          tasks => this.taskList = tasks
+        )
       })
   }
 
   public deleteTask(taskId: number) {
     this.service.deleteTask(taskId)
-      .subscribe(() => {
+      .subscribe(() => {        
         this.taskList = this.taskList.filter(task => task.Id !== taskId)
       })
   } 

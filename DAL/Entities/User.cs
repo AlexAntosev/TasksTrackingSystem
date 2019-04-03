@@ -5,6 +5,11 @@ namespace DAL.Entities
     public class User : BaseEntity
     {
         /// <summary>
+        /// Get and set unique username
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
         /// Get and set user firstname
         /// </summary>
         public string FirstName { get; set; }

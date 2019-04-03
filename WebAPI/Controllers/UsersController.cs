@@ -43,9 +43,10 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetUserById(int id)
+        [Route("api/Users/{userName}")]
+        public IHttpActionResult GetUserByUserName(string userName)
         {
-            UserDTO user = _userService.Get(id);
+            UserDTO user = _userService.GetByUserName(userName);
             if (user == null)
             {
                 return NotFound();
@@ -97,6 +98,7 @@ namespace WebAPI.Controllers
         [HttpDelete]
         [Route("api/Projects/{projectId}/Users")]
         public IHttpActionResult RemoveFromProject(int projectId, int userId)
+
         {
             UserDTO currentUser = _userService.Get(userId);
             if (currentUser == null)

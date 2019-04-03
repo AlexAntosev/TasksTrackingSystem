@@ -12,15 +12,19 @@ export class UsersService {
   
   constructor(private http: HttpClient) { }
 
+  public getAllUsers(): Observable<User[]>  {
+    return this.http.get<User[]>(this.url + '/Users');
+  }
+
   public getUsersByProjectId(projectId : number): Observable<User[]>  {
     return this.http.get<User[]>(this.url + '/Projects/' + projectId + '/Users');
   }
 
-  public addUserToProject(userId: number, projectId: number): Observable<any>{
+  public addUserToProject(userId, projectId): Observable<any>{
     return this.http.put(this.url + '/Projects/' + projectId + '/Users', {},{params:{projectId: projectId, userId: userId}});
   }
 
-  public removeUserFromProject(userId: number, projectId: number): Observable<any>{
+  public removeUserFromProject(userId, projectId): Observable<any>{
     return this.http.delete(this.url + '/Projects/' + projectId + '/Users', {params:{projectId: projectId, userId: userId}});
-  }
+  } 
 }

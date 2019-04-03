@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { Router } from '@angular/router';
 import { Project } from 'src/app/models/project';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-projects',
@@ -13,27 +14,18 @@ export class ProjectsComponent implements OnInit {
   public newProjectName: string;
   public newProjectTag: string;
 
-  constructor(private service: ProjectsService, private router: Router) {
+  constructor(private service: ProjectsService, private router: Router, private accountService: AccountService) {
   }
 
   ngOnInit() {
-    this.service.getProjects().subscribe(
-      projectList => {
-        this.projectList = projectList;
-      }
-    );
+    this.GetAllProjects();
   }
 
   public createProject() {
     this.service.createProject(this.newProjectName, this.newProjectTag)
       .subscribe(
       createdProject => {
-        const project = <Project>{
-          Id: createdProject.Id,
-          Name: createdProject.Name,
-          Tag: createdProject.Tag
-        };
-        this.projectList.push(project);
+        this.GetAllProjects();
       })
   }
 
@@ -43,4 +35,21 @@ export class ProjectsComponent implements OnInit {
         this.projectList = this.projectList.filter(project => project.Id !== projectId)
       })
   }  
+
+  public GetAllProjects() {
+    this.service.getAllProjects().subscribe(
+      projectList => {
+        this.projectList = projectList;
+      }
+    );
+  }
+
+  public GetCurrentUserProjects() {
+    console.log(this.accountService.signInUser.UserName);
+    this.service.GetCurrentUserProjects(this.accountService.signInUser.UserName).subscribe(
+      projectList => {
+        this.projectList = projectList;
+      }
+    );
+  }
 }

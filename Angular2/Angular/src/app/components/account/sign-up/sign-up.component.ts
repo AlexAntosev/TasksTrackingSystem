@@ -10,6 +10,7 @@ import { Router } from '@angular/router';
 })
 export class SignUpComponent implements OnInit {
 
+  public newUserName: string;
   public newFirstName: string;
   public newLastName: string;
   public newPosition: string;
@@ -24,6 +25,7 @@ export class SignUpComponent implements OnInit {
 
   singUp() {
     let newUser: SignUp = {
+      UserName: this.newUserName,
       FirstName: this.newFirstName,
       LastName: this.newLastName,
       Position: this.newPosition,

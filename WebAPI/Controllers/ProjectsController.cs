@@ -25,8 +25,20 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+            
+            return Ok(projects);
+        }
 
-            //var projectList = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Project>, List<ProjectDTO>>(projects);
+        [HttpGet]
+        [Route("api/Users/{userName}/Projects")]
+        public IHttpActionResult GetProjectsByUserName(string userName)
+        {
+            IEnumerable<ProjectDTO> projects = _service.GetByUserName(userName);
+            if (projects == null)
+            {
+                return NotFound();
+            }
+            
             return Ok(projects);
         }
 
@@ -51,7 +63,7 @@ namespace WebAPI.Controllers
             }
             _service.Create(project);
 
-            return Ok(); // Created();
+            return Ok(project); // Created();
         }
 
         [Authorize]
@@ -70,7 +82,7 @@ namespace WebAPI.Controllers
             }
             _service.Edit(id, project);
 
-            return Ok();
+            return Ok(project);
         }
 
         [HttpDelete]

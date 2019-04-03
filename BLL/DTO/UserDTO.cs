@@ -11,6 +11,11 @@ namespace BLL.DTO
         public int Id { get; set; }
 
         /// <summary>
+        /// Get and set unique username
+        /// </summary>
+        public string UserName { get; set; }
+
+        /// <summary>
         /// Get and set user first name 
         /// </summary>
         public string FirstName { get; set; }

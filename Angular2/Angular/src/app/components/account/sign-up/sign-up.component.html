@@ -1,5 +1,9 @@
 <form #form="ngForm">
   <div>
+    <label>Enter UserName</label>
+    <br />
+    <input name="UserName" #UserName="ngModel" [(ngModel)]="newUserName" class="form-control" required>
+    <div class="validation-error" *ngIf="UserName.invalid && UserName.touched">This field is required</div>
     <label>Enter FirstName</label>
     <br />
     <input name="FirstName" #FirstName="ngModel" [(ngModel)]="newFirstName" class="form-control" required>

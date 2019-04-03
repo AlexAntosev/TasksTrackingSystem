@@ -1,4 +1,6 @@
-﻿using BLL.Infrastructure;
+﻿using BLL.DTO;
+using BLL.Infrastructure;
+using BLL.Interfaces;
 using DAL.Entities;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
@@ -6,12 +8,8 @@ using Microsoft.Owin.Security.Cookies;
 using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
-using BLL.DTO;
-using BLL.Interfaces;
+using Ninject;
 
 namespace BLL.Services
 {
@@ -19,15 +17,19 @@ namespace BLL.Services
     {
         private readonly string _publicClientId;
 
-        public ApplicationOAuthProvider(string publicClientId)
+        private IUserService _userService;
+
+        public ApplicationOAuthProvider(string publicClientId, IUserService userService)
         {
             if (publicClientId == null)
             {
                 throw new ArgumentNullException("publicClientId");
             }
-
+            
             _publicClientId = publicClientId;
+            _userService = userService;
         }
+        
 
         public override async System.Threading.Tasks.Task GrantResourceOwnerCredentials(OAuthGrantResourceOwnerCredentialsContext context)
         {
@@ -40,16 +42,15 @@ namespace BLL.Services
                 context.SetError("invalid_grant", "The user name or password is incorrect.");
                 return;
             }
-
             //CustomUserData
-           // UserDTO userDTO = _userService.GetByApplicationUserId(user.Id);
+            UserDTO userDTO = _userService.GetByApplicationUserId(user.Id);
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.Email);
+            AuthenticationProperties properties = CreateProperties(user.Email, userDTO.UserName);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -91,11 +92,12 @@ namespace BLL.Services
             return System.Threading.Tasks.Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string email)
+        public static AuthenticationProperties CreateProperties(string email, string username)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "Email", email }
+                { "Email", email },
+                { "UserName", username },
             };
             return new AuthenticationProperties(data);
         }

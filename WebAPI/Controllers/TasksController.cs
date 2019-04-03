@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
             }
             _service.Create(task, projectId);
 
-            return Ok(); //Created();
+            return Ok(task); //Created();
         }
 
         [HttpGet]
@@ -79,7 +79,7 @@ namespace WebAPI.Controllers
             }
             _service.Update(id, task, projectId);
 
-            return Ok();
+            return Ok(task);
         }
 
         [HttpDelete]

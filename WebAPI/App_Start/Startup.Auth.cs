@@ -8,6 +8,7 @@ using Microsoft.Owin.Security.OAuth;
 using Owin;
 using System;
 using BLL.Interfaces;
+using Microsoft.Owin.Security.Provider;
 
 namespace WebAPI
 {
@@ -35,10 +36,14 @@ namespace WebAPI
 
             // Configure the application for OAuth based flow
             PublicClientId = "self";
+
+            UserService us = (UserService)System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(
+                typeof(IUserService));
+
             OAuthOptions = new OAuthAuthorizationServerOptions
             {
                 TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId),
+                Provider = new ApplicationOAuthProvider(PublicClientId, us),
                 AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
                 AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
                 // In production mode set AllowInsecureHttp = false
@@ -49,4 +54,53 @@ namespace WebAPI
             app.UseOAuthBearerTokens(OAuthOptions);
         }
     }
+
+    public interface SomeInterface
+    {
+        string Name { get; set; }
+
+        string SomeMethod();
+    }
+
+    public class SomeClass : SomeInterface
+    {
+        public SomeClass(string name)
+        {
+            Name = name;
+        }
+
+        public string Name { get; set; }
+
+        public string SomeMethod()
+        {
+            return "Hello Oleg";
+        }
+    }
+
+
+    public class MAin
+    {
+        public void main()
+        {
+            Console.WriteLine("Enter array length");
+            int length = Convert.ToInt32(Console.ReadLine());
+
+            SomeInterface[] array = new SomeInterface[length];
+
+            int i = 0;
+            while (i < length)
+            {
+                Console.WriteLine("Enter name");
+                string name = Console.ReadLine();
+                array[i] = new SomeClass(name);
+            }
+
+            foreach (var value in array)
+            {
+                Console.Write("Name:" + value.Name);
+                Console.Write("MethodResult:" + value.SomeMethod());
+            }
+        }
+    }
+    
 }

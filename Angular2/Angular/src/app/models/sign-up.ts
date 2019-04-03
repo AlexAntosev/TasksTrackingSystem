@@ -1,4 +1,5 @@
 export interface SignUp {
+    UserName: string;
     FirstName: string;
     LastName: string;
     Position: string;
