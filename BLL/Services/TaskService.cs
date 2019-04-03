@@ -16,66 +16,103 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Task Create(TaskDTO taskDTO, int projectId)
+        public async System.Threading.Tasks.Task CreateAsync(TaskDTO taskDTO, int projectId)
         {
+            if (taskDTO == null)
+            {
+                throw new ArgumentNullException(nameof(taskDTO));
+            }
+
+            if (taskDTO.Name == null)
+            {
+                throw new ArgumentException("Some fields are empty.");
+            }
+
+            if (_unitOfWork.Projects.GetByIdAsync(projectId) == null)
+            {
+                throw new ArgumentNullException("Current project is not exist.");
+            }
+
             Task task = new Task()
             {
                 Name = taskDTO.Name,
                 Description = taskDTO.Description,
                 Priority = Convert.ToInt32(taskDTO.Priority),
                 ProjectId = projectId,
-                Deadline = DateTime.Now,
+                Deadline = taskDTO.Deadline,
                 Date = DateTime.Now,
                 Comments = null
             };
 
             _unitOfWork.Tasks.Create(task);
-            _unitOfWork.Save();
-
-            return task;
+            await _unitOfWork.SaveAsync();
         }
 
-        public Task Delete(int id)
+        public async System.Threading.Tasks.Task DeleteAsync(int id)
         {
             Task task = _unitOfWork.Tasks.Delete(id);
-            _unitOfWork.Save();
-
-            return task;
+            await _unitOfWork.SaveAsync();
         }
 
-        public TaskDTO Get(int id)
+        public async System.Threading.Tasks.Task<TaskDTO> GetByIdAsync(int id)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<Task, TaskDTO>(_unitOfWork.Tasks.Get(id));
+            return await Mapper.AutoMapperConfig.Mapper
+                .Map<System.Threading.Tasks.Task<Task>, System.Threading.Tasks.Task<TaskDTO>>(
+                    _unitOfWork.Tasks.GetByIdAsync(id));
         }
 
-        public IEnumerable<TaskDTO> GetAll()
+        public async System.Threading.Tasks.Task<List<TaskDTO>> GetAllAsync()
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Task>, IEnumerable<TaskDTO>>(_unitOfWork.Tasks.GetAll());
+            return await Mapper.AutoMapperConfig.Mapper
+                .Map<System.Threading.Tasks.Task<List<Task>>, System.Threading.Tasks.Task<List<TaskDTO>>>(
+                    _unitOfWork.Tasks.GetAllAsync());
         }
 
-        public IEnumerable<TaskDTO> GetByProject(int id)
+        public async System.Threading.Tasks.Task<IEnumerable<TaskDTO>> GetAllByProjectIdAsync(int id)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Task>, IEnumerable<TaskDTO>>(_unitOfWork.Tasks.Find(t => t.ProjectId == id));
+            return await Mapper.AutoMapperConfig.Mapper
+                .Map<System.Threading.Tasks.Task<IEnumerable<Task>>, System.Threading.Tasks.Task<IEnumerable<TaskDTO>>>(
+                    _unitOfWork.Tasks.GetAllByProjectIdAsync(id));
         }
 
-        public Task Update(int id, TaskDTO taskDTO, int projectId)
+        public async System.Threading.Tasks.Task UpdateAsync(int id, TaskDTO taskDTO, int projectId)
         {
-            var task = _unitOfWork.Tasks.Get(id);
-
-            if (task != null)
+            if (taskDTO == null)
             {
-                task.Name = taskDTO.Name;
-                task.Description = taskDTO.Description;
-                task.ProjectId = projectId;
-                task.Priority = Convert.ToInt32(taskDTO.Priority);
-                task.Date = taskDTO.Date;
-                task.Deadline = taskDTO.Deadline;
-
-                _unitOfWork.Tasks.Update(task);
-                _unitOfWork.Save();
+                throw new ArgumentNullException(nameof(taskDTO));
             }
 
-            return task;
+            if (_unitOfWork.Projects.GetByIdAsync(projectId) == null)
+            {
+                throw new ArgumentNullException("Current project is not exist.");
+            }
+
+            var task = _unitOfWork.Tasks.GetById(id);
+            if (task == null)
+            {
+                throw new ArgumentNullException("Task is not exist.");
+            }
+
+            if (task.Name != taskDTO.Name)
+                task.Name = taskDTO.Name;
+
+            if (task.Description != taskDTO.Description)
+                task.Description = taskDTO.Description;
+
+            if (task.ProjectId != projectId)
+                task.ProjectId = projectId;
+
+            if (task.Priority != Convert.ToInt32(taskDTO.Priority))
+                task.Priority = Convert.ToInt32(taskDTO.Priority);
+
+            if (task.Date != taskDTO.Date)
+                task.Date = taskDTO.Date;
+
+            if (task.Deadline != taskDTO.Deadline)
+                task.Deadline = taskDTO.Deadline;
+
+            _unitOfWork.Tasks.Update(task);
+            await _unitOfWork.SaveAsync();
         }
     }
 }

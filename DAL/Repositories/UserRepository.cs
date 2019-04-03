@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class UserRepository : IGenericRepository<User>
+    public class UserRepository : IUserRepository, IGenericRepository<User>
     {
         private readonly IContext _context;
 
@@ -37,26 +38,41 @@ namespace DAL.Repositories
         {
             return _context.Users.Where(predicate);
         }
+        
+        public async Task<User> GetByIdAsync(int id)
+        {
+            return await _context.Users.FindAsync(id);
+        }
 
-        public User Get(int id)
+        public async Task<List<User>> GetAllAsync()
+        {
+            return await _context.Users.ToListAsync();
+        }
+
+        public async Task<User> GetByAuthenticationIdAsync(string id)
+        {
+            return await _context.Users.Where(u => u.ApplicationUserId == id).FirstOrDefaultAsync();
+        }
+        
+        public void Update(User item)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+        }
+
+        public async Task<IEnumerable<User>> GetByProjectIdAsync(int id)
+        {
+            var project = await _context.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
+            return await _context.Users.Where(u => u.Projects.Contains(project)).ToArrayAsync();
+        }
+
+        public User GetById(int id)
         {
             return _context.Users.Find(id);
         }
 
-        public IEnumerable<User> GetAll()
+        public async Task<User> GetByUserNameAsync(string userName)
         {
-            return _context.Users.OrderBy(u => u.Id);
-        }
-
-        public System.Threading.Tasks.Task<List<Project>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(User item)
-        {
-            _context.Entry(item).State = EntityState.Modified;
-            return true;
+            return await _context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
         }
     }
 }

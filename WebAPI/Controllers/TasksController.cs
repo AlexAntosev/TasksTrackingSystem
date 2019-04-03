@@ -16,21 +16,21 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult Create(TaskDTO task, int projectId)
+        public async System.Threading.Tasks.Task<IHttpActionResult> CreateAsync(TaskDTO task, int projectId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Model is not valid.");
             }
-            _service.Create(task, projectId);
+            await _service.CreateAsync(task, projectId);
 
             return Ok(task); //Created();
         }
 
         [HttpGet]
-        public IHttpActionResult GetTasks()
+        public async System.Threading.Tasks.Task<IHttpActionResult> GetAllTasksAsync()
         {
-            IEnumerable<TaskDTO> tasks = _service.GetAll();
+            IEnumerable<TaskDTO> tasks = await _service.GetAllAsync();
             if (tasks == null)
             {
                 return NotFound();
@@ -41,9 +41,9 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("api/Projects/{projectId}/Tasks")]
-        public IHttpActionResult GetTasksByProjectId(int projectId)
+        public async System.Threading.Tasks.Task<IHttpActionResult> GetTasksByProjectIdAsync(int projectId)
         {
-            IEnumerable<TaskDTO> tasks = _service.GetByProject(projectId);
+            IEnumerable<TaskDTO> tasks = await _service.GetAllByProjectIdAsync(projectId);
             if (tasks == null)
             {
                 return NotFound();
@@ -53,9 +53,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetTaskById(int id)
+        public async System.Threading.Tasks.Task<IHttpActionResult> GetTaskByIdAsync(int id)
         {
-            TaskDTO task = _service.Get(id);
+            TaskDTO task = await _service.GetByIdAsync(id);
             if (task == null)
             {
                 return NotFound();
@@ -65,32 +65,32 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public IHttpActionResult Update(int id, TaskDTO task, int projectId)
+        public async System.Threading.Tasks.Task<IHttpActionResult> UpdateAsync(int id, TaskDTO task, int projectId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Model is not valid.");
             }
 
-            TaskDTO currentTask = _service.Get(id);
+            TaskDTO currentTask = await _service.GetByIdAsync(id);
             if (currentTask == null)
             {
                 return NotFound();
             }
-            _service.Update(id, task, projectId);
+            await _service.UpdateAsync(id, task, projectId);
 
             return Ok(task);
         }
 
         [HttpDelete]
-        public IHttpActionResult Delete(int id)
+        public async System.Threading.Tasks.Task<IHttpActionResult> DeleteAsync(int id)
         {
-            TaskDTO currentTask = _service.Get(id);
+            TaskDTO currentTask = await _service.GetByIdAsync(id);
             if (currentTask == null)
             {
                 return NotFound();
             }
-            _service.Delete(id);
+            await _service.DeleteAsync(id);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

@@ -7,32 +7,20 @@ using System.Linq;
 
 namespace DAL.Repositories
 {
-    /// <summary>
-    /// Processing with database in Tasks table
-    /// </summary>
-    public class TaskRepository : IGenericRepository<Task>
+    public class TaskRepository : ITaskRepository, IGenericRepository<Task>
     {
         private readonly IContext _context;
-
-        /// <summary>
-        /// Initialize a new instance of repository
-        /// </summary>
+        
         public TaskRepository(IContext context)
         {
             _context = context;
         }
-
-        /// <summary>
-        /// Creating new task entity in database
-        /// </summary>
+        
         public void Create(Task item)
         {
             _context.Tasks.Add(item);
         }
-
-        /// <summary>
-        /// Deleting task entity by id in database
-        /// </summary>
+        
         public Task Delete(int id)
         {
             var currentTask = _context.Tasks.Find(id);
@@ -41,44 +29,35 @@ namespace DAL.Repositories
                 _context.Tasks.Remove(currentTask);
             return currentTask;
         }
-
-        /// <summary>
-        /// Get task entities by predicate in database
-        /// </summary>
+        
         public IEnumerable<Task> Find(Func<Task, bool> predicate)
         {
             return _context.Tasks.Where(predicate);
         }
+        
+        public async System.Threading.Tasks.Task<Task> GetByIdAsync(int id)
+        {
+            return await _context.Tasks.FindAsync(id);
+        }
+        
+        public async System.Threading.Tasks.Task<List<Task>> GetAllAsync()
+        {
+            return await _context.Tasks.ToListAsync();
+        }
+        
+        public void Update(Task item)
+        {
+            _context.Entry(item).State = EntityState.Modified;
+        }
 
-        /// <summary>
-        /// Get task entity by id in database
-        /// </summary>
-        public Task Get(int id)
+        public Task GetById(int id)
         {
             return _context.Tasks.Find(id);
         }
 
-        /// <summary>
-        /// Get all task entities in database
-        /// </summary>
-        public IEnumerable<Task> GetAll()
+        public async System.Threading.Tasks.Task<IEnumerable<Task>> GetAllByProjectIdAsync(int id)
         {
-            var tasks = _context.Tasks.OrderBy(t => t.Name);;
-            return tasks;
-        }
-
-        public System.Threading.Tasks.Task<List<Project>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        /// <summary>
-        /// Update task entity in database
-        /// </summary>
-        public bool Update(Task item)
-        {
-            _context.Entry(item).State = EntityState.Modified;
-            return true;
+            return await _context.Tasks.Where(t => t.ProjectId == id).ToArrayAsync();
         }
     }
 }

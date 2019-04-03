@@ -2,9 +2,10 @@
 using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace BLL.Services
 {
@@ -17,67 +18,74 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public Project Create(ProjectDTO projectDTO)
+        public async Task CreateAsync(ProjectDTO projectDTO)
         {
-            Project project = new Project()
+            if (projectDTO == null)
             {
-                Name = projectDTO.Name,
-                Tag = projectDTO.Tag,
-                Tasks = null,
-                Team = null
-            };
-
-            _unitOfWork.Projects.Create(project);
-            _unitOfWork.Save();
-
-            return project;
-        }
-
-        public Project Delete(int id)
-        {
-            Project project = _unitOfWork.Projects.Delete(id); //????return Project
-            _unitOfWork.Save();
-
-            return project;
-        }
-
-        public Project Edit(int id, ProjectDTO projectDTO)
-        {
-            var project = _unitOfWork.Projects.Get(id);
-
-            if (project != null)
-            {
-                if (projectDTO.Name != null && projectDTO.Name != project.Name)
-                    project.Name = projectDTO.Name;
-                if (projectDTO.Tag != null && projectDTO.Tag != project.Tag)
-                    project.Tag = projectDTO.Tag;
-
-                _unitOfWork.Projects.Update(project);
-                _unitOfWork.Save();
+                throw new ArgumentNullException(nameof(projectDTO));
             }
 
-            return project;
+            if (projectDTO.Name == null || projectDTO.Tag == null)
+            {
+                throw new ArgumentException("Some fields are empty.");
+            }
+
+            Project project  = Mapper.AutoMapperConfig.Mapper.Map<ProjectDTO, Project>(projectDTO);
+
+            _unitOfWork.Projects.Create(project);
+            await _unitOfWork.SaveAsync();
         }
 
-        public IEnumerable<ProjectDTO> GetAll()
+        public async Task DeleteAsync(int id)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(_unitOfWork.Projects.GetAll());
-        }
-        
-        public IEnumerable<ProjectDTO> GetByUserName(string userName)
-        {
-            var user = _unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault();
-            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<Project>, IEnumerable<ProjectDTO>>(user.Projects);
+            _unitOfWork.Projects.Delete(id);
+            await _unitOfWork.SaveAsync();
         }
 
-        public async Task<List<Project>> GetAllAsync()
+        public async Task EditAsync(int id, ProjectDTO projectDTO)
         {
-            return await _unitOfWork.Projects.GetAllAsync();
+            if (projectDTO == null)
+            {
+                throw new ArgumentNullException(nameof(projectDTO));
+            }
+
+            if (projectDTO.Name == null || projectDTO.Tasks == null)
+            {
+                throw new ArgumentException("Some fields are empty.");
+            }
+
+            var project = _unitOfWork.Projects.GetById(id);
+            if (project == null)
+            {
+                throw new ArgumentNullException("Project is not exist.");
+            }
+
+            if (project.Name != projectDTO.Name)
+                project.Name = projectDTO.Name;
+
+            if (project.Name != projectDTO.Name)
+                project.Tag = projectDTO.Tag;
+
+            _unitOfWork.Projects.Update(project);
+            await _unitOfWork.SaveAsync();
         }
 
-        public ProjectDTO Get(int id)
+        public async Task<IEnumerable<ProjectDTO>> GetAllByUserNameAsync(string userName)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<Project, ProjectDTO>(_unitOfWork.Projects.Get(id)); ;
+            return await Mapper.AutoMapperConfig.Mapper.Map<Task<IEnumerable<Project>>, Task<IEnumerable<ProjectDTO>>>(
+                _unitOfWork.Projects.GetAllByUserNameAsync(userName));
+        }
+
+        public async Task<List<ProjectDTO>> GetAllAsync()
+        {
+            return await Mapper.AutoMapperConfig.Mapper.Map<Task<List<Project>>, Task<List<ProjectDTO>>>(
+                _unitOfWork.Projects.GetAllAsync());
+        }
+
+        public Task<ProjectDTO> GetByIdAsync(int id)
+        {
+            return Mapper.AutoMapperConfig.Mapper.Map<Task<Project>, Task<ProjectDTO>>(
+                _unitOfWork.Projects.GetByIdAsync(id));
         }
     }
 }

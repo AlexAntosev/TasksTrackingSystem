@@ -1,6 +1,5 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
-using DAL.Entities;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -18,9 +17,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetProjects()
+        public async Task<IHttpActionResult> GetProjectsAsync()
         {
-            IEnumerable<ProjectDTO> projects =  _service.GetAll();
+            List<ProjectDTO> projects =  await _service.GetAllAsync();
             if (projects == null)
             {
                 return NotFound();
@@ -31,9 +30,9 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("api/Users/{userName}/Projects")]
-        public IHttpActionResult GetProjectsByUserName(string userName)
+        public async Task<IHttpActionResult> GetProjectsByUserNameAsync(string userName)
         {
-            IEnumerable<ProjectDTO> projects = _service.GetByUserName(userName);
+            IEnumerable<ProjectDTO> projects = await _service.GetAllByUserNameAsync(userName);
             if (projects == null)
             {
                 return NotFound();
@@ -43,9 +42,9 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult GetProjectById(int id)
+        public async Task<IHttpActionResult> GetProjectByIdAsync(int id)
         {
-            ProjectDTO project = _service.Get(id);
+            ProjectDTO project = await _service.GetByIdAsync(id);
             if (project == null)
             {
                 return NotFound();
@@ -55,45 +54,45 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public IHttpActionResult CreateProject(ProjectDTO project)
+        public async Task<IHttpActionResult> CreateProjectAsync(ProjectDTO project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Model is not valid.");
             }
-            _service.Create(project);
+            await _service.CreateAsync(project);
 
             return Ok(project); // Created();
         }
 
         [Authorize]
         [HttpPut]
-        public IHttpActionResult EditProject(int id, ProjectDTO project)
+        public async Task<IHttpActionResult> EditProjectAsync(int id, ProjectDTO project)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Model is not valid.");
             }
 
-            ProjectDTO currentProject = _service.Get(id);
+            ProjectDTO currentProject = await _service.GetByIdAsync(id);
             if (currentProject == null)
             {
                 return NotFound();
             }
-            _service.Edit(id, project);
+            await _service.EditAsync(id, project);
 
             return Ok(project);
         }
 
         [HttpDelete]
-        public IHttpActionResult DeleteProject(int id)
+        public async Task<IHttpActionResult> DeleteProjectAsync(int id)
         {
-            ProjectDTO currentProject = _service.Get(id);
+            ProjectDTO currentProject = await _service.GetByIdAsync(id);
             if (currentProject == null)
             {
                 return NotFound();
             }
-            _service.Delete(id);
+            await _service.DeleteAsync(id);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

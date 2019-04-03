@@ -1,17 +1,15 @@
-﻿using DAL.Entities;
-using System;
+﻿using BLL.DTO;
 using System.Collections.Generic;
-using BLL.DTO;
 
 namespace BLL.Interfaces
 {
     public interface ITaskService
     {
-        Task Create(TaskDTO taskDTO, int projectId);
-        Task Delete(int id);
-        Task Update(int id, TaskDTO taskDTO, int projectId);
-        TaskDTO Get(int id);
-        IEnumerable<TaskDTO> GetAll();
-        IEnumerable<TaskDTO> GetByProject(int id);
+        System.Threading.Tasks.Task CreateAsync(TaskDTO taskDTO, int projectId);
+        System.Threading.Tasks.Task DeleteAsync(int id);
+        System.Threading.Tasks.Task UpdateAsync(int id, TaskDTO taskDTO, int projectId);
+        System.Threading.Tasks.Task<TaskDTO> GetByIdAsync(int id);
+        System.Threading.Tasks.Task<List<TaskDTO>> GetAllAsync();
+        System.Threading.Tasks.Task<IEnumerable<TaskDTO>> GetAllByProjectIdAsync(int id);
     }
 }

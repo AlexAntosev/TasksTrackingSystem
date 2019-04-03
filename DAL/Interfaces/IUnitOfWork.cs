@@ -1,5 +1,5 @@
-﻿using DAL.Entities;
-using System;
+﻿using System;
+using System.Threading.Tasks;
 
 namespace DAL.Interfaces
 {
@@ -11,26 +11,31 @@ namespace DAL.Interfaces
         /// <summary>
         /// Get tasks repository from database
         /// </summary>
-        IGenericRepository<Task> Tasks { get; }
+        ITaskRepository Tasks { get; }
 
         /// <summary>
         /// Get projects repository from database
         /// </summary>
-        IGenericRepository<Project> Projects { get; }
+        IProjectRepository Projects { get; }
 
         /// <summary>
         /// Get users repository from database
         /// </summary>
-        IGenericRepository<User> Users { get; }
+        IUserRepository Users { get; }
         
         /// <summary>
         /// Get comments repository from database
         /// </summary>
-        IGenericRepository<Comment> Comments { get; }
+        ICommentRepository Comments { get; }
 
         /// <summary>
         /// Method for saving data
         /// </summary>
         void Save();
+
+        /// <summary>
+        /// Method for async saving data
+        /// </summary>
+        Task<int> SaveAsync();
     }
 }

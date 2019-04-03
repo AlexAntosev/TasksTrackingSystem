@@ -1,18 +1,17 @@
 ﻿using BLL.DTO;
-using DAL.Entities;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace BLL.Interfaces
 {
     public interface IProjectService
     {
-        Project Create(ProjectDTO projectDTO);
-        Project Delete(int id);
-        Project Edit(int id, ProjectDTO projectDTO);
-        ProjectDTO Get(int id);
-        IEnumerable<ProjectDTO> GetAll();
-        IEnumerable<ProjectDTO> GetByUserName(string userName);
-        Task<List<Project>> GetAllAsync();
+        Task CreateAsync(ProjectDTO projectDTO);
+        Task DeleteAsync(int id);
+        Task EditAsync(int id, ProjectDTO projectDTO);
+        Task<ProjectDTO> GetByIdAsync(int id);
+        Task<IEnumerable<ProjectDTO>> GetAllByUserNameAsync(string userName);
+        Task<List<ProjectDTO>> GetAllAsync();
     }
 }

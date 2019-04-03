@@ -5,10 +5,11 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using Task = DAL.Entities.Task;
 
 namespace DAL.Repositories
 {
-    public class ProjectRepository : IGenericRepository<Project>
+    public class ProjectRepository : IProjectRepository, IGenericRepository<Project>
     {
         private readonly IContext _context;
 
@@ -39,26 +40,31 @@ namespace DAL.Repositories
             return _context.Projects.Where(predicate);
         }
 
-        public Project Get(int id)
+        public async Task<Project> GetByIdAsync(int id)
         {
-            var project = _context.Projects.Find(id);
-            return project;
-        }
-
-        public IEnumerable<Project> GetAll()
-        {
-            return _context.Projects.OrderBy(p => p.Name);
+            return await _context.Projects.FindAsync(id);
         }
 
         public async Task<List<Project>> GetAllAsync()
         {
+            var p = _context.Projects.ToListAsync();
             return await _context.Projects.ToListAsync();
         }
 
-        public bool Update(Project item)
+        public void Update(Project item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            return true;    
+        }
+
+        public Project GetById(int id)
+        {
+            return _context.Projects.Find(id);
+        }
+
+        public async Task<IEnumerable<Project>> GetAllByUserNameAsync(string userName)
+        {
+            var user = _context.Users.Where(u => u.UserName == userName).FirstOrDefault();
+            return await _context.Projects.Where(p => p.Team.Contains(user)).ToArrayAsync();
         }
     }
 }

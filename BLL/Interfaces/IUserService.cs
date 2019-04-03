@@ -5,20 +5,21 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BLL.DTO;
+using Task = System.Threading.Tasks.Task;
 
 namespace BLL.Interfaces
 {
     public interface IUserService
     {
-        User Create(UserDTO userDTO);
-        User Edit(int id, UserDTO userDTO);
-        User Delete(int id);
-        UserDTO Get(int id);
-        UserDTO GetByUserName(string userName);
-        IEnumerable<UserDTO> GetAll();
-        IEnumerable<UserDTO> GetByProject(int id);
-        UserDTO GetByApplicationUserId(string id);
-        User AddProject(int userId, int projectId);
-        User RemoveProject(int userId, int projectId);
+        Task CreateAsync(UserDTO userDTO);
+        Task EditAsync(int id, UserDTO userDTO);
+        Task DeleteAsync(int id);
+        Task<UserDTO> GetByIdAsync(int id);
+        Task<UserDTO> GetByUserNameAsync(string userName);
+        Task<List<UserDTO>> GetAllAsync();
+        Task<IEnumerable<UserDTO>> GetByProjectIdAsync(int id);
+        Task<UserDTO> GetByAuthenticationIdAsync(string id);
+        Task AddProjectAsync(int userId, int projectId);
+        Task RemoveProjectAsync(int userId, int projectId);
     }
 }

@@ -4,10 +4,11 @@ using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace DAL.Repositories
 {
-    public class CommentRepository : IGenericRepository<Comment>
+    public class CommentRepository : ICommentRepository, IGenericRepository<Comment>
     {
         private readonly IContext _context;
 
@@ -38,25 +39,24 @@ namespace DAL.Repositories
             return _context.Comments.Where(predicate);
         }
 
-        public Comment Get(int id)
+        public async Task<Comment> GetByIdAsync(int id)
         {
-            return _context.Comments.Find(id);
+            return await _context.Comments.FindAsync(id);
         }
 
-        public IEnumerable<Comment> GetAll()
+        public async Task<List<Comment>> GetAllAsync()
         {
-            return _context.Comments.OrderBy(c => c.Time);
+            return await _context.Comments.ToListAsync();
         }
 
-        public System.Threading.Tasks.Task<List<Project>> GetAllAsync()
-        {
-            throw new NotImplementedException();
-        }
-
-        public bool Update(Comment item)
+        public void Update(Comment item)
         {
             _context.Entry(item).State = EntityState.Modified;
-            return true;
+        }
+
+        public Comment GetById(int id)
+        {
+            return _context.Comments.Find(id);
         }
     }
 }

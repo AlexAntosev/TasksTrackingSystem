@@ -25,7 +25,7 @@ namespace DAL.Entities
         public string Position { get; set; }
 
         public string ApplicationUserId { get; set; }
-        public virtual ApplicationUser ApplicationUser { get; set; }
+        public virtual AuthenticationUser AuthenticationUser { get; set; }
 
         /// <summary>
         /// Get and set collection of projects

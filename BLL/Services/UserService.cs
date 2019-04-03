@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using BLL.DTO;
+﻿using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Task = System.Threading.Tasks.Task;
 
 namespace BLL.Services
 {
@@ -19,112 +18,145 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public User AddProject(int userId, int projectId)
+        public async Task AddProjectAsync(int userId, int projectId)
         {
-            User user = _unitOfWork.Users.Get(userId);
-            var project = _unitOfWork.Projects.Get(projectId);
-            if (user != null)
+            var user = _unitOfWork.Users.GetById(userId);
+            if (user == null)
             {
-                if (!user.Projects.Contains(project))
-                {
-                    user.Projects.Add(project);
-
-                    _unitOfWork.Users.Update(user);
-                    _unitOfWork.Save();
-                }
+                throw new ArgumentException("User is not exist.");
             }
 
-            return user;
+            var project = _unitOfWork.Projects.GetById(projectId);
+            if (project == null)
+            {
+                throw new ArgumentException("Project is not exist.");
+            }
+
+            if (user.Projects.Contains(project))
+            {
+                throw new ArgumentException("Current project is already exist in user project list.");
+            }
+
+            user.Projects.Add(project);
+
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveAsync();
+            
         }
 
-        public User RemoveProject(int userId, int projectId)
+        public async Task RemoveProjectAsync(int userId, int projectId)
         {
-            User user = _unitOfWork.Users.Get(userId);
-            var project = _unitOfWork.Projects.Get(projectId);
-            if (user != null)
+            var user = _unitOfWork.Users.GetById(userId);
+            if (user == null)
             {
-                if (user.Projects.Contains(project))
-                {
-                    user.Projects.Remove(project);
-
-                    _unitOfWork.Users.Update(user);
-                    _unitOfWork.Save();
-                }
+                throw new ArgumentException("User is not exist.");
             }
 
-            return user;
+            var project = _unitOfWork.Projects.GetById(projectId);
+            if (project == null)
+            {
+                throw new ArgumentException("Project is not exist.");
+            }
+
+            if (!user.Projects.Contains(project))
+            {
+                throw new ArgumentException("Current project is not exist in user project list.");
+            }
+
+            user.Projects.Remove(project);
+
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveAsync();
         }
 
-        public User Create(UserDTO userDTO)
+        public async Task CreateAsync(UserDTO userDTO)
         {
-            if (_unitOfWork.Users.Find(u => u.UserName == userDTO.UserName).FirstOrDefault() != null) 
+            if (userDTO == null)
             {
-                throw new Exception("User with same username is exist");
+                throw new ArgumentNullException(nameof(userDTO));
             }
 
-            User user = new User()
+            if (userDTO.UserName == null || userDTO.FirstName == null || userDTO.LastName == null ||
+                userDTO.Position == null)
             {
-                UserName = userDTO.UserName,
-                FirstName = userDTO.FirstName,
-                LastName = userDTO.LastName,
-                Position = userDTO.Position,
-                Projects = null,
-                ApplicationUserId = userDTO.ApplicationUserId
-            };
+                throw new ArgumentException("Some fields are empty.");
+            }
+            
+            if (_unitOfWork.Users.GetByUserNameAsync(userDTO.UserName) != null) 
+            {
+                throw new ArgumentException("User with current username is already exist.");
+            }
+
+            User user = Mapper.AutoMapperConfig.Mapper.Map<UserDTO, User>(userDTO);
 
             _unitOfWork.Users.Create(user);
-            _unitOfWork.Save();
-
-            return user;
+            await _unitOfWork.SaveAsync();
         }
 
-        public User Delete(int id)
+        public async Task DeleteAsync(int id)
         {
             User user = _unitOfWork.Users.Delete(id);
-            _unitOfWork.Save();
-
-            return user;
+            await _unitOfWork.SaveAsync();
         }
 
-        public User Edit(int id, UserDTO userDTO)
+        public async Task EditAsync(int id, UserDTO userDTO)
         {
-            User user = _unitOfWork.Users.Get(id);
-
-            if (user != null)
+            if (userDTO == null)
             {
-                user.FirstName = userDTO.FirstName;
-
-                _unitOfWork.Users.Update(user);
-                _unitOfWork.Save();
+                throw new ArgumentNullException(nameof(userDTO));
             }
 
-            return user;
+            if (userDTO.UserName == null || userDTO.FirstName == null || userDTO.LastName == null ||
+                userDTO.Position == null)
+            {
+                throw new ArgumentException("Some fields are empty.");
+            }
+
+            var user = _unitOfWork.Users.GetById(id);
+            if (user == null)
+            {
+                throw new ArgumentNullException("User is not exist.");
+            }
+
+            if (user.FirstName != userDTO.FirstName)
+                user.FirstName = userDTO.FirstName;
+
+            if (user.LastName != userDTO.LastName)
+                user.LastName = userDTO.LastName;
+
+            if (user.UserName != userDTO.UserName)
+                user.UserName = userDTO.UserName;
+
+            if (user.Position != userDTO.Position)
+                user.Position = userDTO.Position;
+
+            _unitOfWork.Users.Update(user);
+            await _unitOfWork.SaveAsync();
         }
 
-        public UserDTO Get(int id)
+        public async Task<UserDTO> GetByIdAsync(int id)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(_unitOfWork.Users.Get(id));
+            return await Mapper.AutoMapperConfig.Mapper.Map<Task<User>, Task<UserDTO>>(_unitOfWork.Users.GetByIdAsync(id));
         }
 
-        public IEnumerable<UserDTO> GetAll()
+        public async Task<List<UserDTO>> GetAllAsync()
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unitOfWork.Users.GetAll());
+            return await Mapper.AutoMapperConfig.Mapper.Map<Task<List<User>>, Task<List<UserDTO>>>(_unitOfWork.Users.GetAllAsync());
         }
 
-        public IEnumerable<UserDTO> GetByProject(int id)
+        public async Task<IEnumerable<UserDTO>> GetByProjectIdAsync(int id)
         {
-            var project = _unitOfWork.Projects.Find(p => p.Id == id).FirstOrDefault();
-            return Mapper.AutoMapperConfig.Mapper.Map<IEnumerable<User>, IEnumerable<UserDTO>>(_unitOfWork.Users.Find(user => user.Projects.Contains(project)));
+            return await Mapper.AutoMapperConfig.Mapper.Map<Task<IEnumerable<User>>, Task<IEnumerable<UserDTO>>>(_unitOfWork.Users.GetByProjectIdAsync(id));
         }
 
-        public UserDTO GetByApplicationUserId(string id)
+        public async Task<UserDTO> GetByAuthenticationIdAsync(string id)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(_unitOfWork.Users.Find(u => u.ApplicationUserId == id).FirstOrDefault());
+            return await Mapper.AutoMapperConfig.Mapper.Map<Task<User>, Task<UserDTO>>(_unitOfWork.Users.GetByAuthenticationIdAsync(id));
         }
 
-        public UserDTO GetByUserName(string userName)
+        public Task<UserDTO> GetByUserNameAsync(string userName)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(_unitOfWork.Users.Find(u => u.UserName == userName).FirstOrDefault());
+            return Mapper.AutoMapperConfig.Mapper.Map<Task<User>, Task<UserDTO>>(_unitOfWork.Users.GetByUserNameAsync(userName));
         }
     }
 }

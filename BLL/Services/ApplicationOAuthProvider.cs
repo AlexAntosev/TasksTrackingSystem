@@ -35,7 +35,7 @@ namespace BLL.Services
         {
             var userManager = context.OwinContext.GetUserManager<ApplicationUserManager>();
 
-            ApplicationUser user = await userManager.FindAsync(context.UserName, context.Password);
+            AuthenticationUser user = await userManager.FindAsync(context.UserName, context.Password);
 
             if (user == null)
             {
@@ -43,14 +43,14 @@ namespace BLL.Services
                 return;
             }
             //CustomUserData
-            UserDTO userDTO = _userService.GetByApplicationUserId(user.Id);
+            //UserDTO userDTO = _userService.GetByAuthenticationIdAsync(user.Id);
 
             ClaimsIdentity oAuthIdentity = await user.GenerateUserIdentityAsync(userManager,
                OAuthDefaults.AuthenticationType);
             ClaimsIdentity cookiesIdentity = await user.GenerateUserIdentityAsync(userManager,
                 CookieAuthenticationDefaults.AuthenticationType);
 
-            AuthenticationProperties properties = CreateProperties(user.Email, userDTO.UserName);
+            AuthenticationProperties properties = CreateProperties(user.Email);
             AuthenticationTicket ticket = new AuthenticationTicket(oAuthIdentity, properties);
             context.Validated(ticket);
             context.Request.Context.Authentication.SignIn(cookiesIdentity);
@@ -92,12 +92,11 @@ namespace BLL.Services
             return System.Threading.Tasks.Task.FromResult<object>(null);
         }
 
-        public static AuthenticationProperties CreateProperties(string email, string username)
+        public static AuthenticationProperties CreateProperties(string email)
         {
             IDictionary<string, string> data = new Dictionary<string, string>
             {
-                { "Email", email },
-                { "UserName", username },
+                { "Email", email }
             };
             return new AuthenticationProperties(data);
         }

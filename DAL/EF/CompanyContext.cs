@@ -10,7 +10,7 @@ namespace DAL.EF
     /// <summary>
     /// Database context
     /// </summary>
-    public class CompanyContext : IdentityDbContext<ApplicationUser>, IContext, IDisposable
+    public class CompanyContext : IdentityDbContext<AuthenticationUser>, IContext, IDisposable
     {
         /// <summary>
         /// Get and set tasks entities
@@ -48,16 +48,13 @@ namespace DAL.EF
             return Entry<TEntity>(entity);
         }
 
-        public void Save()
-        {
-            SaveChanges();
-        }
+        
 
         protected override void OnModelCreating(DbModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<ApplicationUser>().ToTable("ApplicationUsers");
+            builder.Entity<AuthenticationUser>().ToTable("ApplicationUsers");
             builder.Entity<IdentityUserRole>().ToTable("UserRoles");
             builder.Entity<IdentityRole>().ToTable("Roles");
             builder.Entity<IdentityUserLogin>().ToTable("UserLogins");
@@ -67,6 +64,16 @@ namespace DAL.EF
         public static CompanyContext Create()
         {
             return new CompanyContext();
+        }
+
+        public void Save()
+        {
+            SaveChanges();
+        }
+
+        public async System.Threading.Tasks.Task<int> SaveAsync()
+        {
+            return await SaveChangesAsync();
         }
     }
 }

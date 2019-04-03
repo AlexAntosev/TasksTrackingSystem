@@ -12,18 +12,18 @@ using System.Threading.Tasks;
 
 namespace BLL.Infrastructure
 {
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class ApplicationUserManager : UserManager<AuthenticationUser>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
+        public ApplicationUserManager(IUserStore<AuthenticationUser> store)
             : base(store)
         {
         }
 
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options, IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<CompanyContext>()));
+            var manager = new ApplicationUserManager(new UserStore<AuthenticationUser>(context.Get<CompanyContext>()));
             // Configure validation logic for usernames
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            manager.UserValidator = new UserValidator<AuthenticationUser>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -40,7 +40,7 @@ namespace BLL.Infrastructure
             var dataProtectionProvider = options.DataProtectionProvider;
             if (dataProtectionProvider != null)
             {
-                manager.UserTokenProvider = new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                manager.UserTokenProvider = new DataProtectorTokenProvider<AuthenticationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
             }
             return manager;
         }

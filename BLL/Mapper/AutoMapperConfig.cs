@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using BLL.DTO;
 using DAL.Entities;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace BLL.Mapper
 {
@@ -14,8 +16,8 @@ namespace BLL.Mapper
             {
                 cfg.CreateMap<ProjectDTO, Project>();
                 cfg.CreateMap<ProjectDTO, Project>().ReverseMap();
-                cfg.CreateMap<TaskDTO, Task>();
-                cfg.CreateMap<TaskDTO, Task>().ReverseMap();
+                cfg.CreateMap<TaskDTO, DAL.Entities.Task>();
+                cfg.CreateMap<TaskDTO, DAL.Entities.Task>().ReverseMap();
                 cfg.CreateMap<UserDTO, User>();
                 cfg.CreateMap<UserDTO, User>().ReverseMap();
             });

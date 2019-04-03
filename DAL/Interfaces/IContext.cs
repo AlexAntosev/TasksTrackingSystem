@@ -14,5 +14,6 @@ namespace DAL.Interfaces
         DbEntityEntry Entry(object entity);
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : BaseEntity;
         void Save();
+        System.Threading.Tasks.Task<int> SaveAsync();
     }
 }
