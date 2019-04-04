@@ -6,6 +6,6 @@ namespace DAL.Interfaces
 {
     public interface IProjectRepository : IGenericRepository<Project>
     {
-        Task<IEnumerable<Project>> GetAllByUserNameAsync(string userName);
+        Task<List<Project>> GetAllProjectsByUserNameAsync(string userName);
     }
 }

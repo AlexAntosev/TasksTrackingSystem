@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using DAL.Entities;
 
 namespace WebAPI.Controllers
 {
@@ -19,38 +20,43 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetProjectsAsync()
         {
-            List<ProjectDTO> projects =  await _service.GetAllAsync();
+            List<Project> projects =  await _service.GetAllProjectsAsync();
+
             if (projects == null)
             {
                 return NotFound();
             }
-            
-            return Ok(projects);
+
+
+            List<ProjectDTO> projectsDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Project>, List<ProjectDTO>>(projects);
+            return Ok(projectsDTO);
         }
 
         [HttpGet]
         [Route("api/Users/{userName}/Projects")]
         public async Task<IHttpActionResult> GetProjectsByUserNameAsync(string userName)
         {
-            IEnumerable<ProjectDTO> projects = await _service.GetAllByUserNameAsync(userName);
+            List<Project> projects = await _service.GetAllProjectsByUserNameAsync(userName);
             if (projects == null)
             {
                 return NotFound();
             }
-            
-            return Ok(projects);
+
+            List<ProjectDTO> projectsDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Project>, List<ProjectDTO>>(projects);
+            return Ok(projectsDTO);
         }
 
         [HttpGet]
         public async Task<IHttpActionResult> GetProjectByIdAsync(int id)
         {
-            ProjectDTO project = await _service.GetByIdAsync(id);
+            Project project = await _service.GetProjectByIdAsync(id);
             if (project == null)
             {
                 return NotFound();
             }
-
-            return Ok(project);
+            
+            ProjectDTO projectDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<Project, ProjectDTO>(project);
+            return Ok(projectDTO);
         }
 
         [HttpPost]
@@ -60,7 +66,7 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("Model is not valid.");
             }
-            await _service.CreateAsync(project);
+            await _service.CreateProjectAsync(project);
 
             return Ok(project); // Created();
         }
@@ -74,12 +80,13 @@ namespace WebAPI.Controllers
                 return BadRequest("Model is not valid.");
             }
 
-            ProjectDTO currentProject = await _service.GetByIdAsync(id);
+            Project currentProject = await _service.GetProjectByIdAsync(id);
             if (currentProject == null)
             {
                 return NotFound();
             }
-            await _service.EditAsync(id, project);
+            
+            await _service.EditProjectAsync(id, project);
 
             return Ok(project);
         }
@@ -87,12 +94,12 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteProjectAsync(int id)
         {
-            ProjectDTO currentProject = await _service.GetByIdAsync(id);
+            Project currentProject = await _service.GetProjectByIdAsync(id);
             if (currentProject == null)
             {
                 return NotFound();
             }
-            await _service.DeleteAsync(id);
+            await _service.DeleteProjectAsync(id);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

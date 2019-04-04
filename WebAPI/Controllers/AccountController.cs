@@ -32,39 +32,29 @@ namespace WebAPI.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
-        private ApplicationUserManager _userManager;
+        private UserManager<AuthenticationUser> _userManager;
         private SignInManager<AuthenticationUser, string> _signInManager;
         private IUserService _userService;
         private readonly IConfiguration _configuration;
 
-        public AccountController(ApplicationUserManager userManager,
+        public AccountController(UserManager<AuthenticationUser> userManager,
+            IUserService userService)
+        {
+            _userManager = userManager;
+            _userService = userService;
+        }
+
+        public AccountController(UserManager<AuthenticationUser> userManager,
+            SignInManager<AuthenticationUser, string> signInManager,
             IUserService userService,
             IConfiguration configuration)
         {
-            UserManager = userManager;
+            _userManager = userManager;
+            _signInManager = signInManager;
             _userService = userService;
             _configuration = configuration;
         }
-
-        public ApplicationUserManager UserManager
-        {
-            get
-            {
-                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
-        }
         
-        [Route("SignOut")]
-        public IHttpActionResult Logout()
-        {
-           // Authentication.SignOut(CookieAuthenticationDefaults.AuthenticationType);
-            return Ok();
-        }
-
         [AllowAnonymous]
         [HttpPost]
         [Route("SignIn")]
@@ -85,10 +75,12 @@ namespace WebAPI.Controllers
 
             AuthenticationUser authenticationUser =
                 _userManager.Users.FirstOrDefault(u => u.UserName == signInModel.UserName);
-            UserDTO user = await _userService.GetByAuthenticationIdAsync(authenticationUser.Id);
+            User user = await _userService.GetUserByAuthenticationIdAsync(authenticationUser.Id);
+
+            UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
             string token = await CreateJWT(authenticationUser);
 
-            return Ok(new {user, token});
+            return Ok(new {userDTO, token});
         }
 
 
@@ -105,7 +97,7 @@ namespace WebAPI.Controllers
 
             var authenticationUser = new AuthenticationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await UserManager.CreateAsync(authenticationUser, model.Password);
+            IdentityResult result = await _userManager.CreateAsync(authenticationUser, model.Password);
 
             if (!result.Succeeded)
             {
@@ -121,7 +113,7 @@ namespace WebAPI.Controllers
                 ApplicationUserId = authenticationUser.Id
             };
 
-            await _userService.CreateAsync(userDTO);
+            await _userService.CreateUserAsync(userDTO);
 
             string token = await CreateJWT(authenticationUser);
 

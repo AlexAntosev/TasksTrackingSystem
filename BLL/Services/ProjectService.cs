@@ -18,7 +18,7 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task CreateAsync(ProjectDTO projectDTO)
+        public async Task CreateProjectAsync(ProjectDTO projectDTO)
         {
             if (projectDTO == null)
             {
@@ -36,13 +36,13 @@ namespace BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteProjectAsync(int id)
         {
             _unitOfWork.Projects.Delete(id);
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task EditAsync(int id, ProjectDTO projectDTO)
+        public async Task EditProjectAsync(int id, ProjectDTO projectDTO)
         {
             if (projectDTO == null)
             {
@@ -70,22 +70,19 @@ namespace BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task<IEnumerable<ProjectDTO>> GetAllByUserNameAsync(string userName)
+        public async Task<List<Project>> GetAllProjectsByUserNameAsync(string userName)
         {
-            return await Mapper.AutoMapperConfig.Mapper.Map<Task<IEnumerable<Project>>, Task<IEnumerable<ProjectDTO>>>(
-                _unitOfWork.Projects.GetAllByUserNameAsync(userName));
+            return await _unitOfWork.Projects.GetAllProjectsByUserNameAsync(userName);
         }
 
-        public async Task<List<ProjectDTO>> GetAllAsync()
+        public async Task<List<Project>> GetAllProjectsAsync()
         {
-            return await Mapper.AutoMapperConfig.Mapper.Map<Task<List<Project>>, Task<List<ProjectDTO>>>(
-                _unitOfWork.Projects.GetAllAsync());
+            return await _unitOfWork.Projects.GetAllAsync();
         }
 
-        public Task<ProjectDTO> GetByIdAsync(int id)
+        public async Task<Project> GetProjectByIdAsync(int id)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<Task<Project>, Task<ProjectDTO>>(
-                _unitOfWork.Projects.GetByIdAsync(id));
+            return await _unitOfWork.Projects.GetByIdAsync(id);
         }
     }
 }

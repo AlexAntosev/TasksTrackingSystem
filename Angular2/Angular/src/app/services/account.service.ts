@@ -20,12 +20,12 @@ export class AccountService {
 
   public signUp(user: SignUp): Observable<SignUp> {
     const registerHeaders = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
-    return this.http.post<SignUp>(this.rootURL + '/api/Account/Register', user, { headers: registerHeaders });
+    return this.http.post<SignUp>(this.rootURL + '/api/Account/SignUp', user);
   }
 
   public signIn(email: string, password: string): Observable<any> {
     const loginHeaders = new HttpHeaders({ 'Content-Type': 'x-www-form-urlencoded' });
-    return this.http.post<any>(this.rootURL + '/Token',
+    return this.http.post<any>(this.rootURL + '/api/Account/SignIn',
       "userName=" + email +
       "&password=" + password +
       "&grant_type=password",

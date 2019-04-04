@@ -5,6 +5,6 @@ namespace DAL.Interfaces
 {
     public interface ITaskRepository : IGenericRepository<Task>
     {
-        System.Threading.Tasks.Task<IEnumerable<Task>> GetAllByProjectIdAsync(int id);
+        System.Threading.Tasks.Task<List<Task>> GetAllTasksByProjectIdAsync(int id);
     }
 }

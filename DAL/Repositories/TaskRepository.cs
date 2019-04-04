@@ -55,9 +55,9 @@ namespace DAL.Repositories
             return _context.Tasks.Find(id);
         }
 
-        public async System.Threading.Tasks.Task<IEnumerable<Task>> GetAllByProjectIdAsync(int id)
+        public async System.Threading.Tasks.Task<List<Task>> GetAllTasksByProjectIdAsync(int id)
         {
-            return await _context.Tasks.Where(t => t.ProjectId == id).ToArrayAsync();
+            return await _context.Tasks.Where(t => t.ProjectId == id).ToListAsync();
         }
     }
 }

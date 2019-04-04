@@ -6,10 +6,10 @@ namespace DAL.Interfaces
 {
     public interface IUserRepository : IGenericRepository<User>
     {
-        Task<User> GetByAuthenticationIdAsync(string id);
+        Task<User> GetUserByAuthenticationIdAsync(string id);
 
-        Task<IEnumerable<User>> GetByProjectIdAsync(int id);
+        Task<List<User>> GetAllUsersByProjectIdAsync(int id);
 
-        Task<User> GetByUserNameAsync(string userName);
+        Task<User> GetUserByUserNameAsync(string userName);
     }
 }

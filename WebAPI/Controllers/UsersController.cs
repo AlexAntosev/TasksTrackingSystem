@@ -1,5 +1,6 @@
 ﻿using BLL.DTO;
 using BLL.Interfaces;
+using DAL.Entities;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -20,98 +21,101 @@ namespace WebAPI.Controllers
 
         [HttpGet]
         [Route("api/Projects/{projectId}/Users")]
-        public async Task<IHttpActionResult> GetUsersByProjectIdAsync(int projectId)
+        public async Task<IHttpActionResult> GetAllUsersByProjectIdAsync(int projectId)
         {
-            IEnumerable<UserDTO> users = await _userService.GetByProjectIdAsync(projectId);
+            List<User> users = await _userService.GetAllUsersByProjectIdAsync(projectId);
             if (users == null)
             {
                 return NotFound();
             }
 
-            return Ok(users);
+            List<UserDTO> usersDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<User>, List<UserDTO>>(users);
+            return Ok(usersDTO);
         }
 
         [HttpGet]
         public async Task<IHttpActionResult> GetAllUsersAsync()
         {
-            IEnumerable<UserDTO> users = await _userService.GetAllAsync();
+            List<User> users = await _userService.GetAllUsersAsync();
             if (users == null)
             {
                 return NotFound();
             }
 
-            return Ok(users);
+            List<UserDTO> usersDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<User>, List<UserDTO>>(users);
+            return Ok(usersDTO);
         }
 
         [HttpGet]
         [Route("api/Users/{userName}")]
         public async Task<IHttpActionResult> GetUserByUserNameAsync(string userName)
         {
-            UserDTO user = await _userService.GetByUserNameAsync(userName);
+            User user = await _userService.GetUserByUserNameAsync(userName);
             if (user == null)
             {
                 return NotFound();
             }
 
-            return Ok(user);
+            UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
+            return Ok(userDTO);
         }
 
         [HttpPut]
-        public async Task<IHttpActionResult> UpdateAsync(int id, UserDTO user)
+        public async Task<IHttpActionResult> UpdateUserAsync(int id, UserDTO user)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Model is not valid.");
             }
 
-            UserDTO currentUser = await _userService.GetByIdAsync(id);
+            User currentUser = await _userService.GetUserByIdAsync(id);
             if (currentUser == null)
             {
                 return NotFound();
             }
-            await _userService.EditAsync(id, user);
 
+            await _userService.EditUserAsync(id, user);
             return Ok();
         }
 
         [HttpDelete]
-        public async Task<IHttpActionResult> DeleteAsync(int id)
+        public async Task<IHttpActionResult> DeleteUserAsync(int id)
         {
-            UserDTO currentUser = await _userService.GetByIdAsync(id);
+            User currentUser = await _userService.GetUserByIdAsync(id);
             if (currentUser == null)
             {
                 return NotFound();
             }
-            await _userService.DeleteAsync(id);
+            await _userService.DeleteUserAsync(id);
 
             return StatusCode(HttpStatusCode.NoContent);
         }
         
         [HttpPut]
         [Route("api/Projects/{projectId}/Users")]
-        public async Task<IHttpActionResult> AddProjectAsync(int projectId, int userId)
+        public async Task<IHttpActionResult> AddProjectToUserAsync(int projectId, int userId)
         {
-            await _userService.AddProjectAsync(userId, projectId);
+            await _userService.AddProjectToUserAsync(userId, projectId);
 
             return Ok();
         }
 
         [HttpDelete]
         [Route("api/Projects/{projectId}/Users")]
-        public async Task<IHttpActionResult> RemoveProjectAsync(int projectId, int userId)
+        public async Task<IHttpActionResult> RemoveProjectFromUserAsync(int projectId, int userId)
 
         {
-            UserDTO currentUser = await _userService.GetByIdAsync(userId);
+            User currentUser = await _userService.GetUserByIdAsync(userId);
             if (currentUser == null)
             {
                 return NotFound();
             }
-            ProjectDTO currentProject = await _projectService.GetByIdAsync(projectId);
+            Project currentProject = await _projectService.GetProjectByIdAsync(projectId);
             if (currentProject == null)
             {
                 return NotFound();
             }
-            await _userService.RemoveProjectAsync(userId, projectId);
+            await _userService.RemoveProjectFromUserAsync(userId, projectId);
 
             return NotFound();
         }

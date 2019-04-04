@@ -16,7 +16,7 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async System.Threading.Tasks.Task CreateAsync(TaskDTO taskDTO, int projectId)
+        public async System.Threading.Tasks.Task CreateTaskAsync(TaskDTO taskDTO, int projectId)
         {
             if (taskDTO == null)
             {
@@ -28,7 +28,7 @@ namespace BLL.Services
                 throw new ArgumentException("Some fields are empty.");
             }
 
-            if (_unitOfWork.Projects.GetByIdAsync(projectId) == null)
+            if (await _unitOfWork.Projects.GetByIdAsync(projectId) == null)
             {
                 throw new ArgumentNullException("Current project is not exist.");
             }
@@ -39,7 +39,7 @@ namespace BLL.Services
                 Description = taskDTO.Description,
                 Priority = Convert.ToInt32(taskDTO.Priority),
                 ProjectId = projectId,
-                Deadline = taskDTO.Deadline,
+                Deadline = DateTime.Now,//taskDTO.Deadline,
                 Date = DateTime.Now,
                 Comments = null
             };
@@ -48,34 +48,28 @@ namespace BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async System.Threading.Tasks.Task DeleteAsync(int id)
+        public async System.Threading.Tasks.Task DeleteTaskAsync(int id)
         {
             Task task = _unitOfWork.Tasks.Delete(id);
             await _unitOfWork.SaveAsync();
         }
 
-        public async System.Threading.Tasks.Task<TaskDTO> GetByIdAsync(int id)
+        public async System.Threading.Tasks.Task<Task> GetTaskByIdAsync(int id)
         {
-            return await Mapper.AutoMapperConfig.Mapper
-                .Map<System.Threading.Tasks.Task<Task>, System.Threading.Tasks.Task<TaskDTO>>(
-                    _unitOfWork.Tasks.GetByIdAsync(id));
+            return await _unitOfWork.Tasks.GetByIdAsync(id);
         }
 
-        public async System.Threading.Tasks.Task<List<TaskDTO>> GetAllAsync()
+        public async System.Threading.Tasks.Task<List<Task>> GetAllTasksAsync()
         {
-            return await Mapper.AutoMapperConfig.Mapper
-                .Map<System.Threading.Tasks.Task<List<Task>>, System.Threading.Tasks.Task<List<TaskDTO>>>(
-                    _unitOfWork.Tasks.GetAllAsync());
+            return await _unitOfWork.Tasks.GetAllAsync();
         }
 
-        public async System.Threading.Tasks.Task<IEnumerable<TaskDTO>> GetAllByProjectIdAsync(int id)
+        public async System.Threading.Tasks.Task<List<Task>> GetAllTasksByProjectIdAsync(int id)
         {
-            return await Mapper.AutoMapperConfig.Mapper
-                .Map<System.Threading.Tasks.Task<IEnumerable<Task>>, System.Threading.Tasks.Task<IEnumerable<TaskDTO>>>(
-                    _unitOfWork.Tasks.GetAllByProjectIdAsync(id));
+            return await _unitOfWork.Tasks.GetAllTasksByProjectIdAsync(id);
         }
 
-        public async System.Threading.Tasks.Task UpdateAsync(int id, TaskDTO taskDTO, int projectId)
+        public async System.Threading.Tasks.Task UpdateTaskAsync(int id, TaskDTO taskDTO, int projectId)
         {
             if (taskDTO == null)
             {

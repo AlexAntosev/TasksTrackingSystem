@@ -18,7 +18,7 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async Task AddProjectAsync(int userId, int projectId)
+        public async Task AddProjectToUserAsync(int userId, int projectId)
         {
             var user = _unitOfWork.Users.GetById(userId);
             if (user == null)
@@ -44,7 +44,7 @@ namespace BLL.Services
             
         }
 
-        public async Task RemoveProjectAsync(int userId, int projectId)
+        public async Task RemoveProjectFromUserAsync(int userId, int projectId)
         {
             var user = _unitOfWork.Users.GetById(userId);
             if (user == null)
@@ -69,7 +69,7 @@ namespace BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task CreateAsync(UserDTO userDTO)
+        public async Task CreateUserAsync(UserDTO userDTO)
         {
             if (userDTO == null)
             {
@@ -82,7 +82,7 @@ namespace BLL.Services
                 throw new ArgumentException("Some fields are empty.");
             }
             
-            if (_unitOfWork.Users.GetByUserNameAsync(userDTO.UserName) != null) 
+            if (_unitOfWork.Users.GetUserByUserNameAsync(userDTO.UserName) != null) 
             {
                 throw new ArgumentException("User with current username is already exist.");
             }
@@ -93,13 +93,13 @@ namespace BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task DeleteAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
             User user = _unitOfWork.Users.Delete(id);
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task EditAsync(int id, UserDTO userDTO)
+        public async Task EditUserAsync(int id, UserDTO userDTO)
         {
             if (userDTO == null)
             {
@@ -134,29 +134,29 @@ namespace BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task<UserDTO> GetByIdAsync(int id)
+        public async Task<User> GetUserByIdAsync(int id)
         {
-            return await Mapper.AutoMapperConfig.Mapper.Map<Task<User>, Task<UserDTO>>(_unitOfWork.Users.GetByIdAsync(id));
+            return await _unitOfWork.Users.GetByIdAsync(id);
         }
 
-        public async Task<List<UserDTO>> GetAllAsync()
+        public async Task<List<User>> GetAllUsersAsync()
         {
-            return await Mapper.AutoMapperConfig.Mapper.Map<Task<List<User>>, Task<List<UserDTO>>>(_unitOfWork.Users.GetAllAsync());
+            return await _unitOfWork.Users.GetAllAsync();
         }
 
-        public async Task<IEnumerable<UserDTO>> GetByProjectIdAsync(int id)
+        public async Task<List<User>> GetAllUsersByProjectIdAsync(int id)
         {
-            return await Mapper.AutoMapperConfig.Mapper.Map<Task<IEnumerable<User>>, Task<IEnumerable<UserDTO>>>(_unitOfWork.Users.GetByProjectIdAsync(id));
+            return await _unitOfWork.Users.GetAllUsersByProjectIdAsync(id);
         }
 
-        public async Task<UserDTO> GetByAuthenticationIdAsync(string id)
+        public async Task<User> GetUserByAuthenticationIdAsync(string id)
         {
-            return await Mapper.AutoMapperConfig.Mapper.Map<Task<User>, Task<UserDTO>>(_unitOfWork.Users.GetByAuthenticationIdAsync(id));
+            return await _unitOfWork.Users.GetUserByAuthenticationIdAsync(id);
         }
 
-        public Task<UserDTO> GetByUserNameAsync(string userName)
+        public async Task<User> GetUserByUserNameAsync(string userName)
         {
-            return Mapper.AutoMapperConfig.Mapper.Map<Task<User>, Task<UserDTO>>(_unitOfWork.Users.GetByUserNameAsync(userName));
+            return await _unitOfWork.Users.GetUserByUserNameAsync(userName);
         }
     }
 }

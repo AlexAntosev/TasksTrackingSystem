@@ -19,10 +19,12 @@ export class SignInComponent implements OnInit {
 
   public signIn() {
     this.service.signIn(this.newEmail, this.newPassword)
-    .subscribe(data => {
-      sessionStorage.setItem(this.service.tokenKey, data.access_token);
+    .subscribe(({user, token}) => {
+      debugger;
+      sessionStorage.setItem(this.service.tokenKey, token);
       this.service.isSignIn = true;
-      console.log(data.access_token);
+      console.log(user);
+      console.log(token);
     });
   }
 }

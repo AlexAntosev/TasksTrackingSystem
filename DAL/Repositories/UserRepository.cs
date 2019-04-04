@@ -49,7 +49,7 @@ namespace DAL.Repositories
             return await _context.Users.ToListAsync();
         }
 
-        public async Task<User> GetByAuthenticationIdAsync(string id)
+        public async Task<User> GetUserByAuthenticationIdAsync(string id)
         {
             return await _context.Users.Where(u => u.ApplicationUserId == id).FirstOrDefaultAsync();
         }
@@ -59,10 +59,10 @@ namespace DAL.Repositories
             _context.Entry(item).State = EntityState.Modified;
         }
 
-        public async Task<IEnumerable<User>> GetByProjectIdAsync(int id)
+        public async Task<List<User>> GetAllUsersByProjectIdAsync(int id)
         {
             var project = await _context.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
-            return await _context.Users.Where(u => u.Projects.Contains(project)).ToArrayAsync();
+            return await _context.Users.Where(u => u.Projects.Contains(project)).ToListAsync();
         }
 
         public User GetById(int id)
@@ -70,7 +70,7 @@ namespace DAL.Repositories
             return _context.Users.Find(id);
         }
 
-        public async Task<User> GetByUserNameAsync(string userName)
+        public async Task<User> GetUserByUserNameAsync(string userName)
         {
             return await _context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
         }

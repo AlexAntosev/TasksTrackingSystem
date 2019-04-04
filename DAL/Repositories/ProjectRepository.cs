@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
-using Task = DAL.Entities.Task;
 
 namespace DAL.Repositories
 {
@@ -47,7 +46,6 @@ namespace DAL.Repositories
 
         public async Task<List<Project>> GetAllAsync()
         {
-            var p = _context.Projects.ToListAsync();
             return await _context.Projects.ToListAsync();
         }
 
@@ -61,10 +59,10 @@ namespace DAL.Repositories
             return _context.Projects.Find(id);
         }
 
-        public async Task<IEnumerable<Project>> GetAllByUserNameAsync(string userName)
+        public async Task<List<Project>> GetAllProjectsByUserNameAsync(string userName)
         {
-            var user = _context.Users.Where(u => u.UserName == userName).FirstOrDefault();
-            return await _context.Projects.Where(p => p.Team.Contains(user)).ToArrayAsync();
+            var user = await _context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
+            return await _context.Projects.Where(p => p.Team.Contains(user)).ToListAsync();
         }
     }
 }
