@@ -25,8 +25,6 @@ namespace WebAPI.Infrastructure
             kernel.Bind<IProjectService>().To<ProjectService>();
             kernel.Bind<ITaskService>().To<TaskService>();
             kernel.Bind<IUserService>().To<UserService>();
-
-            kernel.Bind<IUserService>().To<UserService>().WhenInjectedInto<ApplicationOAuthProvider>();
         }
     }
 }

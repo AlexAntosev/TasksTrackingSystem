@@ -1,25 +1,17 @@
 ﻿using BLL.Infrastructure;
-using BLL.Services;
 using DAL.EF;
-using Microsoft.AspNet.Identity;
-using Microsoft.Owin;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.Owin.Security.Jwt;
 using Owin;
 using System;
-using BLL.Interfaces;
-using Microsoft.Owin.Security.Provider;
+using System.Text;
+using System.Web.Configuration;
+using WebAPI.Infrastructure;
 
 namespace WebAPI
 {
     public partial class Startup
     {
-        public static OAuthAuthorizationServerOptions OAuthOptions { get; private set; }
-
-        public static string PublicClientId { get; private set; }
-
-        // For more information on configuring authentication, please visit https://go.microsoft.com/fwlink/?LinkId=301864
-
         public void ConfigureAuth(IAppBuilder app)
         {
             //Cors
@@ -28,30 +20,43 @@ namespace WebAPI
             // Configure the db context and user manager to use a single instance per request
             app.CreatePerOwinContext(CompanyContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
+            app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
 
-            // Enable the application to use a cookie to store information for the signed in user
-            // and to use a cookie to temporarily store information about a user logging in with a third party login provider
-            app.UseCookieAuthentication(new CookieAuthenticationOptions());
-            app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
+            WebConfigurationManager.AppSettings["jwt:aud"] = "http://localhost:4200";
+            string audience = WebConfigurationManager.AppSettings["jwt:aud"];
 
-            // Configure the application for OAuth based flow
-            PublicClientId = "self";
+            WebConfigurationManager.AppSettings["jwt:iss"] = "https://localhost:60542";
+            string issuer = WebConfigurationManager.AppSettings["jwt:iss"];
 
-            UserService us = (UserService)System.Web.Http.GlobalConfiguration.Configuration.DependencyResolver.GetService(
-                typeof(IUserService));
+            //string key = "some randomly generated cryptographically good number";
+            WebConfigurationManager.AppSettings["jwt:hash_key"] = RandomGenerator.Next(Int32.MaxValue - 1, Int32.MaxValue).ToString();
+            string key = WebConfigurationManager.AppSettings["jwt:hash_key"];
 
-            OAuthOptions = new OAuthAuthorizationServerOptions
-            {
-                TokenEndpointPath = new PathString("/Token"),
-                Provider = new ApplicationOAuthProvider(PublicClientId, us),
-                AuthorizeEndpointPath = new PathString("/api/Account/ExternalLogin"),
-                AccessTokenExpireTimeSpan = TimeSpan.FromDays(14),
-                // In production mode set AllowInsecureHttp = false
-                AllowInsecureHttp = true
-            };
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(key);
+            var secret = Convert.ToBase64String(bytes);
+            var now = DateTime.UtcNow;
+            var securityKey = new SymmetricSecurityKey(Encoding.Default.GetBytes(secret));
+            var signingCredentials = new SigningCredentials(
+                securityKey,
+                SecurityAlgorithms.HmacSha256Signature);
+            
+            app.UseJwtBearerAuthentication(
+                new JwtBearerAuthenticationOptions
+                {
+                    TokenValidationParameters = new TokenValidationParameters
+                    {
+                        IssuerSigningKey = signingCredentials.Key,
 
-            // Enable the application to use bearer tokens to authenticate users
-            app.UseOAuthBearerTokens(OAuthOptions);
+                        ValidIssuer = issuer,
+                        ValidateIssuer = true,
+
+                        ValidAudience = audience,
+                        ValidateAudience = true,
+
+                        ValidateLifetime = true
+                    },
+                }
+            );
         }
     }
 }

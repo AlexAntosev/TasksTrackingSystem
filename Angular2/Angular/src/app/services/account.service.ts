@@ -23,19 +23,8 @@ export class AccountService {
     return this.http.post<SignUp>(this.rootURL + '/api/Account/SignUp', user);
   }
 
-  public signIn(email: string, password: string): Observable<any> {
-    const loginHeaders = new HttpHeaders({ 'Content-Type': 'x-www-form-urlencoded' });
-    return this.http.post<any>(this.rootURL + '/api/Account/SignIn',
-      "userName=" + email +
-      "&password=" + password +
-      "&grant_type=password",
-      { headers: loginHeaders })
-      .pipe(
-        tap((user)=> {
-          debugger;
-          this.signInUser = user as User;          
-        })
-      );
+  public signIn(userName: string, password: string): Observable<any> {
+    return this.http.post<any>(this.rootURL + '/api/Account/SignIn', {userName, password});
   }
 
   public signOut(): Observable<any>{

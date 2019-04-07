@@ -51,7 +51,7 @@ namespace DAL.Repositories
 
         public async Task<User> GetUserByAuthenticationIdAsync(string id)
         {
-            return await _context.Users.Where(u => u.ApplicationUserId == id).FirstOrDefaultAsync();
+            return await _context.Users.Where(u => u.AuthenticationUserId == id).FirstOrDefaultAsync();
         }
         
         public void Update(User item)

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AccountService } from 'src/app/services/account.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-sign-in',
@@ -19,11 +20,11 @@ export class SignInComponent implements OnInit {
 
   public signIn() {
     this.service.signIn(this.newEmail, this.newPassword)
-    .subscribe(({user, token}) => {
-      debugger;
-      sessionStorage.setItem(this.service.tokenKey, token);
+    .subscribe(({userDTO, token}) => {
+      localStorage.setItem(this.service.tokenKey, token);
       this.service.isSignIn = true;
-      console.log(user);
+      this.service.signInUser = userDTO as User;
+      console.log(userDTO);
       console.log(token);
     });
   }

@@ -1,30 +1,21 @@
 ﻿using BLL.DTO;
 using BLL.Infrastructure;
 using BLL.Interfaces;
-using BLL.Services;
 using DAL.Entities;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using Microsoft.Owin.Security;
-using Microsoft.Owin.Security.Cookies;
-using Microsoft.Owin.Security.OAuth;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
 using System.Net.Http;
 using System.Security.Claims;
-using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Web;
+using System.Web.Configuration;
 using System.Web.Http;
 using WebAPI.Models;
-using WebAPI.Results;
-using Task = System.Threading.Tasks.Task;
 
 namespace WebAPI.Controllers
 {
@@ -32,29 +23,48 @@ namespace WebAPI.Controllers
     [RoutePrefix("api/Account")]
     public class AccountController : ApiController
     {
-        private UserManager<AuthenticationUser> _userManager;
-        private SignInManager<AuthenticationUser, string> _signInManager;
+        private ApplicationUserManager _userManager;
+        private ApplicationSignInManager _signInManager;
         private IUserService _userService;
-        private readonly IConfiguration _configuration;
 
-        public AccountController(UserManager<AuthenticationUser> userManager,
+        public AccountController(IUserService userService)
+        {
+            _userService = userService;
+        }
+
+        public AccountController(ApplicationUserManager userManager,
+            ApplicationSignInManager signInManager,
             IUserService userService)
         {
-            _userManager = userManager;
+            UserManager = userManager;
+            SignInManager = signInManager;
             _userService = userService;
         }
 
-        public AccountController(UserManager<AuthenticationUser> userManager,
-            SignInManager<AuthenticationUser, string> signInManager,
-            IUserService userService,
-            IConfiguration configuration)
+        public ApplicationUserManager UserManager
         {
-            _userManager = userManager;
-            _signInManager = signInManager;
-            _userService = userService;
-            _configuration = configuration;
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
-        
+
+        public ApplicationSignInManager SignInManager
+        {
+            get
+            {
+                return _signInManager ?? Request.GetOwinContext().GetUserManager<ApplicationSignInManager>();
+            }
+            private set
+            {
+                _signInManager = value;
+            }
+        }
+
         [AllowAnonymous]
         [HttpPost]
         [Route("SignIn")]
@@ -65,16 +75,18 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            SignInStatus result =
-                await _signInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, false, false);
+            //SignInStatus result =
+            //    await SignInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, false, false);
 
-            if (result != SignInStatus.Success)
-            {
-                return Unauthorized();
-            }
+            //if (result != SignInStatus.Success)
+            //{
+            //    return Unauthorized();
+            //}
+
+            Request.GetOwinContext().Authentication.SignIn();
 
             AuthenticationUser authenticationUser =
-                _userManager.Users.FirstOrDefault(u => u.UserName == signInModel.UserName);
+                UserManager.Users.FirstOrDefault(u => u.UserName == signInModel.UserName);
             User user = await _userService.GetUserByAuthenticationIdAsync(authenticationUser.Id);
 
             UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
@@ -83,8 +95,6 @@ namespace WebAPI.Controllers
             return Ok(new {userDTO, token});
         }
 
-
-        // POST api/Account/SignUp
         [AllowAnonymous]
         [HttpPost]
         [Route("SignUp")]
@@ -97,7 +107,7 @@ namespace WebAPI.Controllers
 
             var authenticationUser = new AuthenticationUser() { UserName = model.Email, Email = model.Email };
 
-            IdentityResult result = await _userManager.CreateAsync(authenticationUser, model.Password);
+            IdentityResult result = await UserManager.CreateAsync(authenticationUser, model.Password);
 
             if (!result.Succeeded)
             {
@@ -110,7 +120,7 @@ namespace WebAPI.Controllers
                 FirstName = model.FirstName,
                 LastName = model.LastName,
                 Position = model.Position,
-                ApplicationUserId = authenticationUser.Id
+                AuthenticationUserId = authenticationUser.Id
             };
 
             await _userService.CreateUserAsync(userDTO);
@@ -122,46 +132,45 @@ namespace WebAPI.Controllers
 
         private async Task<string> CreateJWT(AuthenticationUser authenticationUser)
         {
-            long unixNowSeconds = DateTimeOffset.Now.ToUnixTimeSeconds();
-            long expirationTime = unixNowSeconds + 10 * 3600;
+            string audience = WebConfigurationManager.AppSettings["jwt:aud"];
+            string issuer = WebConfigurationManager.AppSettings["jwt:iss"];
+            string key = WebConfigurationManager.AppSettings["jwt:hash_key"];
 
-            var claims = new List<Claim>
+            byte[] bytes = System.Text.Encoding.UTF8.GetBytes(key);
+            var secret = Convert.ToBase64String(bytes);
+
+            var now = DateTime.UtcNow;
+            var securityKey = new Microsoft.IdentityModel.Tokens.SymmetricSecurityKey(Encoding.Default.GetBytes(secret));
+            var signingCredentials = new Microsoft.IdentityModel.Tokens.SigningCredentials(
+                securityKey,
+                SecurityAlgorithms.HmacSha256Signature);
+
+            var issuedAt = DateTime.Now.ToUniversalTime();
+            var expiresAt = issuedAt.AddMinutes(5);
+
+            IList<Claim> claims = await UserManager.GetClaimsAsync(authenticationUser.Id);
+
+            if (authenticationUser.Roles.Count > 0)
             {
-                // https://openid.net/specs/openid-connect-core-1_0.html#IDToken
-                new Claim(JwtRegisteredClaimNames.Sub, authenticationUser.Id),
-                //new Claim(JwtRegisteredClaimNames.Iss, _configuration["Jwt:Issuer"]),
-                //new Claim(JwtRegisteredClaimNames.Aud, _configuration["Jwt:Issuer"]),
-                new Claim(JwtRegisteredClaimNames.Iat, unixNowSeconds.ToString()),
-                //new Claim(JwtRegisteredClaimNames.Exp, expirationTime.ToString()),
-                // new Claim(ClaimTypes.Role, user.)
-            };
+                IList<string> roles = await UserManager.GetRolesAsync(authenticationUser.Id);
 
-            Task<IList<string>> rolesTask = _userManager.GetRolesAsync(authenticationUser.Id);
-            Task<IList<Claim>> userClaimsTask = _userManager.GetClaimsAsync(authenticationUser.Id);
-
-            await System.Threading.Tasks.Task.WhenAll(rolesTask, userClaimsTask);
-
-            foreach (string role in rolesTask.Result)
-            {
-                claims.Add(new Claim(ClaimTypes.Role, role));
+                foreach (string role in roles)
+                {
+                    claims.Add(new Claim(ClaimTypes.Role, role));
+                }
             }
-            claims.AddRange(userClaimsTask.Result);
 
-            var securityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_configuration["Jwt:Key"]));
-            var credentials = new SigningCredentials(securityKey, SecurityAlgorithms.HmacSha256);
-
-            var token = new JwtSecurityToken(
-                _configuration["Jwt:Issuer"],
-                _configuration["Jwt:Audience"],
+            var token = new JwtSecurityToken(issuer,
+                audience,
                 claims,
-                expires: DateTime.Now.AddMinutes(10),
-                signingCredentials: credentials
-            );
+                issuedAt,
+                expiresAt,
+                signingCredentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        protected override void Dispose(bool disposing)
+    protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
             {

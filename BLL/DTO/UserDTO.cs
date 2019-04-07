@@ -35,6 +35,6 @@ namespace BLL.DTO
         /// </summary>
         public IEnumerable<ProjectDTO> Projects { get; set; }
 
-        public string ApplicationUserId { get; set; }
+        public string AuthenticationUserId { get; set; }
     }
 }

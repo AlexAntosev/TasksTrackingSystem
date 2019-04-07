@@ -269,3 +269,5 @@ C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\System.Identit
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\System.Memory.xml
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\System.Numerics.Vectors.xml
 C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\System.Runtime.CompilerServices.Unsafe.xml
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\Microsoft.Owin.Security.Jwt.dll
+C:\Users\sasha\Desktop\Epam\Project\TaskTrackingSystem\WebAPI\bin\Microsoft.Owin.Security.Jwt.xml

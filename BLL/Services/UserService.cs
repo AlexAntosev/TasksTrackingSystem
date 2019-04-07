@@ -82,7 +82,7 @@ namespace BLL.Services
                 throw new ArgumentException("Some fields are empty.");
             }
             
-            if (_unitOfWork.Users.GetUserByUserNameAsync(userDTO.UserName) != null) 
+            if (_unitOfWork.Users.GetUserByUserNameAsync(userDTO.UserName) == null) 
             {
                 throw new ArgumentException("User with current username is already exist.");
             }

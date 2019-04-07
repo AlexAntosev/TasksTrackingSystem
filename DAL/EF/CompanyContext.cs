@@ -35,7 +35,7 @@ namespace DAL.EF
         public CompanyContext() : base("CompanyDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<CompanyContext>());
         }
 
         DbEntityEntry IContext.Entry(object entity)
@@ -47,14 +47,12 @@ namespace DAL.EF
         {
             return Entry<TEntity>(entity);
         }
-
         
-
         protected override void OnModelCreating(DbModelBuilder builder)
         {
             base.OnModelCreating(builder);
 
-            builder.Entity<AuthenticationUser>().ToTable("ApplicationUsers");
+            builder.Entity<AuthenticationUser>().ToTable("AuthenticationUsers");
             builder.Entity<IdentityUserRole>().ToTable("UserRoles");
             builder.Entity<IdentityRole>().ToTable("Roles");
             builder.Entity<IdentityUserLogin>().ToTable("UserLogins");

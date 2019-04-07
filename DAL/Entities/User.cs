@@ -24,7 +24,7 @@ namespace DAL.Entities
         /// </summary>
         public string Position { get; set; }
 
-        public string ApplicationUserId { get; set; }
+        public string AuthenticationUserId { get; set; }
         public virtual AuthenticationUser AuthenticationUser { get; set; }
 
         /// <summary>
