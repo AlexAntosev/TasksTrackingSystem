@@ -21,6 +21,11 @@ import { TasksService } from 'src/app/services/tasks.service';
 import { AccountService } from 'src/app/services/account.service';
 import { UsersComponent } from './components/users/users.component';
 import { UsersService } from 'src/app/services/users.service';
+import { TokenService } from 'src/app/services/token.service';
+import { CurrentUserInitializerService } from 'src/app/services/current-user-initializer.service';
+import { HTTP_INTERCEPTORS } from '@angular/common/http';
+import { TokenInterceptor } from 'src/app/core/interceptors/token-interceptor';
+import { APP_INITIALIZER } from '@angular/core';
 
 @NgModule({
   declarations: [
@@ -47,7 +52,31 @@ import { UsersService } from 'src/app/services/users.service';
     HttpClientModule,
     AppRoutingModule
   ],
-  providers: [ProjectsService, ProjectDetailsResolver, TasksService, AccountService, UsersService],
+  providers: [
+    ProjectsService,
+    ProjectDetailsResolver,
+    TasksService,
+    AccountService,
+    UsersService,
+    TokenService,
+    CurrentUserInitializerService,
+    { provide: Window, useValue: window },
+    {
+       provide: HTTP_INTERCEPTORS,
+       useClass: TokenInterceptor,
+       multi: true
+    },
+    { 
+      provide: APP_INITIALIZER, 
+      useFactory: loadCurrentUser, 
+      deps: [CurrentUserInitializerService], 
+      multi: true 
+    } 
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
+
+function loadCurrentUser(currentUserService: CurrentUserInitializerService): () => Promise<boolean> {
+  return () => currentUserService.loadCurrentUser();
+}

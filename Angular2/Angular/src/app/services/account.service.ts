@@ -5,6 +5,14 @@ import { HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
 import { tap } from 'rxjs/operators';
 import { User } from 'src/app/models/user';
+import { TokenService } from 'src/app/services/token.service';
+import { BehaviorSubject } from 'rxjs/internal/BehaviorSubject';
+import { CurrentUserInitializerService } from 'src/app/services/current-user-initializer.service';
+import { map } from 'rxjs/operators';
+import { UserRole } from 'src/app/models/user-role';
+import { catchError } from 'rxjs/internal/operators/catchError';
+import { of } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -12,30 +20,69 @@ import { User } from 'src/app/models/user';
 export class AccountService {
 
   public readonly rootURL = "http://localhost:60542";
-  public tokenKey: string = "tokenInfo";
+  public tokenSignature: string = "tokenInfo";
   public isSignIn: boolean;
   public signInUser: User;
 
-  constructor(private http: HttpClient) { }
+  private currentUser$: BehaviorSubject<User>;
+
+  constructor(private http: HttpClient, private tokenService: TokenService, private currentUserInitializerService: CurrentUserInitializerService, private router: Router) {
+    this.currentUser$ = new BehaviorSubject(currentUserInitializerService.currentUser)
+    console.log(currentUserInitializerService.currentUser);
+  }
 
   public signUp(user: SignUp): Observable<SignUp> {
-    const registerHeaders = new HttpHeaders({ 'Content-Type': 'application/json; charset=utf-8' });
-    return this.http.post<SignUp>(this.rootURL + '/api/Account/SignUp', user);
+
+    return this.http.post<any>(this.rootURL + '/api/Account/SignUp', user)
+      .pipe(
+      tap(({ user, token }) => {
+        this.handleUserAndToken(user, token);
+      })
+      );
   }
 
-  public signIn(userName: string, password: string): Observable<any> {
-    return this.http.post<any>(this.rootURL + '/api/Account/SignIn', {userName, password});
+  public signIn(userName: string, password: string): any {
+    return this.http.post<any>(this.rootURL + '/api/Account/SignIn', { userName, password })
+      .pipe(
+      tap(({ user, token }) => {
+        this.handleUserAndToken(user, token);
+      })
+    );
   }
 
-  public signOut(): Observable<any>{
-    sessionStorage.removeItem(this.tokenKey);    
-    this.isSignIn = false;
-    this.signInUser = null;
-    return this.http.post(this.rootURL + '/api/Account/Logout', {});
+  public signOut() {
+    return this.http.post(this.rootURL + '/api/Account/SignOut', {})
+      .subscribe(() => {
+        this.tokenService.clearToken();
+        this.currentUser$.next(null);
+      }
+      );
   }
 
-  public profile(userName: string): Observable<User>{
-    debugger;
-    return this.http.get<User>(this.rootURL + '/api/Users/'+ userName, {params: {userName:userName}});
+  public getCurrentUser(): Observable<User> {
+    return this.currentUser$.asObservable();
+  }
+
+  public profile(userName: string): Observable<User> {
+    return this.http.get<User>(this.rootURL + '/api/Users/' + userName, { params: { userName: userName } });
+  }
+
+  private handleUserAndToken(user: User, token: string): void {
+    this.tokenService.KeepToken(token);
+    user.Role = this.tokenService.fetchToken().payload.role;
+    console.log(user);
+    this.currentUser$.next(user);
+  }
+
+  public isSignedIn(): Observable<boolean> {
+    return this.currentUser$.pipe(
+      map(currentUser => !!currentUser)
+    )
+  }
+
+  public getRole(): Observable<UserRole> {
+    return this.currentUser$.pipe(
+      map(currentUser => currentUser ? currentUser.Role : null)
+    )
   }
 }

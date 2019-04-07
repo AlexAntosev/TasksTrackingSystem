@@ -10,12 +10,16 @@ import { Router } from '@angular/router';
 })
 export class NavBarComponent implements OnInit {
 
+  public get isUserSignedIn$(): Observable<boolean> {
+    return this.service.isSignedIn();
+  }
+
   constructor(private service: AccountService, private router: Router) { }
 
   ngOnInit() {
   }
 
-  public signOut(): Observable<any> {
+  public signOut(){
     return this.service.signOut();   
   }
 

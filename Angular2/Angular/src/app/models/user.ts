@@ -1,3 +1,5 @@
+import { UserRole } from 'src/app/models/user-role';
+
 export interface User {
     Id: number;
     UserName: string;
@@ -5,4 +7,5 @@ export interface User {
     LastName: string;
     Position: string;
     Email: string;
+    Role: UserRole;
 }

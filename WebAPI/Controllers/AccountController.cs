@@ -13,6 +13,7 @@ using System.Net.Http;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
 using WebAPI.Models;
@@ -66,6 +67,34 @@ namespace WebAPI.Controllers
         }
 
         [AllowAnonymous]
+        [HttpGet]
+        [Route("Current")]
+        public async Task<IHttpActionResult> GetCurrentUserAsync()
+        {
+            AuthenticationUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            string currentUserId = user?.Id;
+
+            if (currentUserId == null)
+            {
+                return Unauthorized();
+            }
+
+            User currentAppUser = await _userService.GetUserByAuthenticationIdAsync(currentUserId);
+
+            return Ok(currentAppUser);
+        }
+
+        [HttpPost]
+        [Route("SignOut")]
+        public IHttpActionResult SignOut()
+        {
+            var authenticationManager = HttpContext.Current.Request.GetOwinContext().Authentication;
+            authenticationManager.SignOut();
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
         [HttpPost]
         [Route("SignIn")]
         public async Task<IHttpActionResult> SignInAsync(SignInModel signInModel)
@@ -75,24 +104,23 @@ namespace WebAPI.Controllers
                 return BadRequest(ModelState);
             }
 
-            //SignInStatus result =
-            //    await SignInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, false, false);
+            SignInStatus result =
+                await SignInManager.PasswordSignInAsync(signInModel.UserName, signInModel.Password, false, false);
 
-            //if (result != SignInStatus.Success)
-            //{
-            //    return Unauthorized();
-            //}
-
-            Request.GetOwinContext().Authentication.SignIn();
+            if (result != SignInStatus.Success)
+            {
+                return Unauthorized();
+            }
 
             AuthenticationUser authenticationUser =
                 UserManager.Users.FirstOrDefault(u => u.UserName == signInModel.UserName);
+
             User user = await _userService.GetUserByAuthenticationIdAsync(authenticationUser.Id);
 
             UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
             string token = await CreateJWT(authenticationUser);
 
-            return Ok(new {userDTO, token});
+            return Ok(new { user = userDTO, token });
         }
 
         [AllowAnonymous]
@@ -127,7 +155,7 @@ namespace WebAPI.Controllers
 
             string token = await CreateJWT(authenticationUser);
 
-            return Ok(new {user = authenticationUser, token});
+            return Ok(new { user = userDTO, token });
         }
 
         private async Task<string> CreateJWT(AuthenticationUser authenticationUser)
@@ -160,6 +188,8 @@ namespace WebAPI.Controllers
                 }
             }
 
+            claims.Add(new Claim(JwtRegisteredClaimNames.Sub, authenticationUser.Id));
+
             var token = new JwtSecurityToken(issuer,
                 audience,
                 claims,
@@ -170,7 +200,7 @@ namespace WebAPI.Controllers
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-    protected override void Dispose(bool disposing)
+        protected override void Dispose(bool disposing)
         {
             if (disposing && _userManager != null)
             {

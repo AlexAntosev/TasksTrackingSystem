@@ -62,7 +62,9 @@ namespace DAL.Repositories
         public async Task<List<User>> GetAllUsersByProjectIdAsync(int id)
         {
             var project = await _context.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
-            return await _context.Users.Where(u => u.Projects.Contains(project)).ToListAsync();
+            var users = await _context.Users.ToListAsync();
+            var curr = users.Where(u => u.Projects.Contains(project));
+            return await curr.AsQueryable().ToListAsync();
         }
 
         public User GetById(int id)

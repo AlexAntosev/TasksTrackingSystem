@@ -34,8 +34,10 @@ export class UsersComponent implements OnInit {
     this.service.addUserToProject(this.newUserId, this.projectId)
     .subscribe(
       user => {
-        this.service.getUsersByProjectId(this.projectId).subscribe(
-          users => this.userList = users
+        this.service.getUsersByProjectId(this.projectId)
+        .subscribe((users) => {
+            debugger;
+            this.userList = users}
         );
       }
     );

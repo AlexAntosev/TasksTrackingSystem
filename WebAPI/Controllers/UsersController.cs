@@ -2,9 +2,14 @@
 using BLL.Interfaces;
 using DAL.Entities;
 using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web;
 using System.Web.Http;
+using Microsoft.AspNet.Identity;
+using System.Net.Http;
 
 namespace WebAPI.Controllers
 {
@@ -59,6 +64,8 @@ namespace WebAPI.Controllers
             UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
             return Ok(userDTO);
         }
+
+       
 
         [HttpPut]
         public async Task<IHttpActionResult> UpdateUserAsync(int id, UserDTO user)

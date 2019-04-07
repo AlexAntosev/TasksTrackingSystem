@@ -91,6 +91,7 @@ namespace WebAPI.Controllers
             return Ok(project);
         }
 
+        [Authorize]
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteProjectAsync(int id)
         {

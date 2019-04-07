@@ -33,6 +33,8 @@ export class SignUpComponent implements OnInit {
       Password: this.newPassword,
       ConfirmPassword: this.newConfirmPassword
     }
-    this.service.signUp(newUser).subscribe(this.router.navigate['/sing-in']);
+    this.service.signUp(newUser).subscribe(() => {
+      this.router.navigate(['/projects']);
+    });
   }
 }
