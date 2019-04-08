@@ -41,6 +41,26 @@ namespace DAL.Entities
         public DateTime Deadline { get; set; }
 
         /// <summary>
+        /// Get and set foreign key to user creator by id 
+        /// </summary>
+        public int? CreatorId { get; set; }
+
+        /// <summary>
+        /// Get and set user creator by foreign key
+        /// </summary>
+        public virtual User Creator { get; set; }
+
+        /// <summary>
+        /// Get and set foreign key to user executor by id 
+        /// </summary>
+        public int? ExecutorId { get; set; }
+
+        /// <summary>
+        /// Get and set user creator by foreign key
+        /// </summary>
+        public virtual User Executor { get; set; }
+
+        /// <summary>
         /// Get and set comments collection
         /// </summary>
         public virtual ICollection<Comment> Comments { get; set; }

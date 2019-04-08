@@ -61,8 +61,7 @@ namespace DAL.Repositories
 
         public async Task<List<Project>> GetAllProjectsByUserNameAsync(string userName)
         {
-            var user = await _context.Users.Where(u => u.UserName == userName).FirstOrDefaultAsync();
-            return await _context.Projects.Where(p => p.Team.Contains(user)).ToListAsync();
+            return await _context.Projects.Where(p => p.Team.Any(u => u.UserName == userName)).ToListAsync();
         }
     }
 }

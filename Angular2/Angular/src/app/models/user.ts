@@ -1,4 +1,6 @@
 import { UserRole } from 'src/app/models/user-role';
+import { Project } from 'src/app/models/project';
+import { Task } from 'src/app/models/task';
 
 export interface User {
     Id: number;
@@ -8,4 +10,7 @@ export interface User {
     Position: string;
     Email: string;
     Role: UserRole;
+    Projects: Project[];
+    CreatedTasks: Task[];
+    TasksInProcess: Task[];
 }

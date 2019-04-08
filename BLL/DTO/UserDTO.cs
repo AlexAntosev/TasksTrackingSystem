@@ -35,6 +35,16 @@ namespace BLL.DTO
         /// </summary>
         public IEnumerable<ProjectDTO> Projects { get; set; }
 
+        /// <summary>
+        /// Get and set collection of created tasks
+        /// </summary>
+        public IEnumerable<TaskDTO> CreatedTasks { get; set; }
+
+        /// <summary>
+        /// Get and set collection of task in process
+        /// </summary>
+        public IEnumerable<TaskDTO> TasksInProcess { get; set; }
+
         public string AuthenticationUserId { get; set; }
     }
 }

@@ -3,6 +3,8 @@ import { Task } from 'src/app/models/task';
 import { TasksService } from 'src/app/services/tasks.service';
 import { Input } from '@angular/core';
 import { Priority } from 'src/app/models/priority.enum';
+import { UsersService } from 'src/app/services/users.service';
+import { User } from 'src/app/models/user';
 
 @Component({
   selector: 'app-tasks',
@@ -15,20 +17,28 @@ export class TasksComponent implements OnInit {
   public newTaskName: string;
   public newTaskDescription: string;
   public newTaskPriority: Priority;
+  public newUserExecutorId: number;
+  public usersInProject: User[];
 
   @Input()
   public projectId: number;
 
-  constructor(private service: TasksService) { }
+  constructor(private service: TasksService, private userService: UsersService) { }
 
   ngOnInit() {
     this.service.getTasksByProjectId(this.projectId).subscribe(
       tasks => this.taskList = tasks
     )
+    this.userService.getUsersByProjectId(this.projectId).subscribe(
+      (users) => {
+        debugger;
+        this.usersInProject = users;
+      }
+    )
   }
 
   public createTask() {
-    this.service.createTask(this.newTaskName, this.newTaskDescription, this.newTaskPriority,this.projectId)
+    this.service.createTask(this.newTaskName, this.newTaskDescription, this.newTaskPriority,this.projectId, this.newUserExecutorId)
       .subscribe(
       createdTask => {
         this.service.getTasksByProjectId(this.projectId).subscribe(

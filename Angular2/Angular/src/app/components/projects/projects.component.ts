@@ -45,8 +45,8 @@ export class ProjectsComponent implements OnInit {
   }
 
   public GetCurrentUserProjects() {
-    console.log(this.accountService.signInUser.UserName);
-    this.service.GetCurrentUserProjects(this.accountService.signInUser.UserName).subscribe(
+    console.log(this.accountService.getCurrentUser().UserName);
+    this.service.GetCurrentUserProjects(this.accountService.getCurrentUser()).subscribe(
       projectList => {
         this.projectList = projectList;
       }

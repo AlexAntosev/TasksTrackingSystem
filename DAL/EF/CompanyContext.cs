@@ -35,7 +35,7 @@ namespace DAL.EF
         public CompanyContext() : base("CompanyDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<CompanyContext>());
         }
 
         DbEntityEntry IContext.Entry(object entity)

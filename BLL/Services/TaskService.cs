@@ -16,7 +16,7 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
         }
 
-        public async System.Threading.Tasks.Task CreateTaskAsync(TaskDTO taskDTO, int projectId)
+        public async System.Threading.Tasks.Task CreateTaskAsync(TaskDTO taskDTO, int projectId, int creatorUserId, int executorUserId)
         {
             if (taskDTO == null)
             {
@@ -39,6 +39,8 @@ namespace BLL.Services
                 Description = taskDTO.Description,
                 Priority = Convert.ToInt32(taskDTO.Priority),
                 ProjectId = projectId,
+                CreatorId = creatorUserId,
+                ExecutorId = executorUserId,
                 Deadline = DateTime.Now,//taskDTO.Deadline,
                 Date = DateTime.Now,
                 Comments = null
@@ -69,7 +71,7 @@ namespace BLL.Services
             return await _unitOfWork.Tasks.GetAllTasksByProjectIdAsync(id);
         }
 
-        public async System.Threading.Tasks.Task UpdateTaskAsync(int id, TaskDTO taskDTO, int projectId)
+        public async System.Threading.Tasks.Task UpdateTaskAsync(int id, TaskDTO taskDTO, int projectId, int creatorUserId, int executorUserId)
         {
             if (taskDTO == null)
             {
@@ -95,6 +97,12 @@ namespace BLL.Services
 
             if (task.ProjectId != projectId)
                 task.ProjectId = projectId;
+
+            if (task.CreatorId != creatorUserId)
+                task.CreatorId = creatorUserId;
+
+            if (task.ExecutorId != executorUserId)
+                task.ExecutorId = executorUserId;
 
             if (task.Priority != Convert.ToInt32(taskDTO.Priority))
                 task.Priority = Convert.ToInt32(taskDTO.Priority);

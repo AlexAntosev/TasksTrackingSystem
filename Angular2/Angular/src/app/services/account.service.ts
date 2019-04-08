@@ -59,8 +59,8 @@ export class AccountService {
       );
   }
 
-  public getCurrentUser(): Observable<User> {
-    return this.currentUser$.asObservable();
+  public getCurrentUser(): User {
+    return this.currentUser$.value as User;
   }
 
   public profile(userName: string): Observable<User> {

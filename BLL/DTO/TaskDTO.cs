@@ -29,6 +29,21 @@ namespace BLL.DTO
         public Priority Priority { get; set; }
 
         /// <summary>
+        /// Get and set foreign key to project by id 
+        /// </summary>
+        public int? ProjectId { get; set; }
+
+        /// <summary>
+        /// Get and set foreign key to user creator by id 
+        /// </summary>
+        public int? CreatorId { get; set; }
+        
+        /// <summary>
+        /// Get and set foreign key to user executor by id 
+        /// </summary>
+        public int? ExecutorId { get; set; }
+
+        /// <summary>
         /// Get and set date when task was created
         /// </summary>
         public DateTime Date { get; set; }

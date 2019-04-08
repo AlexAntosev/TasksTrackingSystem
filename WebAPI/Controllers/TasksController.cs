@@ -17,13 +17,13 @@ namespace WebAPI.Controllers
         }
 
         [HttpPost]
-        public async System.Threading.Tasks.Task<IHttpActionResult> CreateTaskAsync(TaskDTO task, int projectId)
+        public async System.Threading.Tasks.Task<IHttpActionResult> CreateTaskAsync(TaskDTO task, int projectId, int creatorUserId, int executorUserId)
         {
             if (!ModelState.IsValid)
             {
                 return BadRequest("Model is not valid.");
             }
-            await _service.CreateTaskAsync(task, projectId);
+            await _service.CreateTaskAsync(task, projectId, creatorUserId, executorUserId);
 
             return Ok(task); //Created();
         }
@@ -69,7 +69,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpPut]
-        public async System.Threading.Tasks.Task<IHttpActionResult> UpdateTaskAsync(int id, TaskDTO task, int projectId)
+        public async System.Threading.Tasks.Task<IHttpActionResult> UpdateTaskAsync(int id, TaskDTO task, int projectId, int creatorUserId, int executorUserId)
         {
             if (!ModelState.IsValid)
             {
@@ -81,7 +81,7 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
-            await _service.UpdateTaskAsync(id, task, projectId);
+            await _service.UpdateTaskAsync(id, task, projectId, creatorUserId, executorUserId);
 
             return Ok(task);
         }

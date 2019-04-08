@@ -7,11 +7,14 @@ import { ActivatedRouteSnapshot } from '@angular/router';
 import { RouterStateSnapshot } from '@angular/router';
 import { SignUpComponent } from 'src/app/components/account/sign-up/sign-up.component';
 import { SignInComponent } from 'src/app/components/account/sign-in/sign-in.component';
+import { TaskDetailsComponent } from 'src/app/components/task-details/task-details.component';
+import { TaskDetailsResolver } from 'src/app/components/task-details/task-details.resolver';
 
 export const routes: Routes = [
   { path: '',  redirectTo: '/projects', pathMatch: 'full'},
   { path: 'projects',  component: ProjectsComponent},
   { path: 'projects/:id', component: ProjectDetailsComponent, resolve: { project: ProjectDetailsResolver}},
+  { path: 'tasks/:id', component: TaskDetailsComponent, resolve: { task: TaskDetailsResolver}},
   { path: 'sign-up', component: SignUpComponent},
   { path: 'sign-in', component: SignInComponent}
 ];

@@ -26,6 +26,7 @@ import { CurrentUserInitializerService } from 'src/app/services/current-user-ini
 import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from 'src/app/core/interceptors/token-interceptor';
 import { APP_INITIALIZER } from '@angular/core';
+import { TaskDetailsResolver } from 'src/app/components/task-details/task-details.resolver';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { APP_INITIALIZER } from '@angular/core';
     ProjectsService,
     ProjectDetailsResolver,
     TasksService,
+    TaskDetailsResolver,
     AccountService,
     UsersService,
     TokenService,

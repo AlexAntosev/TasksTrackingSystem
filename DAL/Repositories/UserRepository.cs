@@ -2,9 +2,9 @@
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
-using System.Data.Entity;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace DAL.Repositories
 {
@@ -61,10 +61,7 @@ namespace DAL.Repositories
 
         public async Task<List<User>> GetAllUsersByProjectIdAsync(int id)
         {
-            var project = await _context.Projects.Where(p => p.Id == id).FirstOrDefaultAsync();
-            var users = await _context.Users.ToListAsync();
-            var curr = users.Where(u => u.Projects.Contains(project));
-            return await curr.AsQueryable().ToListAsync();
+            return await _context.Users.Where(u => u.Projects.Any(p => p.Id == id)).ToListAsync();
         }
 
         public User GetById(int id)

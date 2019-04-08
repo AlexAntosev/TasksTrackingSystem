@@ -28,7 +28,7 @@ namespace WebAPI.Controllers
         [Route("api/Projects/{projectId}/Users")]
         public async Task<IHttpActionResult> GetAllUsersByProjectIdAsync(int projectId)
         {
-            List<User> users = await _userService.GetAllUsersByProjectIdAsync(projectId);
+            var users = await _userService.GetAllUsersByProjectIdAsync(projectId);
             if (users == null)
             {
                 return NotFound();

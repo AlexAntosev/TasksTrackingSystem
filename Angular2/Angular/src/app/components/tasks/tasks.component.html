@@ -16,7 +16,7 @@
       </thead>
       <tbody>
         <tr *ngFor="let task of taskList">
-          <td>{{task.Name}}</td>
+          <td [routerLink]="['/tasks', task.Id]">{{task.Name}}</td>
           <td>{{task.Description}}</td>
           <td>
             <div *ngIf="task.Priority === 0">
@@ -71,6 +71,14 @@
               <mat-option [value]=1>Middle</mat-option>
               <mat-option [value]=2>High</mat-option>
               <mat-option [value]=3>Ultra-High</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div class="form-group">
+          <h4>Select executor</h4>
+          <mat-form-field>
+            <mat-select [(value)]="newUserExecutorId">
+              <mat-option *ngFor="let user of usersInProject" [value]=user.Id>{{user.UserName}}</mat-option>
             </mat-select>
           </mat-form-field>
         </div>

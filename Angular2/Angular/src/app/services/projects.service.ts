@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Project } from 'src/app/models/project';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs/internal/Observable';
+import { User } from 'src/app/models/user';
 
 @Injectable()
 export class ProjectsService {
@@ -26,8 +27,8 @@ export class ProjectsService {
     return this.http.get<Project>(this.url + '/' + projectId);
   }
 
-  public GetCurrentUserProjects(userName: string): Observable<Project[]> {
-    return this.http.get<Project[]>('http://localhost:60542/api/Users/' + userName + '/Projects');
+  public GetCurrentUserProjects(user: User): Observable<Project[]> {
+    return this.http.get<Project[]>('http://localhost:60542/api/Users/' + user.UserName + '/Projects');
   }
 
 }

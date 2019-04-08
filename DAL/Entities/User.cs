@@ -31,5 +31,15 @@ namespace DAL.Entities
         /// Get and set collection of projects
         /// </summary>
         public virtual ICollection<Project> Projects { get; set; }
+
+        /// <summary>
+        /// Get and set collection of created task
+        /// </summary>
+        public virtual ICollection<Task> CreatedTasks { get; set; }
+
+        /// <summary>
+        /// Get and set collection of created task
+        /// </summary>
+        public virtual ICollection<Task> TasksInProgress { get; set; }
     }
 }

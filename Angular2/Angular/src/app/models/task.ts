@@ -4,5 +4,8 @@ export interface Task{
     Id : number,   
     Name : string,
     Description : string,
-    Priority : Priority
+    Priority : Priority,
+    ProjectId: number,
+    CreatorId: number,
+    ExecutorId: number
 }

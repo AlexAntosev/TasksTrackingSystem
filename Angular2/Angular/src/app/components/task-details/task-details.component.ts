@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { Task } from 'src/app/models/task';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-task-details',
@@ -7,9 +9,12 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TaskDetailsComponent implements OnInit {
 
-  constructor() { }
+  selectedTask: Task;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.selectedTask = this.route.snapshot.data['task'];
   }
 
 }
