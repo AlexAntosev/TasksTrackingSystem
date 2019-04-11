@@ -1,13 +1,52 @@
-<div>
-  <h1>{{selectedTask.Name}} Details:</h1>
-  
-  <h3>Description:</h3>
-  <p>{{selectedTask.Description}}</p>
-  <h3>Priority:</h3>
-  <p>{{selectedTask.Priority}}</p>
+<mat-card>
+  <mat-card-title>
+    <h1>{{selectedTask.Name}}</h1>
+    <hr>
+  </mat-card-title>
+  <mat-card-content>
+    <h3>Details:</h3>
+    <h5>Priority</h5>
+    <div *ngIf="selectedTask.Priority === 0">
+        <div class="bg-primary" style="width: 25px; height: 25px;">
+        </div>
+      </div>
+      <div *ngIf="selectedTask.Priority === 1">
+        <div class="bg-success" style="width: 25px; height: 25px;">
+        </div>
+      </div>
+      <div *ngIf="selectedTask.Priority === 2">
+        <div class="bg-warning" style="width: 25px; height: 25px;">
+        </div>
+      </div>
+      <div *ngIf="selectedTask.Priority === 3">
+        <div class="bg-danger" style="width: 25px; height: 25px;">
+        </div>
+      </div>
+    <h5>Creator:</h5>
+    <p>{{selectedTask.CreatorUserName}}</p>
+    <h5>Executor:</h5>
+    <p>{{selectedTask.ExecutorUserName}}</p>
+    <h3>Description:</h3>
+    <textarea>{{selectedTask.Description}}</textarea>
+    <hr>
+  </mat-card-content>
+  <mat-card-content>  
+      <ul class="nav nav-tabs">
+          <li class="nav-item">
+            <a class="nav-link" data-toggle="tab" href="#comments">Comments</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active" data-toggle="tab" href="#activity">Activity</a>
+          </li>  
+      </ul>   
+      <div id="myTabContent" class="tab-content">
+          <div class="tab-pane fade" id="comments">
+              <app-comments [currentTaskId]="selectedTask.Id"></app-comments>
+          </div>
+          <div class="tab-pane fade active show" id="activity">
+            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit reprehenderit eligendi quas vitae molestias. Excepturi expedita molestiae aspernatur dolorum quod libero perspiciatis fuga quisquam esse! Doloribus iste totam voluptate excepturi.</p>
+          </div>    
+      </div>
+  </mat-card-content>
+</mat-card>
 
-  <h3>Creator:</h3>
-  <p>{{selectedTask.CreatorId}}</p>
-  <h3>Executor:</h3>
-  <p>{{selectedTask.ExecutorId}}</p>
-</div>

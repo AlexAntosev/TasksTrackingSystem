@@ -4,29 +4,22 @@ namespace BLL.DTO
 {
     public sealed class CommentDTO
     {
-        /// <summary>
-        /// Get and set comment id
-        /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        /// Get and set comment user who create comment
+        /// Get and set the foreign key for the user that made the comment.
         /// </summary>
-        public UserDTO Author { get; set; }
+        public int AuthorId { get; set; }
 
-        /// <summary>
-        /// Get and set comment description
-        /// </summary>
+        public string AuthorUserName { get; set; }
+        
         public string Description { get; set; }
-
-        /// <summary>
-        /// Get and set date time when comment was created
-        /// </summary>
+        
         public DateTime Time { get; set; }
 
         /// <summary>
-        /// Get and set commented task
+        /// Get and set the foreign key for the task where the comment was made.
         /// </summary>
-        public TaskDTO Task { get; set; }
+        public int TaskId { get; set; }
     }
 }

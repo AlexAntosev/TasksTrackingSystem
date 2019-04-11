@@ -31,24 +31,23 @@ export class UsersComponent implements OnInit {
   }
 
   public addUserToProject(){
+    debugger;
     this.service.addUserToProject(this.newUserId, this.projectId)
     .subscribe(
       user => {
         this.service.getUsersByProjectId(this.projectId)
         .subscribe((users) => {
-            debugger;
-            this.userList = users}
+            this.userList = users
+          }
         );
       }
     );
   }
 
   public removeUser(userId: number) {
-    debugger;
     this.service.removeUserFromProject(userId, this.projectId)
     .subscribe(
       () => {
-        debugger;
         this.userList = this.userList.filter(u => u.Id !== userId)
       }
     );

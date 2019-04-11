@@ -1,67 +1,77 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Entities
 {
     public class Task : BaseEntity
     {
-        /// <summary>
-        /// Get and set task name
-        /// </summary>
         public string Name { get; set; }
-
-        /// <summary>
-        /// Get and set task description
-        /// </summary>
+        
         public string Description { get; set; }
 
         /// <summary>
-        /// Get and set foreign key to project by id 
+        /// Get and set the foreign key for the project.
         /// </summary>
         public int? ProjectId { get; set; }
 
         /// <summary>
-        /// Get and set project by foreign key
+        /// Lazy loading project using the foreign key.
         /// </summary>
         public virtual Project Project { get; set; }
 
         /// <summary>
-        /// Get and set foreign key to task priority by id 
+        /// Get and set priority of the task.
         /// </summary>
         public int Priority { get; set; }
 
         /// <summary>
-        /// Get and set date when task was created
+        /// Get and set type of the task.
         /// </summary>
-        public DateTime Date { get; set; }
+        public int Type { get; set; }
 
         /// <summary>
-        /// Get and set deadline for task
+        /// Get and set status of the task.
+        /// </summary>
+        public int Status { get; set; }
+
+        /// <summary>
+        /// Get and set time when the task was created.
+        /// </summary>
+        public DateTime Created { get; set; }
+
+        /// <summary>
+        /// Get and set time when the task was last time updated.
+        /// </summary>
+        public DateTime Updated { get; set; }
+
+        /// <summary>
+        /// Get and set deadline for task.
         /// </summary>
         public DateTime Deadline { get; set; }
 
         /// <summary>
-        /// Get and set foreign key to user creator by id 
+        /// Get and set the foreign key for the user that created the task.
         /// </summary>
         public int? CreatorId { get; set; }
 
         /// <summary>
-        /// Get and set user creator by foreign key
+        /// Lazy loading the user who created the task using the foreign key.
         /// </summary>
         public virtual User Creator { get; set; }
 
         /// <summary>
-        /// Get and set foreign key to user executor by id 
+        /// Get and set the foreign key for the user performing the task.
         /// </summary>
         public int? ExecutorId { get; set; }
 
         /// <summary>
-        /// Get and set user creator by foreign key
+        /// Lazy loading the user who execute the task using the foreign key.
         /// </summary>
         public virtual User Executor { get; set; }
 
         /// <summary>
-        /// Get and set comments collection
+        /// Lazy loading comments of the task.
         /// </summary>
         public virtual ICollection<Comment> Comments { get; set; }
     }

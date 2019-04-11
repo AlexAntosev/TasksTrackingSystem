@@ -1,8 +1,23 @@
 <div>
-  <h1>{{selectedProject.Name}} Details:</h1>
-  
-  <h3>Tasks:</h3>
-  <app-tasks [projectId]="selectedProject.Id"></app-tasks>
-  <h3>Stuff:</h3>
-  <app-users [projectId]="selectedProject.Id"></app-users>
+  <h1 class="main-name">{{selectedProject.Name}}</h1>
+  <hr>
+  <div class="flex-container">
+    <div class="flex-item">
+      <app-tasks [projectId]="selectedProject.Id" (chooseTaskEventEmitter)="onChooseTaskEvent($event)"></app-tasks>
+    </div>
+    <div class="flex-item-center">
+      <ng-content *ngIf="currentTask; then TaskIsSelected; else TaskIsNotSelected"></ng-content>
+    </div>
+    <div class="flex-item">
+      <app-users [projectId]="selectedProject.Id"></app-users>
+    </div>
+  </div>
 </div>
+
+<ng-template #TaskIsSelected>
+    <app-task-details [selectedTask]="currentTask"></app-task-details>
+</ng-template>
+
+<ng-template #TaskIsNotSelected>
+  <h1>SELECT TASK PLZ!</h1>
+</ng-template>

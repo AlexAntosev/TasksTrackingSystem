@@ -20,11 +20,15 @@ export class UsersService {
     return this.http.get<User[]>(this.url + '/Projects/' + projectId + '/Users');
   }
 
-  public addUserToProject(userId, projectId): Observable<any>{
-    return this.http.put(this.url + '/Projects/' + projectId + '/Users', {},{params:{projectId: projectId, userId: userId}});
+  public addUserToProject(userId, projectId): Observable<User>{
+    return this.http.put<User>(this.url + '/Projects/' + projectId + '/Users', {},{params:{projectId: projectId, userId: userId}});
   }
 
-  public removeUserFromProject(userId, projectId): Observable<any>{
-    return this.http.delete(this.url + '/Projects/' + projectId + '/Users', {params:{projectId: projectId, userId: userId}});
+  public removeUserFromProject(userId, projectId): Observable<User>{
+    return this.http.delete<User>(this.url + '/Projects/' + projectId + '/Users', {params:{projectId: projectId, userId: userId}});
   } 
+
+  public getUserById(userId: number): Observable<User>{
+    return this.http.get<User>(this.url + '/Users/' + userId);
+  }
 }

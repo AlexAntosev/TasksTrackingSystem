@@ -28,11 +28,11 @@ export class TasksService {
     return this.http.post<Task>(this.url + '/Tasks', {Name: taskName, Description: taskDescription, Priority: taskPriority}, {params: projectIdParam});
   }
 
-  public deleteTask(taskId: number): Observable<any> {
-    return this.http.delete(this.url + '/Tasks/' + taskId)
+  public deleteTask(taskId: number): Observable<Task>  {
+    return this.http.delete<Task>(this.url + '/Tasks/' + taskId)
   }
 
-  public updateTask(formData: Task) {
-    return this.http.put(this.url + '/Tasks/' + formData.Id, formData);
+  public updateTask(formData: Task): Observable<Task>  {
+    return this.http.put<Task>(this.url + '/Tasks/' + formData.Id, formData);
   }  
 }

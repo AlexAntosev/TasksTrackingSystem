@@ -7,5 +7,7 @@ export interface Task{
     Priority : Priority,
     ProjectId: number,
     CreatorId: number,
-    ExecutorId: number
+    CreatorUserName: string,
+    ExecutorId: number,
+    ExecutorUserName: string,
 }

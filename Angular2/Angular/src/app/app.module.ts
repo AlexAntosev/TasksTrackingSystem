@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatCardModule, MatDialogModule, MatSelectModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatCardModule, MatDialogModule, MatSelectModule, MatGridListModule, MatSnackBarModule } from '@angular/material';
 
 import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -27,6 +27,10 @@ import { HTTP_INTERCEPTORS } from '@angular/common/http';
 import { TokenInterceptor } from 'src/app/core/interceptors/token-interceptor';
 import { APP_INITIALIZER } from '@angular/core';
 import { TaskDetailsResolver } from 'src/app/components/task-details/task-details.resolver';
+import { CommentsComponent } from './components/comments/comments.component';
+import { CommentsService } from 'src/app/services/comments.service';
+import { ErrorService } from 'src/app/services/error.service';
+import { NotificationService } from 'src/app/services/notification.service';
 
 @NgModule({
   declarations: [
@@ -38,7 +42,8 @@ import { TaskDetailsResolver } from 'src/app/components/task-details/task-detail
     TaskDetailsComponent,
     SignInComponent,
     SignUpComponent,
-    UsersComponent
+    UsersComponent,
+    CommentsComponent
   ],
   imports: [
     FormsModule,
@@ -50,6 +55,8 @@ import { TaskDetailsResolver } from 'src/app/components/task-details/task-detail
     MatCardModule,
     MatDialogModule,
     MatSelectModule,
+    MatSnackBarModule,
+    MatGridListModule,
     HttpClientModule,
     AppRoutingModule
   ],
@@ -60,8 +67,11 @@ import { TaskDetailsResolver } from 'src/app/components/task-details/task-detail
     TaskDetailsResolver,
     AccountService,
     UsersService,
+    CommentsService,
     TokenService,
     CurrentUserInitializerService,
+    ErrorService,
+    NotificationService,
     { provide: Window, useValue: window },
     {
        provide: HTTP_INTERCEPTORS,

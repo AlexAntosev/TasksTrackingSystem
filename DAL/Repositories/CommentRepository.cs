@@ -58,5 +58,10 @@ namespace DAL.Repositories
         {
             return _context.Comments.Find(id);
         }
+
+        public async Task<List<Comment>> GetAllCommentsByTaskIdAsync(int taskId)
+        {
+            return await _context.Comments.Where(c => c.TaskId == taskId).ToListAsync();
+        }
     }
 }

@@ -1,23 +1,28 @@
 <div>
-  <div class="ml-auto">
-    <button data-toggle="tooltip" data-placement="left" title="Create new task" class="btn btn-success">
-      <span data-toggle="modal" data-target="#myModal" class="text-white fa fa-plus">Create new task</span>
-    </button>
-  </div>
+  <nav class="navbar navbar-expand-md navbar-dark">
+    <div class="navbar-collapse">
+      <h3>Tasks:</h3>
+    </div>
+    <div class="nav justify-content-end">
+      <div class="ml-auto">
+        <button data-toggle="tooltip" data-placement="left" title="Create new task" class="btn btn-primary">
+          <span data-toggle="modal" data-target="#myModal" >Create new task</span>
+        </button>
+      </div>
+    </div>
+  </nav>
   <div>
     <table class="table table-hover">
       <thead>
         <tr>
-          <th scope="col">Name</th>
-          <th scope="col">Description</th>
-          <th scope="col">Priority</th>
+          <th (click)="orderBy('Name')">Name</th>
+          <th scope="col" (click)="orderBy('Priority')">Priority</th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let task of taskList">
-          <td [routerLink]="['/tasks', task.Id]">{{task.Name}}</td>
-          <td>{{task.Description}}</td>
+          <td (click)="chooseTask(task)">{{task.Name}}</td>
           <td>
             <div *ngIf="task.Priority === 0">
               <div class="bg-primary" style="width: 25px; height: 25px;">
@@ -60,7 +65,7 @@
         </div>
         <div class="form-group">
           <label>Description:</label>
-          <input name="Description" #Description="ngModel" [(ngModel)]="newTaskDescription" class="form-control" required>
+          <textarea name="Description" #Description="ngModel" [(ngModel)]="newTaskDescription" class="form-control" required></textarea>
           <div class="validation-error" *ngIf="Description.invalid && Description.touched">This field is required</div>
         </div>
         <div class="form-group">
@@ -82,10 +87,10 @@
             </mat-select>
           </mat-form-field>
         </div>
-      </div>      
+      </div>
       <div class="modal-footer">
-        <button type="button" class="btn btn-info" data-dismiss="modal">Cancel</button>
-        <button type="button" (click)="createTask(newTaskName, newTaskDescription, newTaskPriority)" class="btn btn-success" data-dismiss="modal">Save</button>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="button" (click)="createTask(newTaskName, newTaskDescription, newTaskPriority)" class="btn btn-primary" data-dismiss="modal">Save</button>
       </div>
     </div>
   </div>

@@ -2,17 +2,13 @@
 using BLL.Interfaces;
 using DAL.Entities;
 using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
-using System.Web;
 using System.Web.Http;
-using Microsoft.AspNet.Identity;
-using System.Net.Http;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     public class UsersController : ApiController
     {
         private IUserService _userService;
@@ -52,7 +48,7 @@ namespace WebAPI.Controllers
         }
 
         [HttpGet]
-        [Route("api/Users/{userName}")]
+        [Route("api/Users/UserName/{userName}")]
         public async Task<IHttpActionResult> GetUserByUserNameAsync(string userName)
         {
             User user = await _userService.GetUserByUserNameAsync(userName);
@@ -65,7 +61,19 @@ namespace WebAPI.Controllers
             return Ok(userDTO);
         }
 
-       
+        [HttpGet]
+        public async Task<IHttpActionResult> GetUserByIdAsync(int id)
+        {
+            User user = await _userService.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
+            return Ok(userDTO);
+        }
+
 
         [HttpPut]
         public async Task<IHttpActionResult> UpdateUserAsync(int id, UserDTO user)
@@ -124,7 +132,7 @@ namespace WebAPI.Controllers
             }
             await _userService.RemoveProjectFromUserAsync(userId, projectId);
 
-            return NotFound();
+            return StatusCode(HttpStatusCode.NoContent);
         }
     }
 }

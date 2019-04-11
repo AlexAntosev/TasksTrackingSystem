@@ -42,8 +42,9 @@ namespace BLL.Services
                 CreatorId = creatorUserId,
                 ExecutorId = executorUserId,
                 Deadline = DateTime.Now,//taskDTO.Deadline,
-                Date = DateTime.Now,
-                Comments = null
+                Created = DateTime.Now,
+                Updated = DateTime.Now,
+                Comments = new List<Comment>()
             };
 
             _unitOfWork.Tasks.Create(task);
@@ -107,8 +108,8 @@ namespace BLL.Services
             if (task.Priority != Convert.ToInt32(taskDTO.Priority))
                 task.Priority = Convert.ToInt32(taskDTO.Priority);
 
-            if (task.Date != taskDTO.Date)
-                task.Date = taskDTO.Date;
+            if (task.Created != taskDTO.Created)
+                task.Created = taskDTO.Created;
 
             if (task.Deadline != taskDTO.Deadline)
                 task.Deadline = taskDTO.Deadline;

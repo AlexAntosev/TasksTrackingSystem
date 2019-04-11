@@ -5,6 +5,7 @@ export interface Project {
     Id: number;
     Name: string;
     Tag: string;
+    Url: string;
     Tasks: Task[];   
-    Team: User[]; 
+    Team: User[];
 }

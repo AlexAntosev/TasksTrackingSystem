@@ -7,6 +7,7 @@ using System.Web.Http;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     public class TasksController : ApiController
     {
         private ITaskService _service;
@@ -51,7 +52,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            List<TaskDTO> tasksDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Task>, List<TaskDTO>>(tasks);
+            var tasksDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Task>, List<TaskDTO>>(tasks);
             return Ok(tasksDTO);
         }
 
@@ -94,6 +95,7 @@ namespace WebAPI.Controllers
             {
                 return NotFound();
             }
+
             await _service.DeleteTaskAsync(id);
 
             return StatusCode(HttpStatusCode.NoContent);

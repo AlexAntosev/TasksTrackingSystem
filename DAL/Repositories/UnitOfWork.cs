@@ -21,38 +21,20 @@ namespace DAL.Repositories
         {
             _context = context;
         }
-
-        /// <summary>
-        /// Get task repository
-        /// </summary>
+        
         public ITaskRepository Tasks => _taskRepository ?? (_taskRepository = new TaskRepository(_context));
-
-        /// <summary>
-        /// Get task repository
-        /// </summary>
+        
         public IProjectRepository Projects => _projectRepository ?? (_projectRepository = new ProjectRepository(_context));
-
-        /// <summary>
-        /// Get user repository
-        /// </summary>
+        
         public IUserRepository Users => _userRepository ?? (_userRepository = new UserRepository(_context));
-
-        /// <summary>
-        /// Get comment repository
-        /// </summary>
+        
         public ICommentRepository Comments => _commentRepository ?? (_commentRepository = new CommentRepository(_context));
         
-        /// <summary>
-        /// Save all changes in database
-        /// </summary>
         public void Save()
         {
             _context.Save();
         }
-
-        /// <summary>
-        /// Save all changes in database
-        /// </summary>
+        
         public async Task<int> SaveAsync()
         {
             return await _context.SaveAsync();

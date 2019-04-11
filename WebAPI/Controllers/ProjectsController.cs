@@ -5,22 +5,42 @@ using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
 using DAL.Entities;
+using BLL.Infrastructure;
+using System.Net.Http;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 
 namespace WebAPI.Controllers
 {
+    [Authorize]
     public sealed class ProjectsController : ApiController
     {
-        private IProjectService _service;
+        private ApplicationUserManager _userManager;
+        private IUserService _userService;
+        private IProjectService _projectService;
 
-        public ProjectsController(IProjectService service)
+        public ProjectsController(IProjectService projectService, IUserService userService)
         {
-            _service = service;
+            _projectService = projectService;
+            _userService = userService;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? Request.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
         }
 
         [HttpGet]
         public async Task<IHttpActionResult> GetProjectsAsync()
         {
-            List<Project> projects =  await _service.GetAllProjectsAsync();
+            List<Project> projects =  await _projectService.GetAllProjectsAsync();
 
             if (projects == null)
             {
@@ -36,7 +56,7 @@ namespace WebAPI.Controllers
         [Route("api/Users/{userName}/Projects")]
         public async Task<IHttpActionResult> GetProjectsByUserNameAsync(string userName)
         {
-            List<Project> projects = await _service.GetAllProjectsByUserNameAsync(userName);
+            List<Project> projects = await _projectService.GetAllProjectsByUserNameAsync(userName);
             if (projects == null)
             {
                 return NotFound();
@@ -49,7 +69,7 @@ namespace WebAPI.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> GetProjectByIdAsync(int id)
         {
-            Project project = await _service.GetProjectByIdAsync(id);
+            Project project = await _projectService.GetProjectByIdAsync(id);
             if (project == null)
             {
                 return NotFound();
@@ -66,8 +86,25 @@ namespace WebAPI.Controllers
             {
                 return BadRequest("Model is not valid.");
             }
-            await _service.CreateProjectAsync(project);
 
+            AuthenticationUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
+            string currentUserId = user?.Id;
+
+            if (currentUserId == null)
+            {
+                return Unauthorized();
+            }
+
+            User currentAppUser = await _userService.GetUserByAuthenticationIdAsync(currentUserId);
+
+            if (currentAppUser == null)
+            {
+                return NotFound();
+            }
+
+            project.LeadId = currentAppUser.Id;
+            await _projectService.CreateProjectAsync(project);
+            
             return Ok(project); // Created();
         }
 
@@ -80,13 +117,13 @@ namespace WebAPI.Controllers
                 return BadRequest("Model is not valid.");
             }
 
-            Project currentProject = await _service.GetProjectByIdAsync(id);
+            Project currentProject = await _projectService.GetProjectByIdAsync(id);
             if (currentProject == null)
             {
                 return NotFound();
             }
             
-            await _service.EditProjectAsync(id, project);
+            await _projectService.EditProjectAsync(id, project);
 
             return Ok(project);
         }
@@ -95,12 +132,18 @@ namespace WebAPI.Controllers
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteProjectAsync(int id)
         {
-            Project currentProject = await _service.GetProjectByIdAsync(id);
+            Project currentProject = await _projectService.GetProjectByIdAsync(id);
             if (currentProject == null)
             {
                 return NotFound();
             }
-            await _service.DeleteProjectAsync(id);
+
+            if (currentProject.Tasks.Count != 0 || currentProject.Team.Count != 0)
+            {
+                return BadRequest("Project contains open tasks or users in team");
+            }
+
+            await _projectService.DeleteProjectAsync(id);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

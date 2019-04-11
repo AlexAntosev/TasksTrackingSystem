@@ -64,7 +64,7 @@ export class AccountService {
   }
 
   public profile(userName: string): Observable<User> {
-    return this.http.get<User>(this.rootURL + '/api/Users/' + userName, { params: { userName: userName } });
+    return this.http.get<User>(this.rootURL + '/api/Users/UserName/' + userName, { params: { userName: userName } });
   }
 
   private handleUserAndToken(user: User, token: string): void {

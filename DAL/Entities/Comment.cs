@@ -5,32 +5,29 @@ namespace DAL.Entities
     public class Comment : BaseEntity
     {
         /// <summary>
-        /// Get and set comment author id
+        /// Get and set the foreign key for the user that made the comment.
         /// </summary>
-        public int AuthorId { get; set; }
+        public int? AuthorId { get; set; }
 
         /// <summary>
-        /// Get and set comment author
+        /// Lazy loading the user who made the comment using the foreign key.
         /// </summary>
         public virtual User Author { get; set; }
-
-        /// <summary>
-        /// Get and set comment description
-        /// </summary>
+        
         public string Description { get; set; }
 
         /// <summary>
-        /// Get and set date time when comment was created
+        /// Get and set date time when comment was made.
         /// </summary>
         public DateTime Time { get; set; }
 
         /// <summary>
-        /// Get and set foreign key for Task connected with 
+        /// Get and set the foreign key for the task where the comment was made.
         /// </summary>
-        public int TaskId { get; set; }
+        public int? TaskId { get; set; }
 
         /// <summary>
-        /// Get and set connected task by foreign key
+        /// Lazy loading the task where the comment was made using the foreign key.
         /// </summary>
         public virtual Task Task { get; set; }
     }

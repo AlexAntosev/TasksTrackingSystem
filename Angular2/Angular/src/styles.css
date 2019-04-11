@@ -4,3 +4,25 @@
 .cdk-overlay-container, .cdk-overlay-pane {
     z-index: 9999 !important;
 }
+
+.flex-container {
+    display: flex;
+    height: 100vh;
+}
+
+.flex-item-center{
+    width: 50vw;
+    height: 100vh;
+    padding: 10px;
+}
+
+.flex-item{
+    width: 25vw;
+    height: 100vh;
+    padding: 10px;
+}
+
+.main-name {
+    text-align: center;
+    padding-top: 10px;
+}

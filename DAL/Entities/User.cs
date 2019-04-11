@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DAL.Entities
 {
@@ -9,37 +10,36 @@ namespace DAL.Entities
         /// </summary>
         public string UserName { get; set; }
 
-        /// <summary>
-        /// Get and set user firstname
-        /// </summary>
         public string FirstName { get; set; }
-
-        /// <summary>
-        /// Get and set user lastname
-        /// </summary>
+        
         public string LastName { get; set; }
 
-        /// <summary>
-        /// Get and set user position
-        /// </summary>
         public string Position { get; set; }
 
+        /// <summary>
+        /// Get and set the foreign key for the authenticatiob user.
+        /// </summary>
         public string AuthenticationUserId { get; set; }
+
+        /// <summary>
+        /// Lazy loading the authentication user by the foreign key.
+        /// </summary>
         public virtual AuthenticationUser AuthenticationUser { get; set; }
 
         /// <summary>
-        /// Get and set collection of projects
+        /// Lazy loading of user projects.
         /// </summary>
         public virtual ICollection<Project> Projects { get; set; }
 
         /// <summary>
-        /// Get and set collection of created task
+        /// Lazy loading of tasks created by the user.
         /// </summary>
         public virtual ICollection<Task> CreatedTasks { get; set; }
 
         /// <summary>
-        /// Get and set collection of created task
+        /// Lazy loading of tasks performed by the user.
         /// </summary>
+        
         public virtual ICollection<Task> TasksInProgress { get; set; }
     }
 }

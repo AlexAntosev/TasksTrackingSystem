@@ -4,28 +4,26 @@ namespace BLL.DTO
 {
     public sealed class ProjectDTO
     {
-        /// <summary>
-        /// Get and set project id
-        /// </summary>
         public int Id { get; set; }
-
-        /// <summary>
-        /// Get and set project name
-        /// </summary>
+        
         public string Name { get; set; }
-
-        /// <summary>
-        /// Get and set project tag
-        /// </summary>
+        
         public string Tag { get; set; }
 
+        public string Url { get; set; }
+
         /// <summary>
-        /// Get and set tasks collection in project
+        /// Get and set the foreign key for the user that created the project.
+        /// </summary>
+        public int? LeadId { get; set; }
+
+        /// <summary>
+        /// Get and set tasks in the project.
         /// </summary>
         public IEnumerable<TaskDTO> Tasks { get; set; }
 
         /// <summary>
-        /// Get and set users tean in project
+        /// Get and set users in the project
         /// </summary>
         public IEnumerable<UserDTO> Team { get; set; }
     }
