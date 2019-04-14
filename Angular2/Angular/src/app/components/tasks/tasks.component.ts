@@ -7,6 +7,11 @@ import { UsersService } from 'src/app/services/users.service';
 import { User } from 'src/app/models/user';
 import { Output } from '@angular/core';
 import { EventEmitter } from '@angular/core';
+import { Type } from 'src/app/models/type.enum';
+import { Status } from 'src/app/models/status.enum';
+import { formatDate } from '@angular/common';
+import { SearchingFilterPipe } from 'src/app/core/pipes/searching-filter.pipe';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-tasks',
@@ -19,7 +24,10 @@ export class TasksComponent implements OnInit {
   public newTaskName: string;
   public newTaskDescription: string;
   public newTaskPriority: Priority;
+  public newTaskType: Type;
+  public newTaskStatus: Status = Status.ToDo;
   public newUserExecutorId: number;
+  public newTaskDeadline: Date;
   public usersInProject: User[];
 
   public orderByField = 'Name';
@@ -31,7 +39,7 @@ export class TasksComponent implements OnInit {
   @Output()
   public chooseTaskEventEmitter = new EventEmitter<Task>();
 
-  constructor(private service: TasksService, private userService: UsersService) { }
+  constructor(private service: TasksService, private userService: UsersService, private accountService: AccountService) { }
 
   ngOnInit() {
     this.RefreshTasks();
@@ -43,7 +51,21 @@ export class TasksComponent implements OnInit {
   }
 
   public createTask(): void {    
-    this.service.createTask(this.newTaskName, this.newTaskDescription, this.newTaskPriority,this.projectId, this.newUserExecutorId)
+    let newTask: any = {
+      Name: this.newTaskName,
+      Description: this.newTaskDescription,
+      Priority: this.newTaskPriority,
+      Type: this.newTaskType,
+      Status: this.newTaskStatus,
+      Deadline: formatDate(this.newTaskDeadline, 'yyyy-MM-dd', 'en'),
+      Created: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
+      Updated: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
+      ProjectId: this.projectId,
+      CreatorId: this.accountService.getCurrentUser().Id,
+      ExecutorId: this.newUserExecutorId
+    }
+    
+    this.service.createTask(newTask as Task)
       .subscribe(
       createdTask => {
         this.RefreshTasks();
@@ -70,8 +92,10 @@ export class TasksComponent implements OnInit {
   }
 
   private RefreshTasks(): void{
-    this.service.getTasksByProjectId(this.projectId).subscribe(
-      tasks => this.taskList = tasks
+    this.service.getTasksByProjectId(this.projectId).subscribe(      
+      tasks => {
+        this.taskList = tasks;
+      }
     )
   }
 

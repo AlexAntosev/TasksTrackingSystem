@@ -4,19 +4,22 @@ using DAL.Entities;
 using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
+using AutoMapper;
 
 namespace BLL.Services
 {
     public sealed class TaskService : ITaskService
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public TaskService(IUnitOfWork unitOfWork)
+        public TaskService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
-        public async System.Threading.Tasks.Task CreateTaskAsync(TaskDTO taskDTO, int projectId, int creatorUserId, int executorUserId)
+        public async System.Threading.Tasks.Task CreateTaskAsync(TaskDTO taskDTO)
         {
             if (taskDTO == null)
             {
@@ -28,24 +31,14 @@ namespace BLL.Services
                 throw new ArgumentException("Some fields are empty.");
             }
 
-            if (await _unitOfWork.Projects.GetByIdAsync(projectId) == null)
+            if (await _unitOfWork.Projects.GetByIdAsync(taskDTO.ProjectId) == null)
             {
                 throw new ArgumentNullException("Current project is not exist.");
             }
 
-            Task task = new Task()
-            {
-                Name = taskDTO.Name,
-                Description = taskDTO.Description,
-                Priority = Convert.ToInt32(taskDTO.Priority),
-                ProjectId = projectId,
-                CreatorId = creatorUserId,
-                ExecutorId = executorUserId,
-                Deadline = DateTime.Now,//taskDTO.Deadline,
-                Created = DateTime.Now,
-                Updated = DateTime.Now,
-                Comments = new List<Comment>()
-            };
+
+            Task task = _mapper.Map<TaskDTO, Task>(taskDTO);
+            task.Comments = new List<Comment>();
 
             _unitOfWork.Tasks.Create(task);
             await _unitOfWork.SaveAsync();
@@ -72,14 +65,14 @@ namespace BLL.Services
             return await _unitOfWork.Tasks.GetAllTasksByProjectIdAsync(id);
         }
 
-        public async System.Threading.Tasks.Task UpdateTaskAsync(int id, TaskDTO taskDTO, int projectId, int creatorUserId, int executorUserId)
+        public async System.Threading.Tasks.Task UpdateTaskAsync(int id, TaskDTO taskDTO)
         {
             if (taskDTO == null)
             {
                 throw new ArgumentNullException(nameof(taskDTO));
             }
 
-            if (_unitOfWork.Projects.GetByIdAsync(projectId) == null)
+            if (_unitOfWork.Projects.GetByIdAsync(taskDTO.ProjectId) == null)
             {
                 throw new ArgumentNullException("Current project is not exist.");
             }
@@ -96,23 +89,26 @@ namespace BLL.Services
             if (task.Description != taskDTO.Description)
                 task.Description = taskDTO.Description;
 
-            if (task.ProjectId != projectId)
-                task.ProjectId = projectId;
+            if (task.ProjectId != taskDTO.ProjectId)
+                task.ProjectId = taskDTO.ProjectId;
 
-            if (task.CreatorId != creatorUserId)
-                task.CreatorId = creatorUserId;
+            if (task.CreatorId != taskDTO.CreatorId)
+                task.CreatorId = taskDTO.CreatorId;
 
-            if (task.ExecutorId != executorUserId)
-                task.ExecutorId = executorUserId;
+            if (task.ExecutorId != taskDTO.ExecutorId)
+                task.ExecutorId = taskDTO.ExecutorId;
 
             if (task.Priority != Convert.ToInt32(taskDTO.Priority))
                 task.Priority = Convert.ToInt32(taskDTO.Priority);
 
-            if (task.Created != taskDTO.Created)
-                task.Created = taskDTO.Created;
+            if (task.Created.ToString() != taskDTO.Created)
+                task.Created = Convert.ToDateTime(taskDTO.Created);
 
-            if (task.Deadline != taskDTO.Deadline)
-                task.Deadline = taskDTO.Deadline;
+            if (task.Updated.ToString() != taskDTO.Updated)
+                task.Updated = Convert.ToDateTime(taskDTO.Updated);
+
+            if (task.Deadline.ToString() != taskDTO.Deadline)
+                task.Deadline = Convert.ToDateTime(taskDTO.Deadline);
 
             _unitOfWork.Tasks.Update(task);
             await _unitOfWork.SaveAsync();

@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { Input } from '@angular/core';
 import { Comment } from 'src/app/models/comment';
 import { CommentsService } from 'src/app/services/comments.service';
+import { formatDate } from '@angular/common';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-comments',
@@ -16,7 +18,7 @@ export class CommentsComponent implements OnInit {
   public comments: Comment[];
   public newCommentDescription: string;
 
-  constructor(private commentsService: CommentsService) { }
+  constructor(private commentsService: CommentsService, private accountService: AccountService) { }
 
   ngOnInit() {
     
@@ -31,8 +33,15 @@ export class CommentsComponent implements OnInit {
     )
   }
 
-  public createComment(description: string){
-    this.commentsService.createComment(this.currentTaskId,description)
+  public createComment(description: string) {
+    let comment: any = {
+      Description: description,
+      AuthorId: this.accountService.getCurrentUser().Id,
+      TaskId: this.currentTaskId,
+      Time: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
+    }
+
+    this.commentsService.createComment(this.currentTaskId, comment as Comment)
     .subscribe(
       (comment) => {
         this.commentsService.GetAllCommentsByTaskId(this.currentTaskId)

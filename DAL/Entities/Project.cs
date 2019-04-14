@@ -32,5 +32,9 @@ namespace DAL.Entities
         /// </summary>
         public virtual ICollection<User> Team { get; set; }
         
+        /// <summary>
+        /// Lazy loading of invites in the project.
+        /// </summary>
+        public virtual ICollection<Invite> Invites { get; set; }
     }
 }

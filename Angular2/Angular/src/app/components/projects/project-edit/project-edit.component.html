@@ -1,0 +1,27 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edit project</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="needs-validation" novalidate>
+    <div class="form-group has-danger">
+      <label>Name:</label>
+      <input name="Name" #Name="ngModel" [(ngModel)]="project.Name" class="form-control" required>
+      <div class="validation-error" *ngIf="Name.invalid && Name.touched">This field is required</div>
+    </div>
+    <div class="form-group has-danger">
+      <label>Tag:</label>
+      <input name="Tag" #Tag="ngModel" [(ngModel)]="project.Tag" class="form-control" required>
+      <div class="validation-error" *ngIf="Tag.invalid && Tag.touched">This field is required</div>
+    </div>
+    <div class="form-group has-danger">
+      <label>Url*:</label>
+      <input name="Url" #Url="ngModel" [(ngModel)]="project.Url" class="form-control">
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="saveProject()" class="btn btn-primary">Save</button>
+</div>

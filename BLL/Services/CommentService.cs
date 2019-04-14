@@ -1,4 +1,5 @@
-﻿using BLL.DTO;
+﻿using AutoMapper;
+using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
 using DAL.Interfaces;
@@ -12,10 +13,12 @@ namespace BLL.Services
     public sealed class CommentService : ICommentService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public CommentService(IUnitOfWork unitOfWork)
+        public CommentService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task CreateCommentAsync(CommentDTO commentDTO)
@@ -30,7 +33,7 @@ namespace BLL.Services
                 throw new ArgumentNullException("Some properties of comment are empty");
             }
 
-            Comment comment = BLL.Mapper.AutoMapperConfig.Mapper.Map<CommentDTO, Comment>(commentDTO);
+            Comment comment = _mapper.Map<CommentDTO, Comment>(commentDTO);
 
             _unitOfWork.Comments.Create(comment);
             await _unitOfWork.SaveAsync();

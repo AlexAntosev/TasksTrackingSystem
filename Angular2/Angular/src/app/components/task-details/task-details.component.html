@@ -5,48 +5,94 @@
   </mat-card-title>
   <mat-card-content>
     <h3>Details:</h3>
-    <h5>Priority</h5>
-    <div *ngIf="selectedTask.Priority === 0">
-        <div class="bg-primary" style="width: 25px; height: 25px;">
+    <nav class="navbar navbar-expand-md navbar-dark">
+      <div class="navbar-collapse">
+        <h5>Priority</h5>
+        <div>
+          <div *ngIf="selectedTask.Priority === 0">
+            <div class="bg-primary" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          <div *ngIf="selectedTask.Priority === 1">
+            <div class="bg-success" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          <div *ngIf="selectedTask.Priority === 2">
+            <div class="bg-warning" style="width: 25px; height: 25px;">
+            </div>
+          </div>
+          <div *ngIf="selectedTask.Priority === 3">
+            <div class="bg-danger" style="width: 25px; height: 25px;">
+            </div>
+          </div>
         </div>
       </div>
-      <div *ngIf="selectedTask.Priority === 1">
-        <div class="bg-success" style="width: 25px; height: 25px;">
-        </div>
+      <div class="navbar-collapse">
+        <h5>Type</h5>
+        <div>{{selectedTask.Type}}</div>
       </div>
-      <div *ngIf="selectedTask.Priority === 2">
-        <div class="bg-warning" style="width: 25px; height: 25px;">
-        </div>
+      <div class="navbar-collapse">
+        <h5>Status</h5>
+        <div>{{selectedTask.Status}}</div>
       </div>
-      <div *ngIf="selectedTask.Priority === 3">
-        <div class="bg-danger" style="width: 25px; height: 25px;">
-        </div>
+    </nav>
+
+    <nav class="navbar navbar-expand-md navbar-dark">
+      <div class="navbar-collapse">
+        <h5>Creator:</h5>
+        <p>{{selectedTask.CreatorUserName}}</p>
+
       </div>
-    <h5>Creator:</h5>
-    <p>{{selectedTask.CreatorUserName}}</p>
-    <h5>Executor:</h5>
-    <p>{{selectedTask.ExecutorUserName}}</p>
-    <h3>Description:</h3>
-    <textarea>{{selectedTask.Description}}</textarea>
+      <div class="navbar-collapse">
+        <h5>Executor:</h5>
+        <p>{{selectedTask.ExecutorUserName}}</p>
+      </div>
+    </nav>
+
+
+    <div>
+      <h3>Description:</h3>
+      <textarea readonly>{{selectedTask.Description}}</textarea>
+    </div>
+
+
+    <nav class="navbar navbar-expand-md navbar-dark">
+      <div class="navbar-collapse">
+        <h5>Deadline:</h5>
+        <div>{{selectedTask.Deadline}}</div>
+      </div>
+      <div class="navbar-collapse">
+        <h5>Date of creation</h5>
+        <div>{{selectedTask.Created}}</div>
+      </div>
+      <div class="navbar-collapse">
+        <h5>Date of updation</h5>
+        <div>{{selectedTask.Updated}}</div>
+      </div>
+    </nav>
     <hr>
   </mat-card-content>
-  <mat-card-content>  
-      <ul class="nav nav-tabs">
-          <li class="nav-item">
-            <a class="nav-link" data-toggle="tab" href="#comments">Comments</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link active" data-toggle="tab" href="#activity">Activity</a>
-          </li>  
-      </ul>   
-      <div id="myTabContent" class="tab-content">
-          <div class="tab-pane fade" id="comments">
-              <app-comments [currentTaskId]="selectedTask.Id"></app-comments>
-          </div>
-          <div class="tab-pane fade active show" id="activity">
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit reprehenderit eligendi quas vitae molestias. Excepturi expedita molestiae aspernatur dolorum quod libero perspiciatis fuga quisquam esse! Doloribus iste totam voluptate excepturi.</p>
-          </div>    
+  <mat-card-content>
+    <ul class="nav nav-tabs">
+      <li class="nav-item">
+        <a class="nav-link" data-toggle="tab" href="#comments">Comments</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" data-toggle="tab" href="#activity">Activity</a>
+      </li>
+    </ul>
+
+
+    <div id="myTabContent" class="tab-content">
+      <div class="tab-pane fade" id="comments">
+        <app-comments [currentTaskId]="selectedTask.Id"></app-comments>
       </div>
+      <div class="tab-pane fade active show" id="activity">
+        <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Suscipit reprehenderit eligendi quas vitae molestias. Excepturi
+          expedita molestiae aspernatur dolorum quod libero perspiciatis fuga quisquam esse! Doloribus iste totam voluptate
+          excepturi.
+        </p>
+      </div>
+    </div>
   </mat-card-content>
 </mat-card>
-

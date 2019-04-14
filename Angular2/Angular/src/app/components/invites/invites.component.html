@@ -1,0 +1,31 @@
+<div>
+    <nav class="navbar navbar-expand-md navbar-dark">
+      <div class="navbar-collapse">
+        <h3>My invites:</h3>
+      </div>
+    </nav>
+    <div>
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th scope="col">Project name</th>
+            <th scope="col">Author name</th>
+            <th scope="col"></th>
+            <th scope="col"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let invite of inviteList">
+              <td> {{invite.ProjectName}} </td>
+            <td> {{invite.AuthorUserName}} </td>
+            <td>
+              <button class="btn btn-sm btn-outline-danger" (click)="submitInvite(invite)">Submit invite</button>
+            </td>
+            <td>
+                <button class="btn btn-sm btn-outline-danger" (click)="cancelInvite(invite.Id)">Cancel invite</button>
+              </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>

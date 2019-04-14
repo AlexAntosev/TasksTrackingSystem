@@ -18,19 +18,29 @@ namespace BLL.DTO
         public string Position { get; set; }
 
         /// <summary>
-        /// Get and set collection of projects
+        /// Get and set collection of projects.
         /// </summary>
         public IEnumerable<ProjectDTO> Projects { get; set; }
 
         /// <summary>
-        /// Get and set collection of created tasks
+        /// Get and set collection of created tasks.
         /// </summary>
         public IEnumerable<TaskDTO> CreatedTasks { get; set; }
 
         /// <summary>
-        /// Get and set collection of task in process
+        /// Get and set collection of task in process.
         /// </summary>
         public IEnumerable<TaskDTO> TasksInProcess { get; set; }
+
+        /// <summary>
+        /// Get and set collection of unaccepted invites.
+        /// </summary>
+        public IEnumerable<InviteDTO> Invites { get; set; }
+
+        /// <summary>
+        /// Get and set collection of created invites.
+        /// </summary>
+        public IEnumerable<InviteDTO> CreatedInvites { get; set; }
 
         /// <summary>
         /// Get and set the foreign key for the authenticatiob user.

@@ -22,17 +22,17 @@ namespace BLL.DTO
         /// <summary>
         /// Get and set time when the task was created.
         /// </summary>
-        public DateTime Created { get; set; }
+        public string Created { get; set; }
 
         /// <summary>
         /// Get and set time when the task was last time updated.
         /// </summary>
-        public DateTime Updated { get; set; }
+        public string Updated { get; set; }
 
         /// <summary>
         /// Get and set deadline for task
         /// </summary>
-        public DateTime Deadline { get; set; }
+        public string Deadline { get; set; }
 
         /// <summary>
         /// Get and set the foreign key for the project.

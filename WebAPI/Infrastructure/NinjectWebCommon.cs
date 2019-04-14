@@ -1,4 +1,6 @@
-﻿using BLL.Interfaces;
+﻿using AutoMapper;
+using BLL.Interfaces;
+using BLL.Mapper;
 using BLL.Services;
 using DAL.EF;
 using DAL.Interfaces;
@@ -26,6 +28,8 @@ namespace WebAPI.Infrastructure
             kernel.Bind<ITaskService>().To<TaskService>();
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<ICommentService>().To<CommentService>();
+            kernel.Bind<IInviteService>().To<InviteService>();
+            kernel.Bind<IMapper>().ToMethod(m => new Mapper(AutoMapperConfig.CreateConfigure()));
         }
     }
 }

@@ -5,17 +5,20 @@ using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Task = System.Threading.Tasks.Task;
 
 namespace BLL.Services
 {
     public sealed class ProjectService : IProjectService
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public ProjectService(IUnitOfWork unitOfWork)
+        public ProjectService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task CreateProjectAsync(ProjectDTO projectDTO)
@@ -30,7 +33,7 @@ namespace BLL.Services
                 throw new ArgumentException("Some fields are empty.");
             }
 
-            Project project  = Mapper.AutoMapperConfig.Mapper.Map<ProjectDTO, Project>(projectDTO);
+            Project project  = _mapper.Map<ProjectDTO, Project>(projectDTO);
 
             _unitOfWork.Projects.Create(project);
             await _unitOfWork.SaveAsync();
@@ -49,7 +52,7 @@ namespace BLL.Services
                 throw new ArgumentNullException(nameof(projectDTO));
             }
 
-            if (projectDTO.Name == null || projectDTO.Tasks == null)
+            if (projectDTO.Name == null || projectDTO.Tag == null)
             {
                 throw new ArgumentException("Some fields are empty.");
             }
@@ -63,8 +66,11 @@ namespace BLL.Services
             if (project.Name != projectDTO.Name)
                 project.Name = projectDTO.Name;
 
-            if (project.Name != projectDTO.Name)
+            if (project.Tag != projectDTO.Tag)
                 project.Tag = projectDTO.Tag;
+
+            if (project.Url != projectDTO.Url)
+                project.Url = projectDTO.Url;
 
             _unitOfWork.Projects.Update(project);
             await _unitOfWork.SaveAsync();

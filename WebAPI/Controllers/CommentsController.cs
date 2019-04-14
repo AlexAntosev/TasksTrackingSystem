@@ -1,4 +1,5 @@
-﻿using BLL.DTO;
+﻿using AutoMapper;
+using BLL.DTO;
 using BLL.Interfaces;
 using DAL.Entities;
 using System.Collections.Generic;
@@ -12,10 +13,12 @@ namespace WebAPI.Controllers
     public class CommentsController : ApiController
     {
         private readonly ICommentService _commentService;
+        private readonly IMapper _mapper;
 
-        public CommentsController(ICommentService commentService)
+        public CommentsController(ICommentService commentService, IMapper mapper)
         {
             _commentService = commentService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -27,7 +30,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            var commentsDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Comment>, List<CommentDTO>>(comments);
+            var commentsDTO = _mapper.Map<List<Comment>, List<CommentDTO>>(comments);
             return Ok(commentsDTO);
         }
 
@@ -40,7 +43,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            var commentDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<Comment, CommentDTO>(comment);
+            var commentDTO = _mapper.Map<Comment, CommentDTO>(comment);
             return Ok(commentDTO);
         }
 
@@ -54,7 +57,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            var commentsDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Comment>, List<CommentDTO>>(comments);
+            var commentsDTO = _mapper.Map<List<Comment>, List<CommentDTO>>(comments);
             return Ok(commentsDTO);
         }
 
@@ -67,7 +70,8 @@ namespace WebAPI.Controllers
             }
 
             await _commentService.CreateCommentAsync(commentDTO);
-            return Ok(commentDTO);
+
+            return Created(Url.Request.RequestUri, commentDTO);
         }
 
         [HttpDelete]

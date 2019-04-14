@@ -41,5 +41,15 @@ namespace DAL.Entities
         /// </summary>
         
         public virtual ICollection<Task> TasksInProgress { get; set; }
+
+        /// <summary>
+        /// Lazy loading of invites which were received by the user.
+        /// </summary>
+        public virtual ICollection<Invite> Invites { get; set; }
+
+        /// <summary>
+        /// Lazy loading of invites which were created by the user.
+        /// </summary>
+        public virtual ICollection<Invite> CreatedInvites { get; set; }
     }
 }

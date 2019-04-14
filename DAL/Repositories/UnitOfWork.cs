@@ -16,6 +16,7 @@ namespace DAL.Repositories
         private IProjectRepository _projectRepository;
         private IUserRepository _userRepository;
         private ICommentRepository _commentRepository;
+        private IInviteRepository _inviteRepository;
 
         public UnitOfWork(IContext context)
         {
@@ -29,6 +30,8 @@ namespace DAL.Repositories
         public IUserRepository Users => _userRepository ?? (_userRepository = new UserRepository(_context));
         
         public ICommentRepository Comments => _commentRepository ?? (_commentRepository = new CommentRepository(_context));
+
+        public IInviteRepository Invites => _inviteRepository ?? (_inviteRepository = new InviteRepository(_context));
         
         public void Save()
         {

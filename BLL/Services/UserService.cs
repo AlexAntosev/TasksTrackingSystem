@@ -5,17 +5,20 @@ using DAL.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using AutoMapper;
 using Task = System.Threading.Tasks.Task;
 
 namespace BLL.Services
 {
     public class UserService : IUserService
     {
-        private IUnitOfWork _unitOfWork;
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
 
-        public UserService(IUnitOfWork unitOfWork)
+        public UserService(IUnitOfWork unitOfWork, IMapper mapper)
         {
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
 
         public async Task AddProjectToUserAsync(int userId, int projectId)
@@ -82,12 +85,12 @@ namespace BLL.Services
                 throw new ArgumentException("Some fields are empty.");
             }
             
-            if (_unitOfWork.Users.GetUserByUserNameAsync(userDTO.UserName) == null) 
-            {
-                throw new ArgumentException("User with current username is already exist.");
-            }
-
-            User user = Mapper.AutoMapperConfig.Mapper.Map<UserDTO, User>(userDTO);
+            //if (await _unitOfWork.Users.GetUserByUserNameAsync(userDTO.UserName) == null) 
+            //{
+            //    throw new ArgumentException("User with current username is already exist.");
+            //}
+            
+            User user = _mapper.Map<UserDTO, User>(userDTO);
 
             _unitOfWork.Users.Create(user);
             await _unitOfWork.SaveAsync();

@@ -25,5 +25,6 @@ export class TaskDetailsComponent implements OnInit {
    }
 
   ngOnInit() {
+    console.log(this.selectedTask);
   }
 }

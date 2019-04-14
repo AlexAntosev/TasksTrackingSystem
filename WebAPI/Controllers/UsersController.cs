@@ -5,19 +5,22 @@ using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using System.Web.Http;
+using AutoMapper;
 
 namespace WebAPI.Controllers
 {
     [Authorize]
     public class UsersController : ApiController
     {
-        private IUserService _userService;
-        private IProjectService _projectService;
+        private readonly IUserService _userService;
+        private readonly IProjectService _projectService;
+        private readonly IMapper _mapper;
 
-        public UsersController(IUserService userService, IProjectService projectService)
+        public UsersController(IUserService userService, IProjectService projectService, IMapper mapper)
         {
             _userService = userService;
             _projectService = projectService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -30,7 +33,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            List<UserDTO> usersDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<User>, List<UserDTO>>(users);
+            List<UserDTO> usersDTO = _mapper.Map<List<User>, List<UserDTO>>(users);
             return Ok(usersDTO);
         }
 
@@ -43,7 +46,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            List<UserDTO> usersDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<User>, List<UserDTO>>(users);
+            List<UserDTO> usersDTO = _mapper.Map<List<User>, List<UserDTO>>(users);
             return Ok(usersDTO);
         }
 
@@ -57,7 +60,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
+            UserDTO userDTO = _mapper.Map<User, UserDTO>(user);
             return Ok(userDTO);
         }
 
@@ -70,7 +73,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
+            UserDTO userDTO = _mapper.Map<User, UserDTO>(user);
             return Ok(userDTO);
         }
 

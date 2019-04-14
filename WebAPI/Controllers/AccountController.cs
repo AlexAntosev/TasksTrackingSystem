@@ -16,6 +16,8 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
+using AutoMapper;
+using Microsoft.AspNet.Identity.EntityFramework;
 using WebAPI.Models;
 
 namespace WebAPI.Controllers
@@ -26,20 +28,27 @@ namespace WebAPI.Controllers
     {
         private ApplicationUserManager _userManager;
         private ApplicationSignInManager _signInManager;
-        private IUserService _userService;
+        private ApplicationRoleManager _roleManager;
+        private readonly IUserService _userService;
+        private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService)
+        public AccountController(IUserService userService, IMapper mapper)
         {
             _userService = userService;
+            _mapper = mapper;
         }
 
         public AccountController(ApplicationUserManager userManager,
             ApplicationSignInManager signInManager,
-            IUserService userService)
+            ApplicationRoleManager roleManager,
+            IUserService userService,
+            IMapper mapper)
         {
             UserManager = userManager;
             SignInManager = signInManager;
+            RoleManager = roleManager;
             _userService = userService;
+            _mapper = mapper;
         }
 
         public ApplicationUserManager UserManager
@@ -63,6 +72,18 @@ namespace WebAPI.Controllers
             private set
             {
                 _signInManager = value;
+            }
+        }
+
+        public ApplicationRoleManager RoleManager
+        {
+            get
+            {
+                return _roleManager ?? Request.GetOwinContext().GetUserManager<ApplicationRoleManager>();
+            }
+            private set
+            {
+                _roleManager = value;
             }
         }
 
@@ -117,7 +138,7 @@ namespace WebAPI.Controllers
 
             User user = await _userService.GetUserByAuthenticationIdAsync(authenticationUser.Id);
 
-            UserDTO userDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<User, UserDTO>(user);
+            UserDTO userDTO = _mapper.Map<User, UserDTO>(user);
             string token = await CreateJWT(authenticationUser);
 
             return Ok(new { user = userDTO, token });
@@ -174,7 +195,7 @@ namespace WebAPI.Controllers
                 SecurityAlgorithms.HmacSha256Signature);
 
             var issuedAt = DateTime.Now.ToUniversalTime();
-            var expiresAt = issuedAt.AddMinutes(5);
+            var expiresAt = issuedAt.AddMinutes(30);
 
             IList<Claim> claims = await UserManager.GetClaimsAsync(authenticationUser.Id);
 
@@ -198,6 +219,20 @@ namespace WebAPI.Controllers
                 signingCredentials);
 
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private async System.Threading.Tasks.Task EnsureRoleAsync(string roleName)
+        {
+            bool adminRoleExists = await RoleManager.RoleExistsAsync(roleName);
+            if (!adminRoleExists)
+            {
+                var adminRole = new IdentityRole(roleName);
+                await _roleManager.CreateAsync(adminRole);
+            }
+            else
+            {
+                await _roleManager.FindByNameAsync(roleName);
+            }
         }
 
         protected override void Dispose(bool disposing)

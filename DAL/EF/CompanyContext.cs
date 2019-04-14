@@ -9,26 +9,16 @@ namespace DAL.EF
 {
     public class CompanyContext : IdentityDbContext<AuthenticationUser>, IContext, IDisposable
     {
-        /// <summary>
-        /// Get and set tasks entities
-        /// </summary>
         public DbSet<Task> Tasks { get; set; }
-
-        /// <summary>
-        /// Get and set project entities
-        /// </summary>
+        
         public DbSet<Project> Projects { get; set; }
-
-        /// <summary>
-        /// Get and set user entities
-        /// </summary>
+        
         public DbSet<User> Users { get; set; }
-
-        /// <summary>
-        /// Get and set comment entities
-        /// </summary>
+        
         public DbSet<Comment> Comments { get; set; }
         
+        public DbSet<Invite> Invites { get; set; }
+
         public CompanyContext() : base("TaskTrackingSystemDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
@@ -50,6 +40,9 @@ namespace DAL.EF
             builder.Entity<Project>()
                 .HasMany(p => p.Tasks)
                 .WithRequired(t => t.Project);
+            builder.Entity<Project>()
+                .HasMany(p => p.Invites)
+                .WithOptional(i => i.Project);
 
             builder.Entity<Task>()
                 .Property(t => t.Name)
@@ -82,6 +75,12 @@ namespace DAL.EF
             builder.Entity<User>()
                 .Property(u => u.LastName)
                 .IsRequired();
+            builder.Entity<User>()
+                .HasMany(u => u.Invites)
+                .WithOptional(i => i.Receiver);
+            builder.Entity<User>()
+                .HasMany(u => u.CreatedInvites)
+                .WithOptional(i => i.Author);
 
             builder.Entity<Comment>()
                 .Property(u => u.Description)

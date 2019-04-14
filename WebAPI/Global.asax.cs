@@ -22,7 +22,7 @@ namespace WebAPI
             BundleConfig.RegisterBundles(BundleTable.Bundles);
 
             NinjectWebCommon.CreateKernel();
-            AutoMapperConfig.Configure();
+            //AutoMapperConfig.Configure();
         }
     }
 }

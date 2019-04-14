@@ -23,8 +23,13 @@ namespace BLL.DTO
         public IEnumerable<TaskDTO> Tasks { get; set; }
 
         /// <summary>
-        /// Get and set users in the project
+        /// Get and set users in the project.
         /// </summary>
         public IEnumerable<UserDTO> Team { get; set; }
+
+        /// <summary>
+        /// Get and set invites in the project.
+        /// </summary>
+        public IEnumerable<InviteDTO> Invites { get; set; }
     }
 }

@@ -13,6 +13,7 @@ import { UserRole } from 'src/app/models/user-role';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
+import { ErrorService } from 'src/app/services/error.service';
 
 @Injectable({
   providedIn: 'root'
@@ -26,7 +27,7 @@ export class AccountService {
 
   private currentUser$: BehaviorSubject<User>;
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private currentUserInitializerService: CurrentUserInitializerService, private router: Router) {
+  constructor(private http: HttpClient, private tokenService: TokenService, private currentUserInitializerService: CurrentUserInitializerService, private router: Router, private errorService: ErrorService) {
     this.currentUser$ = new BehaviorSubject(currentUserInitializerService.currentUser)
     console.log(currentUserInitializerService.currentUser);
   }
@@ -46,12 +47,16 @@ export class AccountService {
       .pipe(
       tap(({ user, token }) => {
         this.handleUserAndToken(user, token);
-      })
+      }),
+      catchError(this.errorService.handleError)
+      
     );
   }
 
   public signOut() {
     return this.http.post(this.rootURL + '/api/Account/SignOut', {})
+    .pipe(
+      catchError(this.errorService.handleError))
       .subscribe(() => {
         this.tokenService.clearToken();
         this.currentUser$.next(null);
@@ -64,7 +69,10 @@ export class AccountService {
   }
 
   public profile(userName: string): Observable<User> {
-    return this.http.get<User>(this.rootURL + '/api/Users/UserName/' + userName, { params: { userName: userName } });
+    return this.http.get<User>(this.rootURL + '/api/Users/UserName/' + userName, { params: { userName: userName } })
+    .pipe(
+      catchError(this.errorService.handleError)
+    );
   }
 
   private handleUserAndToken(user: User, token: string): void {

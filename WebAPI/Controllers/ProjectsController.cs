@@ -1,14 +1,15 @@
-﻿using BLL.DTO;
-using BLL.Interfaces;
-using System.Collections.Generic;
-using System.Net;
-using System.Threading.Tasks;
-using System.Web.Http;
-using DAL.Entities;
+﻿using AutoMapper;
+using BLL.DTO;
 using BLL.Infrastructure;
-using System.Net.Http;
+using BLL.Interfaces;
+using DAL.Entities;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
+using System.Collections.Generic;
+using System.Net;
+using System.Net.Http;
+using System.Threading.Tasks;
+using System.Web.Http;
 
 namespace WebAPI.Controllers
 {
@@ -16,13 +17,15 @@ namespace WebAPI.Controllers
     public sealed class ProjectsController : ApiController
     {
         private ApplicationUserManager _userManager;
-        private IUserService _userService;
-        private IProjectService _projectService;
+        private readonly IUserService _userService;
+        private readonly IProjectService _projectService;
+        private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectService projectService, IUserService userService)
+        public ProjectsController(IProjectService projectService, IUserService userService, IMapper mapper)
         {
             _projectService = projectService;
             _userService = userService;
+            _mapper = mapper;
         }
 
         public ApplicationUserManager UserManager
@@ -48,7 +51,7 @@ namespace WebAPI.Controllers
             }
 
 
-            List<ProjectDTO> projectsDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Project>, List<ProjectDTO>>(projects);
+            List<ProjectDTO> projectsDTO = _mapper.Map<List<Project>, List<ProjectDTO>>(projects);
             return Ok(projectsDTO);
         }
 
@@ -62,7 +65,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
 
-            List<ProjectDTO> projectsDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<List<Project>, List<ProjectDTO>>(projects);
+            List<ProjectDTO> projectsDTO = _mapper.Map<List<Project>, List<ProjectDTO>>(projects);
             return Ok(projectsDTO);
         }
 
@@ -75,7 +78,7 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
             
-            ProjectDTO projectDTO = BLL.Mapper.AutoMapperConfig.Mapper.Map<Project, ProjectDTO>(project);
+            ProjectDTO projectDTO = _mapper.Map<Project, ProjectDTO>(project);
             return Ok(projectDTO);
         }
 
@@ -105,7 +108,7 @@ namespace WebAPI.Controllers
             project.LeadId = currentAppUser.Id;
             await _projectService.CreateProjectAsync(project);
             
-            return Ok(project); // Created();
+            return Created(Url.Request.RequestUri, project);
         }
 
         [Authorize]

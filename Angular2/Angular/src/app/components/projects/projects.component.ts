@@ -3,6 +3,8 @@ import { ProjectsService } from 'src/app/services/projects.service';
 import { Router } from '@angular/router';
 import { Project } from 'src/app/models/project';
 import { AccountService } from 'src/app/services/account.service';
+import { ProjectEditComponent } from 'src/app/components/projects/project-edit/project-edit.component';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-projects',
@@ -15,7 +17,7 @@ export class ProjectsComponent implements OnInit {
   public newProjectTag: string;
   public newProjectUrl: string;
 
-  constructor(private service: ProjectsService, private router: Router, private accountService: AccountService) {
+  constructor(private service: ProjectsService, private router: Router, private accountService: AccountService, private modalServie: NgbModal) {
   }
 
   ngOnInit() {
@@ -48,9 +50,24 @@ export class ProjectsComponent implements OnInit {
     this.service.deleteProject(projectId)
       .subscribe(() => {
         this.projectList = this.projectList.filter(project => project.Id !== projectId)
-      });
-      
+      });      
   }  
+
+  public editProject(projectId: number) {
+    let editedProject = {
+      Name: this.newProjectName,
+      Tag: this.newProjectTag,
+      Url: this.newProjectUrl,
+    }
+
+    this.refreshCreatingModel();
+
+    this.service.editProject(projectId, editedProject as Project)
+    .subscribe(
+    editedProject => {
+      this.GetAllProjects();
+    })
+  }
 
   public GetAllProjects() {
     this.service.getAllProjects().subscribe(
@@ -66,5 +83,18 @@ export class ProjectsComponent implements OnInit {
         this.projectList = projectList;
       }
     );
+  }
+
+  public openEditModal(project: Project){
+
+    const modalRef = this.modalServie.open(ProjectEditComponent);
+    modalRef.componentInstance.project = project;
+    modalRef.componentInstance.saveEntry
+    .subscribe(
+      (p) => {
+        console.log(p);
+        debugger;
+        this.service.editProject(project.Id, p).subscribe();
+      });
   }
 }

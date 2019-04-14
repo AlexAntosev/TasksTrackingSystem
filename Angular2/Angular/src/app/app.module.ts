@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatCardModule, MatDialogModule, MatSelectModule, MatGridListModule, MatSnackBarModule } from '@angular/material';
+import { MatButtonModule, MatCheckboxModule, MatToolbarModule, MatCardModule, MatDialogModule, MatSelectModule, MatGridListModule, MatSnackBarModule, MatDatepickerModule, MatNativeDateModule, MatInputModule } from '@angular/material';
 
 import { AppRoutingModule, routes } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -31,6 +31,11 @@ import { CommentsComponent } from './components/comments/comments.component';
 import { CommentsService } from 'src/app/services/comments.service';
 import { ErrorService } from 'src/app/services/error.service';
 import { NotificationService } from 'src/app/services/notification.service';
+import { ServerErrorInterceptor } from 'src/app/core/interceptors/server-error-interceptor';
+import { ProjectEditComponent } from 'src/app/components/projects/project-edit/project-edit.component';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { SearchingFilterPipe } from 'src/app/core/pipes/searching-filter.pipe';
+import { InvitesComponent } from './components/invites/invites.component';
 
 @NgModule({
   declarations: [
@@ -43,7 +48,10 @@ import { NotificationService } from 'src/app/services/notification.service';
     SignInComponent,
     SignUpComponent,
     UsersComponent,
-    CommentsComponent
+    CommentsComponent,
+    ProjectEditComponent,
+    SearchingFilterPipe,
+    InvitesComponent
   ],
   imports: [
     FormsModule,
@@ -57,7 +65,11 @@ import { NotificationService } from 'src/app/services/notification.service';
     MatSelectModule,
     MatSnackBarModule,
     MatGridListModule,
+    MatDatepickerModule,
+    MatNativeDateModule,
+    MatInputModule,
     HttpClientModule,
+    NgbModule,
     AppRoutingModule
   ],
   providers: [
@@ -78,6 +90,11 @@ import { NotificationService } from 'src/app/services/notification.service';
        useClass: TokenInterceptor,
        multi: true
     },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ServerErrorInterceptor,
+      multi: true
+    },
     { 
       provide: APP_INITIALIZER, 
       useFactory: loadCurrentUser, 
@@ -85,7 +102,9 @@ import { NotificationService } from 'src/app/services/notification.service';
       multi: true 
     } 
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
+
+  entryComponents: [ProjectEditComponent]
 })
 export class AppModule { }
 

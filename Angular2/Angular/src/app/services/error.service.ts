@@ -11,10 +11,15 @@ export class ErrorService {
 
   constructor(private router: Router, private notificationService: NotificationService) {
   }
-  public handleError = (error: HttpErrorResponse): Observable<any> => {
-    
-    
-    this.notificationService.showError('Error: ' + error.error.Message);
-    return throwError(error);
+
+  public handleError = (error: HttpErrorResponse): Observable<any> => {   
+    if(error.error != null) {
+      this.notificationService.showError('Error: ' + error.error.Message);
+      return throwError(error);
+    }
+    else{
+      this.notificationService.showError('Error: ' + error.message);
+      return throwError(error);
+    }
   }
 }

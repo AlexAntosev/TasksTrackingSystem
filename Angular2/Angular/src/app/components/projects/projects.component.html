@@ -5,7 +5,7 @@
     </div>
     <div class="nav justify-content-end">
       <button title="Create new project" class="btn btn-outline-info">
-        <span data-toggle="modal" data-target="#myModal">Create new project</span>
+        <span data-toggle="modal" data-target="#CreatingModal">Create new project</span>
       </button>
     </div>
   </nav>
@@ -19,6 +19,7 @@
           <th scope="col">Tag</th>
           <th scope="col">URL</th>
           <th scope="col"></th>
+          <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
@@ -26,6 +27,9 @@
           <td [routerLink]="['/projects', project.Id]">{{project.Name}}</td>
           <td>{{project.Tag}}</td>
           <td><a href="project.Url">{{project.Url}}</a></td>
+          <td>
+            <button title="Edit project" class="btn btn-outline-info" (click)="openEditModal(project)">Edit project</button>
+          </td>
           <td>
             <button class="btn btn-sm btn-outline-danger" (click)="deleteProject(project.Id)">Delete</button>
           </td>
@@ -35,8 +39,10 @@
   </div>
 </div>
 
-<div id="myModal" class="modal fade" role="dialog">
-  <div class="modal-dialog">
+<app-invites [currentUserId]="accountService.getCurrentUser().Id"></app-invites>
+
+<div id="CreatingModal" class="modal fade" role="dialog">
+  <div class="modal-dialog modal-dialog-centered">
     <div class="modal-content">
       <div class="modal-header">
         <h4 class="modal-title">Create new project</h4>
@@ -67,3 +73,5 @@
     </div>
   </div>
 </div>
+
+

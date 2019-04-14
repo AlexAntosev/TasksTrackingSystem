@@ -1,34 +1,43 @@
 <form #form="ngForm">
-  <div>
-    <label>Enter UserName</label>
-    <br />
-    <input name="UserName" #UserName="ngModel" [(ngModel)]="newUserName" class="form-control" required>
-    <div class="validation-error" *ngIf="UserName.invalid && UserName.touched">This field is required</div>
-    <label>Enter FirstName</label>
-    <br />
-    <input name="FirstName" #FirstName="ngModel" [(ngModel)]="newFirstName" class="form-control" required>
-    <div class="validation-error" *ngIf="FirstName.invalid && FirstName.touched">This field is required</div>
-    <label>Enter LastName</label>
-    <br />
-    <input name="LastName" #LastName="ngModel" [(ngModel)]="newLastName" class="form-control" required>
-    <div class="validation-error" *ngIf="LastName.invalid && LastName.touched">This field is required</div>
-    <label>Enter Position</label>
-    <br />
-    <input name="Position" #Position="ngModel" [(ngModel)]="newPosition" class="form-control" required>
-    <div class="validation-error" *ngIf="Position.invalid && Position.touched">This field is required</div>
-    <label>Enter email</label>
-    <br />
-    <input name="Email" #Email="ngModel" [(ngModel)]="newEmail" class="form-control" required>
-    <div class="validation-error" *ngIf="Email.invalid && Email.touched">This field is required</div>
-    <label>Enter password</label>
-    <br />
-    <input type="password" name="Password" #Password="ngModel" [(ngModel)]="newPassword" class="form-control" required>
-    <div class="validation-error" *ngIf="Password.invalid && Password.touched">This field is required</div>
-    <label>Submit password</label>
-    <br />
-    <input type="password" name="ConfirmPassword" #ConfirmPassword="ngModel" [(ngModel)]="newConfirmPassword" class="form-control"
-      required>
-    <div class="validation-error" *ngIf="ConfirmPassword.invalid && ConfirmPassword.touched">This field is required</div>
-    <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="singUp()">Submit</button>
+  <div class="container login-container">
+    <div>
+      <div class="col-md-6 ">
+        <h3>Sign up</h3>
+        <form>
+          <div class="form-group">
+            <input name="UserName" #UserName="ngModel" [(ngModel)]="newUserName" class="form-control" placeholder="Your UserName *" required>
+            <div class="validation-error" *ngIf="UserName.invalid && UserName.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <input name="FirstName" #FirstName="ngModel" [(ngModel)]="newFirstName" class="form-control" placeholder="Your Firstname *" required>
+            <div class="validation-error" *ngIf="FirstName.invalid && FirstName.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <input name="LastName" #LastName="ngModel" [(ngModel)]="newLastName" class="form-control" placeholder="Your Lastname *" required>
+            <div class="validation-error" *ngIf="LastName.invalid && LastName.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <input name="Position" #Position="ngModel" [(ngModel)]="newPosition" class="form-control" placeholder="Your Position *" required>
+            <div class="validation-error" *ngIf="Position.invalid && Position.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <input name="Email" #Email="ngModel" [(ngModel)]="newEmail" class="form-control" placeholder="Your Email *" required>
+            <div class="validation-error" *ngIf="Email.invalid && Email.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <input type="password" name="Password" #Password="ngModel" [(ngModel)]="newPassword" class="form-control" placeholder="Your Password *" required>
+            <div class="validation-error" *ngIf="Password.invalid && Password.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <input type="password" name="ConfirmPassword" #ConfirmPassword="ngModel" [(ngModel)]="newConfirmPassword" class="form-control" placeholder="Confirm Password *"
+              required>
+            <div class="validation-error" *ngIf="ConfirmPassword.invalid && ConfirmPassword.touched">This field is required</div>
+          </div>
+          <div class="form-group">
+            <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="singUp()">Sign Up</button>
+          </div>
+        </form>
+      </div>
+    </div>
   </div>
 </form>

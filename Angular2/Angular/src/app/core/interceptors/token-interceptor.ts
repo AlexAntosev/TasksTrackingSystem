@@ -8,11 +8,11 @@ import { TokenService } from 'src/app/services/token.service';
 
 @Injectable()
 export class TokenInterceptor implements HttpInterceptor {
-    constructor(private tokenService: TokenService){
+    constructor(private tokenService: TokenService) {
 
     }
 
-    intercept(request: HttpRequest<any>, handler: HttpHandler): Observable<HttpEvent<any>>{
+    intercept(request: HttpRequest<any>, handler: HttpHandler): Observable<HttpEvent<any>> {
         console.log(this.tokenService.fetchToken());
         request = request.clone({
             setHeaders: {

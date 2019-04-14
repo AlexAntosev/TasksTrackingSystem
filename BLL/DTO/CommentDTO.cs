@@ -15,7 +15,7 @@ namespace BLL.DTO
         
         public string Description { get; set; }
         
-        public DateTime Time { get; set; }
+        public string Time { get; set; }
 
         /// <summary>
         /// Get and set the foreign key for the task where the comment was made.
