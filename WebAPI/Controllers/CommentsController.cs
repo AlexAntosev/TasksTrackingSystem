@@ -66,12 +66,13 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Comment is not valid");
+                return BadRequest("The comment is not created. The comment creating model is incorrectly filled.");
             }
 
-            await _commentService.CreateCommentAsync(commentDTO);
+            Comment createdComment = await _commentService.CreateCommentAsync(commentDTO);
+            CommentDTO createdCommentDTO = _mapper.Map<Comment, CommentDTO>(createdComment);
 
-            return Created(Url.Request.RequestUri, commentDTO);
+            return Created(Url.Request.RequestUri, createdCommentDTO);
         }
 
         [HttpDelete]
@@ -91,7 +92,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Comment is not valid");
+                return BadRequest("The comment is not edited. The comment editing model is incorrectly filled.");
             }
 
             var comment = await _commentService.GetCommentByIdAsync(id);

@@ -83,7 +83,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid.");
+                return BadRequest("The user is not updated. The user updating model is incorrectly filled.");
             }
 
             User currentUser = await _userService.GetUserByIdAsync(id);

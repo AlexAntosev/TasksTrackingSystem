@@ -74,6 +74,11 @@ namespace DAL.Entities
         /// Lazy loading comments of the task.
         /// </summary>
         public virtual ICollection<Comment> Comments { get; set; }
+
+        public Task()
+        {
+            Comments = new HashSet<Comment>();
+        }
     }
 
     

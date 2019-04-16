@@ -9,7 +9,7 @@ import { NavBarComponent } from './components/nav-bar/nav-bar.component';
 import { ProjectsComponent } from './components/projects/projects.component';
 import { ProjectsService } from 'src/app/services/projects.service';
 import { HttpClientModule } from '@angular/common/http';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ProjectDetailsComponent } from './components/project-details/project-details.component';
 import { ProjectDetailsResolver } from 'src/app/components/project-details/project-details.resolver';
 import { RouterModule } from '@angular/router';
@@ -33,9 +33,12 @@ import { ErrorService } from 'src/app/services/error.service';
 import { NotificationService } from 'src/app/services/notification.service';
 import { ServerErrorInterceptor } from 'src/app/core/interceptors/server-error-interceptor';
 import { ProjectEditComponent } from 'src/app/components/projects/project-edit/project-edit.component';
-import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { SearchingFilterPipe } from 'src/app/core/pipes/searching-filter.pipe';
 import { InvitesComponent } from './components/invites/invites.component';
+import { AlertComponent } from './components/alert/alert.component';
+import { AlertService } from 'src/app/services/alert.service';
+import { TaskEditComponent } from './components/tasks/task-edit/task-edit.component';
 
 @NgModule({
   declarations: [
@@ -51,7 +54,9 @@ import { InvitesComponent } from './components/invites/invites.component';
     CommentsComponent,
     ProjectEditComponent,
     SearchingFilterPipe,
-    InvitesComponent
+    InvitesComponent,
+    AlertComponent,
+    TaskEditComponent
   ],
   imports: [
     FormsModule,
@@ -69,6 +74,7 @@ import { InvitesComponent } from './components/invites/invites.component';
     MatNativeDateModule,
     MatInputModule,
     HttpClientModule,
+    ReactiveFormsModule,
     NgbModule,
     AppRoutingModule
   ],
@@ -84,6 +90,7 @@ import { InvitesComponent } from './components/invites/invites.component';
     CurrentUserInitializerService,
     ErrorService,
     NotificationService,
+    AlertService,
     { provide: Window, useValue: window },
     {
        provide: HTTP_INTERCEPTORS,
@@ -104,7 +111,7 @@ import { InvitesComponent } from './components/invites/invites.component';
   ],
   bootstrap: [AppComponent],
 
-  entryComponents: [ProjectEditComponent]
+  entryComponents: [ProjectEditComponent, TaskEditComponent]
 })
 export class AppModule { }
 

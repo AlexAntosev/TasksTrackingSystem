@@ -122,7 +122,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Sign in form is incorrect.");
             }
 
             SignInStatus result =
@@ -151,7 +151,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest(ModelState);
+                return BadRequest("Sign up form is incorrect.");
             }
 
             var authenticationUser = new AuthenticationUser() { UserName = model.Email, Email = model.Email };
@@ -160,7 +160,7 @@ namespace WebAPI.Controllers
 
             if (!result.Succeeded)
             {
-                return BadRequest(result.Errors.ToString());
+                return BadRequest("Cannot create user with current email or password.");
             }
 
             UserDTO userDTO = new UserDTO()
@@ -172,11 +172,12 @@ namespace WebAPI.Controllers
                 AuthenticationUserId = authenticationUser.Id
             };
 
-            await _userService.CreateUserAsync(userDTO);
+            User createdUser = await _userService.CreateUserAsync(userDTO);
+            UserDTO createdUserDTO = _mapper.Map<User, UserDTO>(createdUser);
 
             string token = await CreateJWT(authenticationUser);
 
-            return Ok(new { user = userDTO, token });
+            return Ok(new { user = createdUserDTO, token });
         }
 
         private async Task<string> CreateJWT(AuthenticationUser authenticationUser)

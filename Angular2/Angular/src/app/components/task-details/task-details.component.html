@@ -1,75 +1,103 @@
 <mat-card>
   <mat-card-title>
-    <h1>{{selectedTask.Name}}</h1>
+    <h3>{{selectedTask.Name}}</h3>
+    <button title="Edit task" class="btn btn-outline-info" (click)="openEditModal(selectedTask)">Edit task</button>
     <hr>
   </mat-card-title>
   <mat-card-content>
-    <h3>Details:</h3>
+    <h5>Details:</h5>
+
     <nav class="navbar navbar-expand-md navbar-dark">
       <div class="navbar-collapse">
-        <h5>Priority</h5>
+        <h6 style="margin-right:1rem">Creator:</h6>
+        <h6>{{selectedTask.CreatorUserName}}</h6>
+      </div>
+      <div class="navbar-collapse">
+        <h6 style="margin-right:1rem">Executor:</h6>
+        <h6>{{selectedTask.ExecutorUserName}}</h6>
+      </div>
+    </nav>
+
+
+
+    <nav class="navbar navbar-expand-md navbar-dark">
+      <div class="navbar-collapse">
+        <h6 style="margin-right:1rem">Priority:</h6>
         <div>
-          <div *ngIf="selectedTask.Priority === 0">
-            <div class="bg-primary" style="width: 25px; height: 25px;">
-            </div>
+          <div *ngIf="selectedTask.Priority === 0" class="navbar-collapse">
+            <div class="bg-primary" style="width: 25px; height: 25px;"></div>
+            <div style="margin-left:10px">Low</div>
           </div>
-          <div *ngIf="selectedTask.Priority === 1">
-            <div class="bg-success" style="width: 25px; height: 25px;">
-            </div>
+          <div *ngIf="selectedTask.Priority === 1" class="navbar-collapse">
+            <div class="bg-success" style="width: 25px; height: 25px;"></div>
+            <div style="margin-left:10px">Middle</div>
           </div>
-          <div *ngIf="selectedTask.Priority === 2">
-            <div class="bg-warning" style="width: 25px; height: 25px;">
-            </div>
+          <div *ngIf="selectedTask.Priority === 2" class="navbar-collapse">
+            <div class="bg-warning" style="width: 25px; height: 25px;"></div>
+            <div style="margin-left:10px">High</div>
           </div>
-          <div *ngIf="selectedTask.Priority === 3">
-            <div class="bg-danger" style="width: 25px; height: 25px;">
-            </div>
+          <div *ngIf="selectedTask.Priority === 3" class="navbar-collapse">
+            <div class="bg-danger" style="width: 25px; height: 25px;"></div>
+            <div style="margin-left:10px">Blocker</div>
           </div>
         </div>
       </div>
       <div class="navbar-collapse">
-        <h5>Type</h5>
-        <div>{{selectedTask.Type}}</div>
+        <h6 style="margin-right:1rem">Type:</h6>
+        <div>
+          <div *ngIf="selectedTask.Type === 0">
+            <h6>Task</h6>
+          </div>
+          <div *ngIf="selectedTask.Type === 1">
+            <h6>Bug</h6>
+          </div>
+          <div *ngIf="selectedTask.Type === 2">
+            <h6>Improvement</h6>
+          </div>
+          <div *ngIf="selectedTask.Type === 3">
+            <h6>Feature</h6>
+          </div>
+        </div>
       </div>
       <div class="navbar-collapse">
-        <h5>Status</h5>
-        <div>{{selectedTask.Status}}</div>
+        <h6 style="margin-right:1rem">Status:</h6>
+        <div>
+          <div *ngIf="selectedTask.Status === 0">
+            <h6>To do</h6>
+          </div>
+          <div *ngIf="selectedTask.Status === 1">
+            <h6>In progress</h6>
+          </div>
+          <div *ngIf="selectedTask.Status === 2">
+            <h6>On review</h6>
+          </div>
+          <div *ngIf="selectedTask.Status === 3">
+            <h6>Done</h6>
+          </div>
+        </div>
       </div>
     </nav>
 
     <nav class="navbar navbar-expand-md navbar-dark">
       <div class="navbar-collapse">
-        <h5>Creator:</h5>
-        <p>{{selectedTask.CreatorUserName}}</p>
-
+        <h6>Deadline:</h6>
+        <h6>{{selectedTask.Deadline}}</h6>
       </div>
       <div class="navbar-collapse">
-        <h5>Executor:</h5>
-        <p>{{selectedTask.ExecutorUserName}}</p>
+        <h6>Date of creation: </h6>
+        <h6>{{selectedTask.Created}}</h6>
+      </div>
+      <div class="navbar-collapse">
+        <h6>Date of updation: </h6>
+        <h6>{{selectedTask.Updated}}</h6>
       </div>
     </nav>
-
 
     <div>
-      <h3>Description:</h3>
-      <textarea readonly>{{selectedTask.Description}}</textarea>
+      <h6>Description:</h6>
+      <textarea readonly style="width: 100%">{{selectedTask.Description}}</textarea>
     </div>
 
-
-    <nav class="navbar navbar-expand-md navbar-dark">
-      <div class="navbar-collapse">
-        <h5>Deadline:</h5>
-        <div>{{selectedTask.Deadline}}</div>
-      </div>
-      <div class="navbar-collapse">
-        <h5>Date of creation</h5>
-        <div>{{selectedTask.Created}}</div>
-      </div>
-      <div class="navbar-collapse">
-        <h5>Date of updation</h5>
-        <div>{{selectedTask.Updated}}</div>
-      </div>
-    </nav>
     <hr>
   </mat-card-content>
   <mat-card-content>

@@ -8,7 +8,7 @@ namespace BLL.Interfaces
 {
     public interface IProjectService
     {
-        Task CreateProjectAsync(ProjectDTO projectDTO);
+        Task<Project> CreateProjectAsync(ProjectDTO projectDTO);
         Task DeleteProjectAsync(int id);
         Task EditProjectAsync(int id, ProjectDTO projectDTO);
         Task<Project> GetProjectByIdAsync(int id);

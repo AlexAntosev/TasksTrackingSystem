@@ -25,11 +25,12 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid.");
+                return BadRequest("The task is not created. The task creation model is incorrectly filled.");
             }
-            await _service.CreateTaskAsync(task);
+            Task createdTask = await _service.CreateTaskAsync(task);
+            TaskDTO createdTaskDTO = _mapper.Map<Task, TaskDTO>(createdTask);
             
-            return Created(Url.Request.RequestUri, task);
+            return Created(Url.Request.RequestUri, createdTaskDTO);
         }
 
         [HttpGet]
@@ -77,7 +78,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid.");
+                return BadRequest("The task is not edited. The task editing model is incorrectly filled.");
             }
 
             Task currentTask = await _service.GetTaskByIdAsync(id);

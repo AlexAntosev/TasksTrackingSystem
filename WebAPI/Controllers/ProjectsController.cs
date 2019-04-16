@@ -87,7 +87,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid.");
+                return BadRequest("The project is not created. The project creating model is incorrectly filled.");
             }
 
             AuthenticationUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
@@ -106,9 +106,9 @@ namespace WebAPI.Controllers
             }
 
             project.LeadId = currentAppUser.Id;
-            await _projectService.CreateProjectAsync(project);
-            
-            return Created(Url.Request.RequestUri, project);
+            Project createdProject = await _projectService.CreateProjectAsync(project);
+            ProjectDTO createdProjectDTO = _mapper.Map<Project, ProjectDTO>(createdProject);
+            return Created(Url.Request.RequestUri, createdProjectDTO);
         }
 
         [Authorize]
@@ -117,7 +117,7 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Model is not valid.");
+                return BadRequest("The project is not edited. The project editing model is incorrectly filled.");
             }
 
             Project currentProject = await _projectService.GetProjectByIdAsync(id);

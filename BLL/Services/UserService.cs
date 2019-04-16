@@ -72,7 +72,7 @@ namespace BLL.Services
             await _unitOfWork.SaveAsync();
         }
 
-        public async Task CreateUserAsync(UserDTO userDTO)
+        public async Task<User> CreateUserAsync(UserDTO userDTO)
         {
             if (userDTO == null)
             {
@@ -94,6 +94,8 @@ namespace BLL.Services
 
             _unitOfWork.Users.Create(user);
             await _unitOfWork.SaveAsync();
+
+            return user;
         }
 
         public async Task DeleteUserAsync(int id)

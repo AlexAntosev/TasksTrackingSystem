@@ -3,22 +3,23 @@ import { Router } from '@angular/router';
 import { Observable, throwError } from 'rxjs';
 import { HttpErrorResponse } from '@angular/common/http';
 import { NotificationService } from 'src/app/services/notification.service';
+import { AlertService } from 'src/app/services/alert.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class ErrorService {
 
-  constructor(private router: Router, private notificationService: NotificationService) {
+  constructor(private router: Router, private notificationService: NotificationService, private alertService: AlertService) {
   }
 
-  public handleError = (error: HttpErrorResponse): Observable<any> => {   
+  public handleError = (error: HttpErrorResponse): Observable<any> => {
     if(error.error != null) {
-      this.notificationService.showError('Error: ' + error.error.Message);
-      return throwError(error);
+      this.alertService.error(error.error.Message);
+      return throwError(error.error);
     }
     else{
-      this.notificationService.showError('Error: ' + error.message);
+      this.alertService.error(error.message);
       return throwError(error);
     }
   }

@@ -21,7 +21,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task CreateCommentAsync(CommentDTO commentDTO)
+        public async Task<Comment> CreateCommentAsync(CommentDTO commentDTO)
         {
             if (commentDTO == null)
             {
@@ -37,6 +37,8 @@ namespace BLL.Services
 
             _unitOfWork.Comments.Create(comment);
             await _unitOfWork.SaveAsync();
+
+            return comment;
         }
 
         public async Task DeleteCommentAsync(int id)

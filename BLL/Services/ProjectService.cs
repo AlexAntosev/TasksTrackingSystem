@@ -21,7 +21,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task CreateProjectAsync(ProjectDTO projectDTO)
+        public async Task<Project> CreateProjectAsync(ProjectDTO projectDTO)
         {
             if (projectDTO == null)
             {
@@ -37,6 +37,8 @@ namespace BLL.Services
 
             _unitOfWork.Projects.Create(project);
             await _unitOfWork.SaveAsync();
+
+            return project;
         }
 
         public async Task DeleteProjectAsync(int id)

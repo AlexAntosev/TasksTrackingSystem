@@ -15,7 +15,7 @@ export class ProjectEditComponent implements OnInit {
   @Input()
   public project: Project;
 
-  @Output() 
+  @Output()
   saveEntry: EventEmitter<any> = new EventEmitter();
 
   constructor(private modalService: NgbModal) { }
@@ -26,6 +26,7 @@ export class ProjectEditComponent implements OnInit {
 
   saveProject() {
     this.saveEntry.emit(this.project);
+    this.modalService.dismissAll();
   }
 
 }

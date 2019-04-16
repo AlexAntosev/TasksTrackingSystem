@@ -11,7 +11,7 @@ import { TaskDetailsComponent } from 'src/app/components/task-details/task-detai
 import { TaskDetailsResolver } from 'src/app/components/task-details/task-details.resolver';
 
 export const routes: Routes = [
-  { path: '',  redirectTo: '/projects', pathMatch: 'full'},
+  { path: '',  redirectTo: '/sign-in', pathMatch: 'full'},
   { path: 'projects',  component: ProjectsComponent},
   { path: 'projects/:id', component: ProjectDetailsComponent, resolve: { project: ProjectDetailsResolver}},
   { path: 'tasks/:id', component: TaskDetailsComponent, resolve: { task: TaskDetailsResolver}},

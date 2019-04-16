@@ -60,6 +60,7 @@ export class AccountService {
       .subscribe(() => {
         this.tokenService.clearToken();
         this.currentUser$.next(null);
+        this.router.navigate(['/sign-in']);
       }
       );
   }

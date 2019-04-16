@@ -52,4 +52,11 @@ export class TasksService {
       catchError(this.errorService.handleError)
     );
   }
+
+  public editTask(taskId: number, editedTask: Task): Observable<Task> {
+    return this.http.put<Task>(this.url + '/Tasks/' + taskId, editedTask)
+    .pipe(
+      catchError(this.errorService.handleError)
+    );
+  }
 }

@@ -49,13 +49,4 @@ export class InvitesService {
       catchError(this.errorService.handleError)
       );
   }
-
-  public addUserToProject(invite: Invite): Observable<User> {
-    const projectId = ''+invite.ProjectId;
-    const receiverId = ''+invite.ReceiverId;
-    return this.http.put<User>(this.url + '/Projects/' + invite.ProjectId + '/Users', {}, { params: { projectId: projectId, userId: receiverId} })
-      .pipe(
-        catchError(this.errorService.handleError)
-      );
-  }
 }

@@ -25,11 +25,12 @@ namespace WebAPI.Controllers
         {
             if (!ModelState.IsValid)
             {
-                return BadRequest("Invite is not valid.");
+                return BadRequest("The invite is not created. The invite creating model is incorrectly filled.");
             }
-            await _service.CreateInviteAsync(invite);
+            Invite createdInvite = await _service.CreateInviteAsync(invite);
+            InviteDTO createdInviteDTO = _mapper.Map<Invite, InviteDTO>(createdInvite);
 
-            return Created(Url.Request.RequestUri, invite);
+            return Created(Url.Request.RequestUri, createdInviteDTO);
         }
         
 

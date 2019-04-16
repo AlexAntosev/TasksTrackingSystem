@@ -3,6 +3,7 @@ using DAL.Entities;
 using DAL.Interfaces;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Data.Entity.ModelConfiguration;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace DAL.EF
@@ -22,72 +23,15 @@ namespace DAL.EF
         public CompanyContext() : base("TaskTrackingSystemDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
-            Database.SetInitializer(new DropCreateDatabaseAlways<CompanyContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
         }
         
         protected override void OnModelCreating(DbModelBuilder builder)
         {
-            builder.Entity<Project>()
-                .Property(p => p.Name)
-                .IsRequired();
-            builder.Entity<Project>()
-                .Property(p => p.Tag)
-                .IsRequired();
-            builder.Entity<Project>()
-                .HasMany(p => p.Team)
-                .WithMany(u => u.Projects)
-                .Map(m => m.ToTable("ProjectsAndUsers").MapLeftKey("ProjectId").MapRightKey("UserId"));
-            builder.Entity<Project>()
-                .HasMany(p => p.Tasks)
-                .WithRequired(t => t.Project);
-            builder.Entity<Project>()
-                .HasMany(p => p.Invites)
-                .WithOptional(i => i.Project);
-
-            builder.Entity<Task>()
-                .Property(t => t.Name)
-                .IsRequired();
-            builder.Entity<Task>()
-                .Property(t => t.Priority)
-                .IsRequired();
-            builder.Entity<Task>()
-                .Property(t => t.Created)
-                .IsRequired();
-            builder.Entity<Task>()
-                .Property(t => t.Updated)
-                .IsRequired();
-            builder.Entity<Task>()
-                .HasMany(t => t.Comments)
-                .WithRequired(c => c.Task);
-            builder.Entity<Task>()
-                .HasRequired(t => t.Creator)
-                .WithMany(u => u.CreatedTasks);
-            builder.Entity<Task>()
-                .HasOptional(t => t.Executor)
-                .WithMany(u => u.TasksInProgress);
-
-            builder.Entity<User>()
-                .Property(u => u.UserName)
-                .IsRequired();
-            builder.Entity<User>()
-                .Property(u => u.FirstName)
-                .IsRequired();
-            builder.Entity<User>()
-                .Property(u => u.LastName)
-                .IsRequired();
-            builder.Entity<User>()
-                .HasMany(u => u.Invites)
-                .WithOptional(i => i.Receiver);
-            builder.Entity<User>()
-                .HasMany(u => u.CreatedInvites)
-                .WithOptional(i => i.Author);
-
-            builder.Entity<Comment>()
-                .Property(u => u.Description)
-                .IsRequired();
-            builder.Entity<Comment>()
-                .Property(u => u.Time)
-                .IsRequired();
+            builder.Configurations.Add(new ProjectConfiguration());
+            builder.Configurations.Add(new TaskConfiguration());
+            builder.Configurations.Add(new UserConfiguration());
+            builder.Configurations.Add(new CommentConfiguration());
 
             builder.Entity<AuthenticationUser>().ToTable("AuthenticationUsers");
             builder.Entity<IdentityUserRole>().ToTable("UserRoles");
@@ -96,6 +40,71 @@ namespace DAL.EF
             builder.Entity<IdentityUserClaim>().ToTable("UserClaims");
 
             base.OnModelCreating(builder);
+        }
+
+        private class ProjectConfiguration : EntityTypeConfiguration<Project>
+        {
+            public ProjectConfiguration()
+            {
+                Property(p => p.Name).IsRequired();
+                Property(p => p.Tag).IsRequired();
+                HasMany(p => p.Team)
+                    .WithMany(u => u.Projects)
+                    .Map(m => m.ToTable("ProjectsAndUsers").MapLeftKey("ProjectId").MapRightKey("UserId"));
+                HasMany(p => p.Tasks)
+                    .WithRequired(t => t.Project);
+                HasMany(p => p.Invites)
+                    .WithOptional(i => i.Project);
+            }
+        }
+
+        private class TaskConfiguration : EntityTypeConfiguration<Task>
+        {
+            public TaskConfiguration()
+            {
+                Property(t => t.Name)
+                    .IsRequired();
+                Property(t => t.Priority)
+                    .IsRequired();
+                Property(t => t.Created)
+                    .IsRequired();
+                Property(t => t.Updated)
+                    .IsRequired();
+                HasMany(t => t.Comments)
+                    .WithRequired(c => c.Task);
+                HasRequired(t => t.Creator)
+                    .WithMany(u => u.CreatedTasks);
+                HasOptional(t => t.Executor)
+                    .WithMany(u => u.TasksInProgress);
+            }
+        }
+
+        private class UserConfiguration : EntityTypeConfiguration<User>
+        {
+            public UserConfiguration()
+            {
+                Property(u => u.UserName)
+                    .IsRequired();
+                Property(u => u.FirstName)
+                    .IsRequired();
+                Property(u => u.LastName)
+                    .IsRequired();
+                HasMany(u => u.Invites)
+                    .WithOptional(i => i.Receiver);
+                HasMany(u => u.CreatedInvites)
+                    .WithOptional(i => i.Author);
+            }
+        }
+
+        private class CommentConfiguration : EntityTypeConfiguration<Comment>
+        {
+            public CommentConfiguration()
+            {
+                Property(u => u.Description)
+                    .IsRequired();
+                Property(u => u.Time)
+                    .IsRequired();
+            }
         }
 
         public static CompanyContext Create()

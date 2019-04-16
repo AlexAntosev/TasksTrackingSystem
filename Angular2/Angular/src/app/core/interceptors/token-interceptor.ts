@@ -13,7 +13,7 @@ export class TokenInterceptor implements HttpInterceptor {
     }
 
     intercept(request: HttpRequest<any>, handler: HttpHandler): Observable<HttpEvent<any>> {
-        console.log(this.tokenService.fetchToken());
+        
         request = request.clone({
             setHeaders: {
                 Authorization: `Bearer ${this.tokenService.fetchToken().signature}`

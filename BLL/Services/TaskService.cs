@@ -19,7 +19,7 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async System.Threading.Tasks.Task CreateTaskAsync(TaskDTO taskDTO)
+        public async System.Threading.Tasks.Task<Task> CreateTaskAsync(TaskDTO taskDTO)
         {
             if (taskDTO == null)
             {
@@ -42,6 +42,8 @@ namespace BLL.Services
 
             _unitOfWork.Tasks.Create(task);
             await _unitOfWork.SaveAsync();
+
+            return task;
         }
 
         public async System.Threading.Tasks.Task DeleteTaskAsync(int id)
@@ -70,11 +72,6 @@ namespace BLL.Services
             if (taskDTO == null)
             {
                 throw new ArgumentNullException(nameof(taskDTO));
-            }
-
-            if (_unitOfWork.Projects.GetByIdAsync(taskDTO.ProjectId) == null)
-            {
-                throw new ArgumentNullException("Current project is not exist.");
             }
 
             var task = _unitOfWork.Tasks.GetById(id);

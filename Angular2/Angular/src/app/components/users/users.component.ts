@@ -43,7 +43,6 @@ export class UsersComponent implements OnInit {
       ReceiverId: this.newUserId,  
       Time: formatDate(Date.now(), 'yyyy-MM-dd', 'en')
     }
-    debugger;
     this.inviteService.sendInvite(invite as Invite).subscribe(
       invite => {
         this.inviteService.getAllInvitesByProjectId(this.projectId).subscribe(

@@ -1,0 +1,87 @@
+<div class="modal-header">
+  <h4 class="modal-title">Edit task</h4>
+  <button type="button" class="close" aria-label="Close" (click)="activeModal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <form class="needs-validation" novalidate>
+    <div class="form-group">
+      <label>Name:</label>
+      <input name="Name" #Name="ngModel" [(ngModel)]="task.Name" class="form-control" required>
+      <div class="validation-error" *ngIf="Name.invalid && Name.touched">This field is required</div>
+    </div>
+    <div class="form-group">
+      <label>Description:</label>
+      <textarea name="Description" #Description="ngModel" [(ngModel)]="task.Description" class="form-control" required></textarea>
+      <div class="validation-error" *ngIf="Description.invalid && Description.touched">This field is required</div>
+    </div>
+    <div class="form-group">
+      <h4>Select priority</h4>
+      <mat-form-field>
+        <mat-select [(value)]="task.Priority" class="form-control">
+          <mat-option [value]=0>Low</mat-option>
+          <mat-option [value]=1>Middle</mat-option>
+          <mat-option [value]=2>High</mat-option>
+          <mat-option [value]=3>Ultra-High</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <h4>Select type</h4>
+      <mat-form-field>
+        <mat-select [(value)]="task.Type" class="form-control">
+          <mat-option [value]=0>Task</mat-option>
+          <mat-option [value]=1>Bug</mat-option>
+          <mat-option [value]=2>Improvement</mat-option>
+          <mat-option [value]=3>Feature</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <h4>Select status</h4>
+      <mat-form-field>
+        <mat-select [(value)]="task.Status" class="form-control">
+          <mat-option [value]=0>To do</mat-option>
+          <mat-option [value]=1>In progress</mat-option>
+          <mat-option [value]=2>On review</mat-option>
+          <mat-option [value]=3>Done</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <h4>Select executor</h4>
+      <mat-form-field>
+        <mat-select [(value)]="task.ExecutorId">
+          <mat-option *ngFor="let user of usersInProject" [value]=user.Id>{{user.UserName}}</mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput [matDatepicker]="picker" placeholder="Choose a date of deadline" name="Deadline" #Deadline="ngModel" [(ngModel)]="task.Deadline">
+        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+        <mat-datepicker #picker></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput [matDatepicker]="pickerCreated" placeholder="Choose a date of creation" name="Created" #Created="ngModel"
+          [(ngModel)]="task.Created">
+        <mat-datepicker-toggle matSuffix [for]="pickerCreated"></mat-datepicker-toggle>
+        <mat-datepicker #pickerCreated></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div class="form-group">
+      <mat-form-field>
+        <input matInput [matDatepicker]="pickerUpdated" placeholder="Choose a date of updation" name="Updated" #Updated="ngModel"
+          [(ngModel)]="task.Updated">
+        <mat-datepicker-toggle matSuffix [for]="pickerUpdated"></mat-datepicker-toggle>
+        <mat-datepicker #pickerUpdated></mat-datepicker>
+      </mat-form-field>
+    </div>
+  </form>
+</div>
+<div class="modal-footer">
+  <button type="button" (click)="saveTask()" class="btn btn-primary">Save</button>
+</div>

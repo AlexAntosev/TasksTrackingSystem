@@ -8,7 +8,7 @@ namespace BLL.Interfaces
 {
     public interface IUserService
     {
-        Task CreateUserAsync(UserDTO userDTO);
+        Task<User> CreateUserAsync(UserDTO userDTO);
         Task EditUserAsync(int id, UserDTO userDTO);
         Task DeleteUserAsync(int id);
         Task<User> GetUserByIdAsync(int id);

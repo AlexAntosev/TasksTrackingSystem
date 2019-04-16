@@ -1,6 +1,6 @@
 export enum Type {
-    Task,
-    Bug,
-    Improvement,
-    Feature
+    Task = 'Task',
+    Bug  = 'Bug',
+    Improvement = 'Improvement',
+    Feature = 'Feature'
 }

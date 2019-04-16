@@ -19,7 +19,7 @@ namespace BLL.Services
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
-        public async System.Threading.Tasks.Task CreateInviteAsync(InviteDTO inviteDTO)
+        public async System.Threading.Tasks.Task<Invite> CreateInviteAsync(InviteDTO inviteDTO)
         {
             if (inviteDTO == null)
             {
@@ -30,6 +30,8 @@ namespace BLL.Services
 
             _unitOfWork.Invites.Create(invite);
             await _unitOfWork.SaveAsync();
+
+            return invite;
         }
 
         public async System.Threading.Tasks.Task DeleteInviteAsync(int id)

@@ -36,5 +36,12 @@ namespace DAL.Entities
         /// Lazy loading of invites in the project.
         /// </summary>
         public virtual ICollection<Invite> Invites { get; set; }
+
+        public Project()
+        {
+            Tasks = new HashSet<Task>();
+            Team = new HashSet<User>();
+            Invites = new HashSet<Invite>();
+        }
     }
 }
