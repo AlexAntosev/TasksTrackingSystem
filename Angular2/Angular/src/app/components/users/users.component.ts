@@ -8,6 +8,8 @@ import { InvitesService } from 'src/app/services/invites.service';
 import { Invite } from 'src/app/models/invite';
 import { AccountService } from 'src/app/services/account.service';
 import { formatDate } from '@angular/common';
+import { UserWithRole } from 'src/app/models/user-with-role';
+import { Role } from 'src/app/models/role.enum';
 
 @Component({
   selector: 'app-users',
@@ -16,9 +18,10 @@ import { formatDate } from '@angular/common';
 })
 export class UsersComponent implements OnInit {
 
-  public userList: User[];
+  public userList: UserWithRole[];
   public allUsers: User[];
   public newUserId: number;
+  public newRole: Role;
   @Input()
   public projectId: number;
   public inviteList: Invite[];
@@ -26,8 +29,12 @@ export class UsersComponent implements OnInit {
   constructor(private service: UsersService, private inviteService: InvitesService, private accountService: AccountService) { }
 
   ngOnInit() {
-    this.service.getUsersByProjectId(this.projectId).subscribe(
-      users => this.userList = users
+    this.service.getUsersWithRolesByProjectId(this.projectId).subscribe(
+      
+      users => {
+        debugger;
+        this.userList = users
+      }
     );
     
     //all users
@@ -41,8 +48,10 @@ export class UsersComponent implements OnInit {
       AuthorId: this.accountService.getCurrentUser().Id,  
       ProjectId: this.projectId,  
       ReceiverId: this.newUserId,  
-      Time: formatDate(Date.now(), 'yyyy-MM-dd', 'en')
+      Time: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
+      Role: this.newRole
     }
+    debugger;
     this.inviteService.sendInvite(invite as Invite).subscribe(
       invite => {
         this.inviteService.getAllInvitesByProjectId(this.projectId).subscribe(

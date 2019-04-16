@@ -14,5 +14,6 @@ namespace DAL.Entities
         public virtual User Receiver { get; set; }
 
         public DateTime Time { get; set; }
+        public int Role { get; set; }
     }
 }

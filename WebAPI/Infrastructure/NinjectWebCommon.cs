@@ -29,6 +29,7 @@ namespace WebAPI.Infrastructure
             kernel.Bind<IUserService>().To<UserService>();
             kernel.Bind<ICommentService>().To<CommentService>();
             kernel.Bind<IInviteService>().To<InviteService>();
+            kernel.Bind<IUserWithRoleService>().To<UserWithRoleService>();
             kernel.Bind<IMapper>().ToMethod(m => new Mapper(AutoMapperConfig.CreateConfigure()));
         }
     }

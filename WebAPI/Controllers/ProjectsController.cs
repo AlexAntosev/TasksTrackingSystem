@@ -18,13 +18,15 @@ namespace WebAPI.Controllers
     {
         private ApplicationUserManager _userManager;
         private readonly IUserService _userService;
+        private readonly IUserWithRoleService _userWithRoleService;
         private readonly IProjectService _projectService;
         private readonly IMapper _mapper;
 
-        public ProjectsController(IProjectService projectService, IUserService userService, IMapper mapper)
+        public ProjectsController(IProjectService projectService, IUserService userService, IMapper mapper, IUserWithRoleService userWithRoleService)
         {
             _projectService = projectService;
             _userService = userService;
+            _userWithRoleService = userWithRoleService;
             _mapper = mapper;
         }
 
@@ -110,8 +112,7 @@ namespace WebAPI.Controllers
             ProjectDTO createdProjectDTO = _mapper.Map<Project, ProjectDTO>(createdProject);
             return Created(Url.Request.RequestUri, createdProjectDTO);
         }
-
-        [Authorize]
+        
         [HttpPut]
         public async Task<IHttpActionResult> EditProjectAsync(int id, ProjectDTO project)
         {
@@ -130,8 +131,7 @@ namespace WebAPI.Controllers
 
             return Ok(project);
         }
-
-        [Authorize]
+        
         [HttpDelete]
         public async Task<IHttpActionResult> DeleteProjectAsync(int id)
         {
@@ -147,6 +147,55 @@ namespace WebAPI.Controllers
             }
 
             await _projectService.DeleteProjectAsync(id);
+
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
+        [HttpGet]
+        [Route("api/Projects/{projectId}/Users")]
+        public async Task<IHttpActionResult> GetAllUsersWithRolesByProjectIdAsync(int projectId)
+        {
+            var usersWithRoles = await _userWithRoleService.GetAllUsersWithRolesByProjectIdAsync(projectId);
+            if (usersWithRoles == null)
+            {
+                return NotFound();
+            }
+
+            List<UserWithRoleDTO> usersWithRolesDTO = _mapper.Map<List<UserWithRole>, List<UserWithRoleDTO>>(usersWithRoles);
+            return Ok(usersWithRolesDTO);
+        }
+
+        [HttpPut]
+        [Route("api/Projects/{projectId}/Users")]
+        public async Task<IHttpActionResult> AddUserToProjectAsync(UserWithRoleDTO userWithRoleDTO, int projectId)
+        {
+           // userWithRoleDTO.User = _mapper.Map<User, UserDTO>(await _userService.GetUserByIdAsync(userWithRoleDTO.UserId));
+            UserWithRole createdUserWithRole = await _userWithRoleService.CreateUserWithRoleAsync(userWithRoleDTO, projectId);
+            UserWithRoleDTO createdUserWithRoleDTO = _mapper.Map<UserWithRole, UserWithRoleDTO>(createdUserWithRole);
+
+            
+
+            return Ok(createdUserWithRoleDTO);
+        }
+
+        [HttpDelete]
+        [Route("api/Projects/{projectId}/Users")]
+        public async Task<IHttpActionResult> RemoveUserFromProjectAsync(int projectId, int userId)
+
+        {
+            UserWithRole currentUserWithRole = await _userWithRoleService.GetUserWithRoleByUserIdAsync(userId);
+            if (currentUserWithRole == null)
+            {
+                return NotFound();
+            }
+
+            Project currentProject = await _projectService.GetProjectByIdAsync(projectId);
+            if (currentProject == null)
+            {
+                return NotFound();
+            }
+
+            await _userWithRoleService.DeleteUserWithRoleAsync(currentUserWithRole.Id);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

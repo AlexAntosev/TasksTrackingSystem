@@ -12,6 +12,7 @@ namespace DAL.Interfaces
         DbSet<User> Users { get; set; }
         DbSet<Comment> Comments { get; set; }
         DbSet<Invite> Invites { get; set; }
+        DbSet<UserWithRole> UsersWithRoles { get; set; }
         DbEntityEntry Entry(object entity);
         DbEntityEntry<TEntity> Entry<TEntity>(TEntity entity) where TEntity : BaseEntity;
         void Save();

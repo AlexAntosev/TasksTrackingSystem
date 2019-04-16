@@ -25,7 +25,7 @@ namespace BLL.DTO
         /// <summary>
         /// Get and set users in the project.
         /// </summary>
-        public IEnumerable<UserDTO> Team { get; set; }
+        public IEnumerable<UserWithRoleDTO> Team { get; set; }
 
         /// <summary>
         /// Get and set invites in the project.

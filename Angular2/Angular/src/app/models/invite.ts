@@ -1,3 +1,5 @@
+import { Role } from 'src/app/models/role.enum';
+
 export interface Invite {
     Id: number;
 
@@ -11,4 +13,5 @@ export interface Invite {
     ReceiverUserName: string;
 
     Time: Date;
+    Role: Role;
 }

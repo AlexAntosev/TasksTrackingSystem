@@ -16,16 +16,18 @@
       <thead>
         <tr>
           <th scope="col">UserName</th>
+          <th scope="col">Role</th>
           <th scope="col">Position</th>
           <th scope="col"></th>
         </tr>
       </thead>
       <tbody>
         <tr *ngFor="let user of userList">
-          <td> {{user.UserName}} </td>
-          <td> {{user.Position}} </td>
+          <td> {{user.User.UserName}} </td>
+          <td> {{user.Role}} </td>
+          <td> {{user.User.Position}} </td>
           <td>
-            <button class="btn btn-sm btn-outline-danger" (click)="removeUser(user.Id)">Remove from project</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="removeUser(user.User.Id)">Remove from project</button>
           </td>
         </tr>
       </tbody>
@@ -78,6 +80,16 @@
             </mat-select>
           </mat-form-field>
         </div>
+        <div class="form-group">
+            <h4>Select role</h4>
+            <mat-form-field>
+                <mat-select [(value)]="newRole" class="form-control">
+                  <mat-option [value]=0>Admin</mat-option>
+                  <mat-option [value]=1>Developer</mat-option>
+                  <mat-option [value]=2>Watcher</mat-option>
+                </mat-select>
+              </mat-form-field>
+          </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>

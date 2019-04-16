@@ -16,5 +16,6 @@ namespace BLL.DTO
         public string ReceiverUserName { get; set; }
 
         public string Time { get; set; }
+        public ProjectRoles Role { get; set; }
     }
 }

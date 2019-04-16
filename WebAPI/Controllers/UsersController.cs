@@ -23,19 +23,7 @@ namespace WebAPI.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        [Route("api/Projects/{projectId}/Users")]
-        public async Task<IHttpActionResult> GetAllUsersByProjectIdAsync(int projectId)
-        {
-            var users = await _userService.GetAllUsersByProjectIdAsync(projectId);
-            if (users == null)
-            {
-                return NotFound();
-            }
-
-            List<UserDTO> usersDTO = _mapper.Map<List<User>, List<UserDTO>>(users);
-            return Ok(usersDTO);
-        }
+        
 
         [HttpGet]
         public async Task<IHttpActionResult> GetAllUsersAsync()
@@ -105,35 +93,6 @@ namespace WebAPI.Controllers
                 return NotFound();
             }
             await _userService.DeleteUserAsync(id);
-
-            return StatusCode(HttpStatusCode.NoContent);
-        }
-        
-        [HttpPut]
-        [Route("api/Projects/{projectId}/Users")]
-        public async Task<IHttpActionResult> AddProjectToUserAsync(int projectId, int userId)
-        {
-            await _userService.AddProjectToUserAsync(userId, projectId);
-
-            return Ok();
-        }
-
-        [HttpDelete]
-        [Route("api/Projects/{projectId}/Users")]
-        public async Task<IHttpActionResult> RemoveProjectFromUserAsync(int projectId, int userId)
-
-        {
-            User currentUser = await _userService.GetUserByIdAsync(userId);
-            if (currentUser == null)
-            {
-                return NotFound();
-            }
-            Project currentProject = await _projectService.GetProjectByIdAsync(projectId);
-            if (currentProject == null)
-            {
-                return NotFound();
-            }
-            await _userService.RemoveProjectFromUserAsync(userId, projectId);
 
             return StatusCode(HttpStatusCode.NoContent);
         }

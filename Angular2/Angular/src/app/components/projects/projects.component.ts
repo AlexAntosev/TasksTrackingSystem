@@ -6,6 +6,7 @@ import { AccountService } from 'src/app/services/account.service';
 import { ProjectEditComponent } from 'src/app/components/projects/project-edit/project-edit.component';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersService } from 'src/app/services/users.service';
+import { Role } from 'src/app/models/role.enum';
 
 @Component({
   selector: 'app-projects',
@@ -86,7 +87,7 @@ export class ProjectsComponent implements OnInit {
         this.service.createProject(p).subscribe(
           createdProject => {
             this.GetAllProjects();
-            this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUser().Id).subscribe();
+            this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUser().Id, Role.Admin).subscribe();
           }
         );
       }

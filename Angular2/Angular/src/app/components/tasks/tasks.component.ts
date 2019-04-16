@@ -14,6 +14,7 @@ import { SearchingFilterPipe } from 'src/app/core/pipes/searching-filter.pipe';
 import { AccountService } from 'src/app/services/account.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { TaskEditComponent } from 'src/app/components/tasks/task-edit/task-edit.component';
+import { UserWithRole } from 'src/app/models/user-with-role';
 
 @Component({
   selector: 'app-tasks',
@@ -23,7 +24,7 @@ import { TaskEditComponent } from 'src/app/components/tasks/task-edit/task-edit.
 export class TasksComponent implements OnInit {
 
   public taskList: Task[];
-  public usersInProject: User[];
+  public usersInProject: UserWithRole[];
 
   public orderByField = 'Name';
   public reverseSort = false;
@@ -75,7 +76,7 @@ export class TasksComponent implements OnInit {
   }
 
   private RefreshUsers(): void {
-    this.userService.getUsersByProjectId(this.projectId).subscribe(
+    this.userService.getUsersWithRolesByProjectId(this.projectId).subscribe(
       (users) => {
         this.usersInProject = users;
       }

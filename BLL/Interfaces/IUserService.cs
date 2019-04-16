@@ -14,9 +14,6 @@ namespace BLL.Interfaces
         Task<User> GetUserByIdAsync(int id);
         Task<User> GetUserByUserNameAsync(string userName);
         Task<List<User>> GetAllUsersAsync();
-        Task<List<User>> GetAllUsersByProjectIdAsync(int id);
         Task<User> GetUserByAuthenticationIdAsync(string id);
-        Task AddProjectToUserAsync(int userId, int projectId);
-        Task RemoveProjectFromUserAsync(int userId, int projectId);
     }
 }

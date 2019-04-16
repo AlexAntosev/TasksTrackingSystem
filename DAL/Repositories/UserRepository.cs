@@ -58,12 +58,7 @@ namespace DAL.Repositories
         {
             _context.Entry(item).State = EntityState.Modified;
         }
-
-        public async Task<List<User>> GetAllUsersByProjectIdAsync(int id)
-        {
-            return await _context.Users.Where(u => u.Projects.Any(p => p.Id == id)).ToListAsync();
-        }
-
+        
         public User GetById(int id)
         {
             return _context.Users.Find(id);

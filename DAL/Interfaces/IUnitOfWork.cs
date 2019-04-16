@@ -17,6 +17,8 @@ namespace DAL.Interfaces
         ICommentRepository Comments { get; }
 
         IInviteRepository Invites { get; }
+
+        IUserWithRoleRepository UsersWithRoles { get; }
         
         void Save();
         

@@ -20,10 +20,12 @@ namespace DAL.EF
         
         public DbSet<Invite> Invites { get; set; }
 
+        public DbSet<UserWithRole> UsersWithRoles { get; set; }
+
         public CompanyContext() : base("TaskTrackingSystemDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
+            Database.SetInitializer(new DropCreateDatabaseAlways<CompanyContext>());
         }
         
         protected override void OnModelCreating(DbModelBuilder builder)
@@ -50,7 +52,7 @@ namespace DAL.EF
                 Property(p => p.Tag).IsRequired();
                 HasMany(p => p.Team)
                     .WithMany(u => u.Projects)
-                    .Map(m => m.ToTable("ProjectsAndUsers").MapLeftKey("ProjectId").MapRightKey("UserId"));
+                    .Map(m => m.ToTable("ProjectsAndUsersWithRoles").MapLeftKey("ProjectId").MapRightKey("UserWithRoleId"));
                 HasMany(p => p.Tasks)
                     .WithRequired(t => t.Project);
                 HasMany(p => p.Invites)

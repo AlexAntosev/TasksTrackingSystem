@@ -5,6 +5,8 @@ import { User } from 'src/app/models/user';
 import { ErrorService } from 'src/app/services/error.service';
 import { catchError } from 'rxjs/internal/operators/catchError';
 import { Invite } from 'src/app/models/invite';
+import { UserWithRole } from 'src/app/models/user-with-role';
+import { Role } from 'src/app/models/role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -22,8 +24,8 @@ export class UsersService {
       );
   }
 
-  public getUsersByProjectId(projectId: number): Observable<User[]> {
-    return this.http.get<User[]>(this.url + '/Projects/' + projectId + '/Users')
+  public getUsersWithRolesByProjectId(projectId: number): Observable<UserWithRole[]> {
+    return this.http.get<UserWithRole[]>(this.url + '/Projects/' + projectId + '/Users')
       .pipe(
         catchError(this.errorService.handleError)
       );
@@ -44,16 +46,18 @@ export class UsersService {
   }
 
   public addUserToProjectByInvite(invite: Invite): Observable<User> {
+    debugger;
     const projectId = ''+invite.ProjectId;
     const receiverId = ''+invite.ReceiverId;
-    return this.http.put<User>(this.url + '/Projects/' + invite.ProjectId + '/Users', {}, { params: { projectId: projectId, userId: receiverId} })
+    const roleId = ''+invite.Role;
+    return this.http.put<User>(this.url + '/Projects/' + invite.ProjectId + '/Users', {UserId: invite.ReceiverId, Role: roleId}, {params: {projectId: projectId}})
       .pipe(
         catchError(this.errorService.handleError)
       );
   }
 
-  public addUserToProject(projectId: number, userId: number): Observable<User> {
-    return this.http.put<User>(this.url + '/Projects/' + projectId + '/Users', {}, { params: { projectId: ''+projectId, userId: ''+userId} })
+  public addUserToProject(projectId: number, userId: number, role: Role): Observable<User> {
+    return this.http.put<User>(this.url + '/Projects/' + projectId + '/Users', {UserId: userId, Role: role})
       .pipe(
         catchError(this.errorService.handleError)
       );

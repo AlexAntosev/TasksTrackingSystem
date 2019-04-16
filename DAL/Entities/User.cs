@@ -29,7 +29,7 @@ namespace DAL.Entities
         /// <summary>
         /// Lazy loading of user projects.
         /// </summary>
-        public virtual ICollection<Project> Projects { get; set; }
+        public virtual ICollection<UserWithRole> UserWithRoles { get; set; }
 
         /// <summary>
         /// Lazy loading of tasks created by the user.
@@ -54,7 +54,7 @@ namespace DAL.Entities
 
         public User()
         {
-            Projects = new HashSet<Project>();
+            UserWithRoles = new HashSet<UserWithRole>();
             CreatedTasks = new HashSet<Task>();
             TasksInProgress = new HashSet<Task>();
             Invites = new HashSet<Invite>();

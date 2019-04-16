@@ -53,7 +53,7 @@
       <h4>Select executor</h4>
       <mat-form-field>
         <mat-select [(value)]="task.ExecutorId">
-          <mat-option *ngFor="let user of usersInProject" [value]=user.Id>{{user.UserName}}</mat-option>
+          <mat-option *ngFor="let user of usersInProject" [value]=user.User.Id>{{user.User.UserName}}</mat-option>
         </mat-select>
       </mat-form-field>
     </div>

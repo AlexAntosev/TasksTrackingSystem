@@ -21,57 +21,6 @@ namespace BLL.Services
             _mapper = mapper;
         }
 
-        public async Task AddProjectToUserAsync(int userId, int projectId)
-        {
-            var user = _unitOfWork.Users.GetById(userId);
-            if (user == null)
-            {
-                throw new ArgumentException("User is not exist.");
-            }
-
-            var project = _unitOfWork.Projects.GetById(projectId);
-            if (project == null)
-            {
-                throw new ArgumentException("Project is not exist.");
-            }
-
-            if (user.Projects.Contains(project))
-            {
-                throw new ArgumentException("Current project is already exist in user project list.");
-            }
-
-            user.Projects.Add(project);
-
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.SaveAsync();
-            
-        }
-
-        public async Task RemoveProjectFromUserAsync(int userId, int projectId)
-        {
-            var user = _unitOfWork.Users.GetById(userId);
-            if (user == null)
-            {
-                throw new ArgumentException("User is not exist.");
-            }
-
-            var project = _unitOfWork.Projects.GetById(projectId);
-            if (project == null)
-            {
-                throw new ArgumentException("Project is not exist.");
-            }
-
-            if (!user.Projects.Contains(project))
-            {
-                throw new ArgumentException("Current project is not exist in user project list.");
-            }
-
-            user.Projects.Remove(project);
-
-            _unitOfWork.Users.Update(user);
-            await _unitOfWork.SaveAsync();
-        }
-
         public async Task<User> CreateUserAsync(UserDTO userDTO)
         {
             if (userDTO == null)
@@ -148,12 +97,7 @@ namespace BLL.Services
         {
             return await _unitOfWork.Users.GetAllAsync();
         }
-
-        public async Task<List<User>> GetAllUsersByProjectIdAsync(int id)
-        {
-            return await _unitOfWork.Users.GetAllUsersByProjectIdAsync(id);
-        }
-
+        
         public async Task<User> GetUserByAuthenticationIdAsync(string id)
         {
             return await _unitOfWork.Users.GetUserByAuthenticationIdAsync(id);

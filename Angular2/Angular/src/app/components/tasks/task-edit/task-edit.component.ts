@@ -6,6 +6,7 @@ import { EventEmitter } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user';
 import { UsersService } from 'src/app/services/users.service';
+import { UserWithRole } from 'src/app/models/user-with-role';
 
 @Component({
   selector: 'app-task-edit',
@@ -16,7 +17,7 @@ export class TaskEditComponent implements OnInit {
 
   @Input()
   public task: Task;
-  public usersInProject: User[];
+  public usersInProject: UserWithRole[];
 
   @Output() 
   saveEntry: EventEmitter<any> = new EventEmitter();
@@ -34,7 +35,7 @@ export class TaskEditComponent implements OnInit {
   }
 
   private RefreshUsers(): void{
-    this.userService.getUsersByProjectId(this.task.ProjectId).subscribe(
+    this.userService.getUsersWithRolesByProjectId(this.task.ProjectId).subscribe(
       (users) => {
         this.usersInProject = users;
       }

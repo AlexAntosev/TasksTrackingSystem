@@ -49,6 +49,11 @@ namespace BLL.Mapper
                     .ForPath(dest => dest.ReceiverUserName, opt => opt.MapFrom(src => src.Receiver.UserName))
                     .ForPath(dest => dest.ProjectName, opt => opt.MapFrom(src => src.Project.Name))
                     .ForMember(dest => dest.Time, opt => opt.MapFrom(src => src.Time.ToString()));
+
+                cfg.CreateMap<UserWithRoleDTO, UserWithRole>()
+                    .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
+                cfg.CreateMap<UserWithRoleDTO, UserWithRole>().ReverseMap()
+                    .ForMember(dest => dest.User, opt => opt.MapFrom(src => src.User));
             });
         }
 
