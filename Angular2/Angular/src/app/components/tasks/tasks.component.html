@@ -44,7 +44,7 @@
             </nav>
           </td>
           <td>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.Id)">Delete</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.Id)" *ngIf="getRole() == 1">Delete</button>
           </td>
         </tr>
       </tbody>

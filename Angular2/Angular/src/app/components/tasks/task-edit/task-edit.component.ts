@@ -7,6 +7,7 @@ import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { User } from 'src/app/models/user';
 import { UsersService } from 'src/app/services/users.service';
 import { UserWithRole } from 'src/app/models/user-with-role';
+import { AccountService } from 'src/app/services/account.service';
 
 @Component({
   selector: 'app-task-edit',
@@ -23,7 +24,7 @@ export class TaskEditComponent implements OnInit {
   @Output() 
   saveEntry: EventEmitter<any> = new EventEmitter();
 
-  constructor(private modalService: NgbModal, private userService: UsersService) { }
+  constructor(private modalService: NgbModal, private userService: UsersService, private accountService: AccountService) { }
 
   ngOnInit() {
     this.RefreshUsers();
@@ -41,5 +42,10 @@ export class TaskEditComponent implements OnInit {
       }
     )
   }
+
+  
+  public getRole() { 
+    return this.accountService.getCurrentUserWithRole().Role
+}
 
 }

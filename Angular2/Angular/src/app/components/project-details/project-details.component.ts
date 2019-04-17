@@ -40,8 +40,8 @@ export class ProjectDetailsComponent implements OnInit {
     this.userInitializeService.currentProjectId = this.selectedProject.Id;
 
     this.userInitializeService.loadCurrentUser().then(() => {
-        this.isAvailable = true;
-      });
+      this.isAvailable = true;
+    });
   }
 
   public onChooseTaskEvent(task: Task) {
@@ -68,5 +68,9 @@ export class ProjectDetailsComponent implements OnInit {
       .subscribe(() => {
         this.router.navigate(['/home']);
       });
+  }
+
+  public getRole() {
+    return this.accountService.getCurrentUserWithRole().Role
   }
 }

@@ -6,17 +6,17 @@
 </div>
 <div class="modal-body">
   <form class="needs-validation" novalidate>
-    <div class="form-group">
+    <div class="form-group" *ngIf="getRole() == 1">
       <label>Name:</label>
       <input name="Name" #Name="ngModel" [(ngModel)]="task.Name" class="form-control" required>
       <div class="validation-error" *ngIf="Name.invalid && Name.touched">This field is required</div>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="getRole() == 1">
       <label>Description:</label>
       <textarea name="Description" #Description="ngModel" [(ngModel)]="task.Description" class="form-control" required></textarea>
       <div class="validation-error" *ngIf="Description.invalid && Description.touched">This field is required</div>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="getRole() == 1">
       <h4>Select priority</h4>
       <mat-form-field>
         <mat-select [(value)]="task.Priority" class="form-control">
@@ -27,7 +27,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="getRole() == 1">
       <h4>Select type</h4>
       <mat-form-field>
         <mat-select [(value)]="task.Type" class="form-control">
@@ -38,7 +38,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="form-group" *ngIf="editing">
+    <div class="form-group" *ngIf="editing && (getRole() == 1 || getRole() == 2)">
       <h4>Select status</h4>
       <mat-form-field>
         <mat-select [(value)]="task.Status" class="form-control">
@@ -49,7 +49,7 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="form-group">
+    <div class="form-group" *ngIf="getRole() == 1">
       <h4>Select executor</h4>
       <mat-form-field>
         <mat-select [(value)]="task.ExecutorId">
@@ -57,14 +57,14 @@
         </mat-select>
       </mat-form-field>
     </div>
-    <div class="form-group" >
+    <div class="form-group" *ngIf="getRole() == 1">
       <mat-form-field>
         <input matInput [matDatepicker]="picker" placeholder="Choose a date of deadline" name="Deadline" #Deadline="ngModel" [(ngModel)]="task.Deadline">
         <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
         <mat-datepicker #picker></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="form-group" *ngIf="editing">
+    <div class="form-group" *ngIf="editing && getRole() == 1">
       <mat-form-field>
         <input matInput [matDatepicker]="pickerCreated" placeholder="Choose a date of creation" name="Created" #Created="ngModel"
           [(ngModel)]="task.Created">
@@ -72,7 +72,7 @@
         <mat-datepicker #pickerCreated></mat-datepicker>
       </mat-form-field>
     </div>
-    <div class="form-group" *ngIf="editing">
+    <div class="form-group" *ngIf="editing && getRole() == 1">
       <mat-form-field>
         <input matInput [matDatepicker]="pickerUpdated" placeholder="Choose a date of updation" name="Updated" #Updated="ngModel"
           [(ngModel)]="task.Updated">

@@ -98,6 +98,12 @@ namespace BLL.Services
             if (task.Priority != Convert.ToInt32(taskDTO.Priority))
                 task.Priority = Convert.ToInt32(taskDTO.Priority);
 
+            if (task.Type != Convert.ToInt32(taskDTO.Type))
+                task.Type = Convert.ToInt32(taskDTO.Type);
+
+            if (task.Status != Convert.ToInt32(taskDTO.Status))
+                task.Status = Convert.ToInt32(taskDTO.Status);
+
             if (task.Created.ToString() != taskDTO.Created)
                 task.Created = Convert.ToDateTime(taskDTO.Created);
 

@@ -50,9 +50,9 @@ export class ProjectsComponent implements OnInit {
     modalRef.componentInstance.saveEntry
       .subscribe(p => {
         debugger;
-        this.service.createProject(p).subscribe(createdProject => {
-          this.getCurrentUserProjects();
-          this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUserWithRole().User.Id, Role.Admin).subscribe();
+        this.service.createProject(p).subscribe(createdProject => {          
+          this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUserWithRole().User.Id, Role.Admin).subscribe(() => this.getCurrentUserProjects());
+          
         });
       });
   }

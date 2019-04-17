@@ -39,7 +39,7 @@
           </td>
           <td> {{user.User.Position}} </td>
           <td>
-            <button class="btn btn-sm btn-outline-danger" (click)="removeUser(user.User.Id)">Remove from project</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="removeUser(user.User.Id)" *ngIf="getRole() == 1">Remove from project</button>
           </td>
         </tr>
       </tbody>
@@ -65,7 +65,7 @@
         <tr *ngFor="let invite of inviteList">
           <td> {{invite.ReceiverUserName}} </td>
           <td>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteInvite(invite.Id)">Delete invite</button>
+            <button class="btn btn-sm btn-outline-danger" (click)="deleteInvite(invite.Id)" *ngIf="getRole() == 1">Delete invite</button>
           </td>
         </tr>
       </tbody>

@@ -4,8 +4,8 @@
       <h1 class="main-name">{{selectedProject.Name}}</h1>
     </div>
     <div class="nav justify-content-end">
-      <button title="Edit project" class="btn btn-outline-info" (click)="openEditModal(selectedProject)">Edit project</button>
-      <button title="Delete project" class="btn btn-outline-danger" (click)="deleteProject(selectedProject.Id)" style="margin-left:10px">Delete project</button>
+      <button title="Edit project" class="btn btn-outline-info" (click)="openEditModal(selectedProject)" *ngIf="getRole() == 1">Edit project</button>
+      <button title="Delete project" class="btn btn-outline-danger" (click)="deleteProject(selectedProject.Id)" style="margin-left:10px" *ngIf="getRole() == 1">Delete project</button>
     </div>
   </nav>
   <hr>
