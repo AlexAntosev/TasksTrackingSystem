@@ -4,6 +4,8 @@ import { Comment } from 'src/app/models/comment';
 import { CommentsService } from 'src/app/services/comments.service';
 import { formatDate } from '@angular/common';
 import { AccountService } from 'src/app/services/account.service';
+import { TasksService } from 'src/app/services/tasks.service';
+import { Task } from 'src/app/models/task';
 
 @Component({
   selector: 'app-comments',
@@ -18,7 +20,7 @@ export class CommentsComponent implements OnInit {
   public comments: Comment[];
   public newCommentDescription: string;
 
-  constructor(private commentsService: CommentsService, private accountService: AccountService) { }
+  constructor(private commentsService: CommentsService, private accountService: AccountService, private taskService: TasksService) { }
 
   ngOnInit() {
     
@@ -36,7 +38,7 @@ export class CommentsComponent implements OnInit {
   public createComment(description: string) {
     let comment: any = {
       Description: description,
-      AuthorId: this.accountService.getCurrentUser().Id,
+      AuthorId: this.accountService.getCurrentUserWithRole().User.Id,
       TaskId: this.currentTaskId,
       Time: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
     }

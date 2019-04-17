@@ -8,5 +8,6 @@ namespace DAL.Interfaces
     {
         Task<List<UserWithRole>> GetAllUsersWithRolesByProjectIdAsync(int id);
         Task<UserWithRole> GetUserWithRoleByUserIdAsync(int userId);
+        Task<UserWithRole> GetUserWithRoleByUserIdAndProjectIdAsync(int userId, int projectId);
     }
 }

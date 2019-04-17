@@ -67,5 +67,11 @@ namespace DAL.Repositories
         {
             return await _context.UsersWithRoles.Where(u => u.UserId == userId).FirstOrDefaultAsync();
         }
+
+        
+        public async Task<UserWithRole> GetUserWithRoleByUserIdAndProjectIdAsync(int userId, int projectId)
+        {
+            return await _context.UsersWithRoles.Where(u => u.UserId == userId).Where(u => u.Projects.Any(p =>p.Id == projectId)).FirstOrDefaultAsync();
+        }
     }
 }

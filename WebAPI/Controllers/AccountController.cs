@@ -19,6 +19,7 @@ using System.Web.Http;
 using AutoMapper;
 using Microsoft.AspNet.Identity.EntityFramework;
 using WebAPI.Models;
+using UserWithRoleDTO = BLL.DTO.UserWithRoleDTO;
 
 namespace WebAPI.Controllers
 {
@@ -30,11 +31,13 @@ namespace WebAPI.Controllers
         private ApplicationSignInManager _signInManager;
         private ApplicationRoleManager _roleManager;
         private readonly IUserService _userService;
+        private readonly IUserWithRoleService _userWithRoleService;
         private readonly IMapper _mapper;
 
-        public AccountController(IUserService userService, IMapper mapper)
+        public AccountController(IUserService userService, IUserWithRoleService userWithRoleService, IMapper mapper)
         {
             _userService = userService;
+            _userWithRoleService = userWithRoleService;
             _mapper = mapper;
         }
 
@@ -42,12 +45,14 @@ namespace WebAPI.Controllers
             ApplicationSignInManager signInManager,
             ApplicationRoleManager roleManager,
             IUserService userService,
+            IUserWithRoleService userWithRoleService,
             IMapper mapper)
         {
             UserManager = userManager;
             SignInManager = signInManager;
             RoleManager = roleManager;
             _userService = userService;
+            _userWithRoleService = userWithRoleService;
             _mapper = mapper;
         }
 
@@ -89,8 +94,8 @@ namespace WebAPI.Controllers
 
         [AllowAnonymous]
         [HttpGet]
-        [Route("Current")]
-        public async Task<IHttpActionResult> GetCurrentUserAsync()
+        [Route("Current/{projectId}")]
+        public async Task<IHttpActionResult> GetCurrentUserAsync(int projectId = 0)
         {
             AuthenticationUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
             string currentUserId = user?.Id;
@@ -101,8 +106,17 @@ namespace WebAPI.Controllers
             }
 
             User currentAppUser = await _userService.GetUserByAuthenticationIdAsync(currentUserId);
+            UserDTO currentAppUserDTO = _mapper.Map<User, UserDTO>(currentAppUser);
 
-            return Ok(currentAppUser);
+            UserWithRole userWithRole = await _userWithRoleService.GetUserWithRoleByUserIdAndProjectIdAsync(currentAppUser.Id, projectId);
+            if (userWithRole == null)
+            {
+                return Ok(new UserWithRoleDTO(){User = currentAppUserDTO, Role = ProjectRoles.NoRole});
+            }
+
+            UserWithRoleDTO userWithRoleDTO = _mapper.Map<UserWithRole, UserWithRoleDTO>(userWithRole);           
+
+            return Ok(userWithRoleDTO);
         }
 
         [HttpPost]
@@ -130,7 +144,7 @@ namespace WebAPI.Controllers
 
             if (result != SignInStatus.Success)
             {
-                return Unauthorized();
+                return BadRequest("Wrong email or/and password.");
             }
 
             AuthenticationUser authenticationUser =

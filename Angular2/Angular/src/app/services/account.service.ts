@@ -14,6 +14,8 @@ import { catchError } from 'rxjs/internal/operators/catchError';
 import { of } from 'rxjs';
 import { Router } from '@angular/router';
 import { ErrorService } from 'src/app/services/error.service';
+import { UserWithRole } from 'src/app/models/user-with-role';
+import { Role } from 'src/app/models/role.enum';
 
 @Injectable({
   providedIn: 'root'
@@ -25,11 +27,15 @@ export class AccountService {
   public isSignIn: boolean;
   public signInUser: User;
 
-  private currentUser$: BehaviorSubject<User>;
+  private currentUserWithRole$: BehaviorSubject<UserWithRole>;
 
-  constructor(private http: HttpClient, private tokenService: TokenService, private currentUserInitializerService: CurrentUserInitializerService, private router: Router, private errorService: ErrorService) {
-    this.currentUser$ = new BehaviorSubject(currentUserInitializerService.currentUser)
-    console.log(currentUserInitializerService.currentUser);
+  constructor(private http: HttpClient,
+    private tokenService: TokenService,
+    private currentUserInitializerService: CurrentUserInitializerService,
+    private router: Router,
+    private errorService: ErrorService) {
+    this.currentUserWithRole$ = new BehaviorSubject(currentUserInitializerService.currentUserWithRole)
+    console.log(currentUserInitializerService.currentUserWithRole);
   }
 
   public signUp(user: SignUp): Observable<SignUp> {
@@ -49,49 +55,52 @@ export class AccountService {
         this.handleUserAndToken(user, token);
       }),
       catchError(this.errorService.handleError)
-      
-    );
+
+      );
   }
 
   public signOut() {
     return this.http.post(this.rootURL + '/api/Account/SignOut', {})
-    .pipe(
+      .pipe(
       catchError(this.errorService.handleError))
       .subscribe(() => {
         this.tokenService.clearToken();
-        this.currentUser$.next(null);
+        this.currentUserWithRole$.next(null);
         this.router.navigate(['/sign-in']);
       }
       );
   }
 
-  public getCurrentUser(): User {
-    return this.currentUser$.value as User;
+  public getCurrentUserWithRole(): UserWithRole {
+    return this.currentUserInitializerService.currentUserWithRole as UserWithRole;
   }
 
   public profile(userName: string): Observable<User> {
     return this.http.get<User>(this.rootURL + '/api/Users/UserName/' + userName, { params: { userName: userName } })
-    .pipe(
+      .pipe(
       catchError(this.errorService.handleError)
-    );
+      );
   }
 
   private handleUserAndToken(user: User, token: string): void {
     this.tokenService.KeepToken(token);
     user.Role = this.tokenService.fetchToken().payload.role;
-    console.log(user);
-    this.currentUser$.next(user);
+    let userWithRole = {
+      User: user,
+      Role: Role.Watcher
+    }
+    this.currentUserWithRole$.next(userWithRole as UserWithRole);
   }
 
   public isSignedIn(): Observable<boolean> {
-    return this.currentUser$.pipe(
-      map(currentUser => !!currentUser)
+    return this.currentUserWithRole$.pipe(
+      map(currentUserWithRole => !!currentUserWithRole)
     )
   }
 
-  public getRole(): Observable<UserRole> {
-    return this.currentUser$.pipe(
-      map(currentUser => currentUser ? currentUser.Role : null)
+  public getGlobalRole(): Observable<UserRole> {
+    return this.currentUserWithRole$.pipe(
+      map(currentUserWithRole => currentUserWithRole ? currentUserWithRole.User.Role : null)
     )
   }
 }

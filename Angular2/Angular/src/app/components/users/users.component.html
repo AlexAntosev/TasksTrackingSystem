@@ -5,7 +5,7 @@
     </div>
     <div class="nav justify-content-end">
       <div class="ml-auto">
-        <button data-toggle="tooltip" data-placement="left" title="Add new user to project" class="btn btn-primary">
+        <button data-toggle="tooltip" data-placement="left" title="Add new user to project" class="btn btn-primary" *ngIf="getRole() == 1">
           <span data-toggle="modal" data-target="#myUserModal">Add new user to project</span>
         </button>
       </div>
@@ -24,7 +24,19 @@
       <tbody>
         <tr *ngFor="let user of userList">
           <td> {{user.User.UserName}} </td>
-          <td> {{user.Role}} </td>
+          <td>
+          <div>
+            <div *ngIf="user.Role == 1">
+              <h6>Admin</h6>
+            </div>
+            <div *ngIf="user.Role == 2">
+              <h6>Developer</h6>
+            </div>
+            <div *ngIf="user.Role == 3">
+              <h6>Watcher</h6>
+            </div>
+          </div>
+        </td>
           <td> {{user.User.Position}} </td>
           <td>
             <button class="btn btn-sm btn-outline-danger" (click)="removeUser(user.User.Id)">Remove from project</button>
@@ -84,9 +96,9 @@
             <h4>Select role</h4>
             <mat-form-field>
                 <mat-select [(value)]="newRole" class="form-control">
-                  <mat-option [value]=0>Admin</mat-option>
-                  <mat-option [value]=1>Developer</mat-option>
-                  <mat-option [value]=2>Watcher</mat-option>
+                  <mat-option [value]=0>Watcher</mat-option>
+                  <mat-option [value]=1>Admin</mat-option>
+                  <mat-option [value]=2>Developer</mat-option>                  
                 </mat-select>
               </mat-form-field>
           </div>

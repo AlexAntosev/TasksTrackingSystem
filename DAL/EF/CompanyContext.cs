@@ -25,7 +25,7 @@ namespace DAL.EF
         public CompanyContext() : base("TaskTrackingSystemDB")
         {
             Database.SetInitializer(new CreateDatabaseIfNotExists<CompanyContext>());
-            Database.SetInitializer(new DropCreateDatabaseAlways<CompanyContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<CompanyContext>());
         }
         
         protected override void OnModelCreating(DbModelBuilder builder)

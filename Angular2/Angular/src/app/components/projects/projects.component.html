@@ -1,42 +1,39 @@
-<div>
-  <nav class="navbar navbar-expand-md">
-    <div class="navbar-collapse">
-      <h2>Project list</h2>
+<div *ngIf="isAvailable" class="main">
+  <div class="split left">
+    <div class="centered">
+      <nav class="navbar navbar-expand-md">
+        <div class="navbar-collapse">
+          <h2>My project list</h2>
+        </div>
+        <div class="nav justify-content-end">
+          <button title="Create project" class="btn btn-outline-info" (click)="openCreateModal()">Create project</button>
+        </div>
+      </nav>
+      <div>
+        <table class="table table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Name</th>
+              <th scope="col">Tag</th>
+              <th scope="col">URL</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let project of projectList">
+              <td [routerLink]="['/projects', project.Id]">{{project.Name}}</td>
+              <td>{{project.Tag}}</td>
+              <td>
+                <a href="project.Url">{{project.Url}}</a>
+              </td>              
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-    <div class="nav justify-content-end">
-      <button title="Create project" class="btn btn-outline-info" (click)="openCreateModal()">Create project</button>
+  </div>
+  <div class="split right">
+    <div class="centered">
+      <app-invites [currentUserId]="getUserId()"></app-invites>
     </div>
-  </nav>
-  <div>
-    <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">Role</th>
-          <th scope="col">Name</th>
-          <th scope="col">Tag</th>
-          <th scope="col">URL</th>
-          <th scope="col"></th>
-          <th scope="col"></th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let project of projectList">
-          <td>Admin</td>
-          <td [routerLink]="['/projects', project.Id]">{{project.Name}}</td>
-          <td>{{project.Tag}}</td>
-          <td>
-            <a href="project.Url">{{project.Url}}</a>
-          </td>
-          <td>
-            <button title="Edit project" class="btn btn-outline-info" (click)="openEditModal(project)">Edit project</button>
-          </td>
-          <td>
-            <button class="btn btn-sm btn-outline-danger" (click)="deleteProject(project.Id)">Delete</button>
-          </td>
-        </tr>
-      </tbody>
-    </table>
   </div>
 </div>
-
-<app-invites [currentUserId]="accountService.getCurrentUser().Id"></app-invites>

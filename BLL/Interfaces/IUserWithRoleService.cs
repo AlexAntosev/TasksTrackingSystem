@@ -13,6 +13,7 @@ namespace BLL.Interfaces
         Task EditUserWithRoleASync(int id, UserWithRoleDTO userWithRoleDTO);
         Task<UserWithRole> GetUserWithRoleByIdAsync(int id);
         Task<UserWithRole> GetUserWithRoleByUserIdAsync(int userId);
+        Task<UserWithRole> GetUserWithRoleByUserIdAndProjectIdAsync(int userId, int projectId);
         Task<List<UserWithRole>> GetAllUsersWithRolesAsync();
         Task<List<UserWithRole>> GetAllUsersWithRolesByProjectIdAsync(int projectId);
     }

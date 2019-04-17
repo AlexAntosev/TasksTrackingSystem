@@ -14,13 +14,7 @@ export class ErrorService {
   }
 
   public handleError = (error: HttpErrorResponse): Observable<any> => {
-    if(error.error != null) {
-      this.alertService.error(error.error.Message);
-      return throwError(error.error);
-    }
-    else{
-      this.alertService.error(error.message);
+        this.alertService.error(error.message);
       return throwError(error);
-    }
   }
 }

@@ -1,8 +1,8 @@
 import { User } from 'src/app/models/user';
+import { Role } from 'src/app/models/role.enum';
 
 export interface UserWithRole {
     Id: number;
-    UserId: number;
     User: User;
-    Role: number;
+    Role: Role;
 }

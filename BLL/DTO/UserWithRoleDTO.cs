@@ -13,6 +13,7 @@
 
     public enum ProjectRoles
     {
+        NoRole,
         Admin,
         Developer,
         Watcher

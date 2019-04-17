@@ -46,7 +46,7 @@ export class UsersService {
   }
 
   public addUserToProjectByInvite(invite: Invite): Observable<User> {
-    debugger;
+    debugger; 
     const projectId = ''+invite.ProjectId;
     const receiverId = ''+invite.ReceiverId;
     const roleId = ''+invite.Role;

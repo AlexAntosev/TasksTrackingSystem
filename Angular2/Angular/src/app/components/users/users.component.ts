@@ -32,20 +32,17 @@ export class UsersComponent implements OnInit {
     this.service.getUsersWithRolesByProjectId(this.projectId).subscribe(
       
       users => {
-        debugger;
-        this.userList = users
+        this.userList = users;
       }
     );
     
     //all users
-    this.service.getAllUsers().subscribe(
-      users => this.allUsers = users
-    );
+    this.service.getAllUsers().subscribe(users => this.allUsers = users)
   }
 
   public sendInviteToUser() {
     let invite: any = {
-      AuthorId: this.accountService.getCurrentUser().Id,  
+      AuthorId: this.accountService.getCurrentUserWithRole().User.Id,  
       ProjectId: this.projectId,  
       ReceiverId: this.newUserId,  
       Time: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
@@ -81,4 +78,8 @@ export class UsersComponent implements OnInit {
     );
   }
 
+
+  public getRole(){
+    return this.accountService.getCurrentUserWithRole().Role
+  }
 }

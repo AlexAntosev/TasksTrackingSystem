@@ -39,6 +39,7 @@ import { InvitesComponent } from './components/invites/invites.component';
 import { AlertComponent } from './components/alert/alert.component';
 import { AlertService } from 'src/app/services/alert.service';
 import { TaskEditComponent } from './components/tasks/task-edit/task-edit.component';
+import { HomeComponent } from './components/home/home.component';
 
 @NgModule({
   declarations: [
@@ -56,7 +57,8 @@ import { TaskEditComponent } from './components/tasks/task-edit/task-edit.compon
     SearchingFilterPipe,
     InvitesComponent,
     AlertComponent,
-    TaskEditComponent
+    TaskEditComponent,
+    HomeComponent
   ],
   imports: [
     FormsModule,

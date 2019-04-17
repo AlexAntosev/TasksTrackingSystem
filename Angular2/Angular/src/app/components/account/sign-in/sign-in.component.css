@@ -31,3 +31,20 @@
     font-weight: 600;
     text-decoration: none;
 }
+
+.centered {
+    top: 10%;
+    text-align: center;
+  }
+
+  .split {
+    height: 100%;
+    width: 100%;
+    position: fixed;
+    top: 30%;
+    left: 25%;
+    right: 25%;
+    overflow-x: hidden;
+    padding-top: 20px;
+  }
+  

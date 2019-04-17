@@ -7,6 +7,7 @@ import { ProjectEditComponent } from 'src/app/components/projects/project-edit/p
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { UsersService } from 'src/app/services/users.service';
 import { Role } from 'src/app/models/role.enum';
+import { CurrentUserInitializerService } from 'src/app/services/current-user-initializer.service';
 
 @Component({
   selector: 'app-projects',
@@ -15,15 +16,23 @@ import { Role } from 'src/app/models/role.enum';
 })
 export class ProjectsComponent implements OnInit {
   public projectList: Project[];
+  public isAvailable: boolean = false;
 
   constructor(private service: ProjectsService,
     private router: Router,
     private accountService: AccountService,
     private modalServie: NgbModal,
-    private userService: UsersService) {
+    private userService: UsersService,
+    private userInitializeService: CurrentUserInitializerService) {
   }
 
-  ngOnInit() {
+  ngOnInit() {    
+    this.userInitializeService.currentProjectId = 0;
+    this.userInitializeService.loadCurrentUser().then(
+      () => {
+        this.isAvailable = true
+      }
+    );
     this.GetAllProjects();
   }
 
@@ -43,7 +52,8 @@ export class ProjectsComponent implements OnInit {
   }
 
   public GetCurrentUserProjects() {
-    this.service.GetCurrentUserProjects(this.accountService.getCurrentUser()).subscribe(
+    debugger;
+    this.service.GetCurrentUserProjects(this.accountService.getCurrentUserWithRole().User).subscribe(
       projectList => {
         this.projectList = projectList;
       }
@@ -87,10 +97,16 @@ export class ProjectsComponent implements OnInit {
         this.service.createProject(p).subscribe(
           createdProject => {
             this.GetAllProjects();
-            this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUser().Id, Role.Admin).subscribe();
+            this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUserWithRole().User.Id, Role.Admin).subscribe();
           }
         );
       }
       );
+  }
+
+  public getUserId(){
+    let id = this.accountService.getCurrentUserWithRole().User.Id
+    console.log(id);
+    return id;
   }
 }

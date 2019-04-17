@@ -1,27 +1,25 @@
 <form #form="ngForm">
-  <div class="container login-container">
-    <div>
-      <div class="col-md-6 ">
+  <div class="container login-container login-form-1" style="margin-top:10vh">
+    <div class="row">
+        <div class="col"></div>
+      <div class="col">
         <h3>Login</h3>
         <form>
           <div class="form-group">
-            <input type="email" name="Email" #Email="ngModel" [(ngModel)]="newEmail" class="form-control" placeholder="Your Email *"
-              value="" required>
-            <div class="validation-error" *ngIf="Email.invalid && Email.touched">This field is required</div>
+            <input type="email" name="Email" #Email="ngModel" [(ngModel)]="newEmail" class="form-control " placeholder="Your Email *" [ngClass]="{'is-invalid': Email.invalid && (Email.dirty || Email.touched)}" value="" required email>
+            <div class="invalid-feedback" *ngIf="Email.invalid && (Email.dirty || Email.touched)">This field is required</div>
           </div>
           <div class="form-group">
-            <input type="password" name="Password" #Password="ngModel" [(ngModel)]="newPassword" class="form-control" placeholder="Your password *"
+            <input type="password" name="Password" #Password="ngModel" [(ngModel)]="newPassword" class="form-control" placeholder="Your Password *"  [ngClass]="{'is-invalid': Password.invalid && (Password.dirty || Password.touched)}"
               required>
-            <div class="validation-error" *ngIf="Password.invalid && Password.touched">This field is required</div>
+            <div class="invalid-feedback" *ngIf="Password.invalid && (Password.dirty || Password.touched)">This field is required</div>
           </div>
           <div class="form-group">
             <button type="submit" [disabled]="form.invalid" class="btn btn-primary" (click)="signIn()">Login</button>
           </div>
-          <div class="form-group">
-            <a href="#" class="ForgetPwd">Forget Password?</a>
-          </div>
         </form> 
       </div>
+      <div class="col"></div>
     </div>
   </div>
 </form>

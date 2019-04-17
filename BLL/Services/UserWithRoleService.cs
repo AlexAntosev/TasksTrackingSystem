@@ -88,5 +88,10 @@ namespace BLL.Services
         {
             return await _unitOfWork.UsersWithRoles.GetUserWithRoleByUserIdAsync(userId);
         }
+
+        public async Task<UserWithRole> GetUserWithRoleByUserIdAndProjectIdAsync(int userId, int projectId)
+        {
+            return await _unitOfWork.UsersWithRoles.GetUserWithRoleByUserIdAndProjectIdAsync(userId, projectId);
+        }
     }
 }

@@ -95,7 +95,7 @@ export class TasksComponent implements OnInit {
       Created: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
       Updated: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
       ProjectId: this.projectId,
-      CreatorId: this.accountService.getCurrentUser().Id,
+      CreatorId: this.accountService.getCurrentUserWithRole().User.Id,
       ExecutorId: 0
     }
     modalRef.componentInstance.task = newTask as Task;
@@ -106,5 +106,9 @@ export class TasksComponent implements OnInit {
           () => this.RefreshTasks()
         );
       });
+  }
+
+  public getRole(){
+    return this.accountService.getCurrentUserWithRole().Role
   }
 }

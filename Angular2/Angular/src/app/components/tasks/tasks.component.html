@@ -6,7 +6,7 @@
     </div>
     <div class="nav justify-content-end">
       <div class="ml-auto">
-          <button title="Create task" class="btn btn-outline-info" (click)="openCreateModal()">Create task</button>
+          <button title="Create task" class="btn btn-outline-info" (click)="openCreateModal()" *ngIf="getRole() == 2">Create task</button>
       </div>
     </div>
   </nav>

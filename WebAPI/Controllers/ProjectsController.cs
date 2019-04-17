@@ -169,11 +169,8 @@ namespace WebAPI.Controllers
         [Route("api/Projects/{projectId}/Users")]
         public async Task<IHttpActionResult> AddUserToProjectAsync(UserWithRoleDTO userWithRoleDTO, int projectId)
         {
-           // userWithRoleDTO.User = _mapper.Map<User, UserDTO>(await _userService.GetUserByIdAsync(userWithRoleDTO.UserId));
             UserWithRole createdUserWithRole = await _userWithRoleService.CreateUserWithRoleAsync(userWithRoleDTO, projectId);
             UserWithRoleDTO createdUserWithRoleDTO = _mapper.Map<UserWithRole, UserWithRoleDTO>(createdUserWithRole);
-
-            
 
             return Ok(createdUserWithRoleDTO);
         }
