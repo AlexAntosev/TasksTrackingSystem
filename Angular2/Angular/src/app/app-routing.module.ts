@@ -9,14 +9,24 @@ import { SignUpComponent } from 'src/app/components/account/sign-up/sign-up.comp
 import { SignInComponent } from 'src/app/components/account/sign-in/sign-in.component';
 import { TaskDetailsComponent } from 'src/app/components/task-details/task-details.component';
 import { TaskDetailsResolver } from 'src/app/components/task-details/task-details.resolver';
+import { HomeComponent } from 'src/app/components/home/home.component';
+import { AdminGuard } from 'src/app/core/guard/admin.guard';
+import { UsersForAdminComponent } from 'src/app/components/admin/users/users.component';
 
 export const routes: Routes = [
   { path: '',  redirectTo: '/sign-in', pathMatch: 'full'},
-  { path: 'projects',  component: ProjectsComponent},
+  { path: 'home',  component: HomeComponent},
   { path: 'projects/:id', component: ProjectDetailsComponent, resolve: { project: ProjectDetailsResolver}},
   { path: 'tasks/:id', component: TaskDetailsComponent, resolve: { task: TaskDetailsResolver}},
   { path: 'sign-up', component: SignUpComponent},
-  { path: 'sign-in', component: SignInComponent}
+  { path: 'sign-in', component: SignInComponent},
+  { path: 'admin', 
+  canActivate: [ AdminGuard ],
+  canActivateChild: [ AdminGuard ],    
+  children: [
+      { path: 'user-list', component: UsersForAdminComponent }
+  ] 
+}  
 ];
 
 @NgModule({

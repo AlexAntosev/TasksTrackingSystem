@@ -1,9 +1,9 @@
-<div *ngIf="isAvailable" class="main">
-  <div class="split left">
-    <div class="centered">
+<div>
+  <div>
+    <div>
       <nav class="navbar navbar-expand-md">
         <div class="navbar-collapse">
-          <h2>My project list</h2>
+          <h2>Project list</h2>
         </div>
         <div class="nav justify-content-end">
           <button title="Create project" class="btn btn-outline-info" (click)="openCreateModal()">Create project</button>
@@ -24,16 +24,11 @@
               <td>{{project.Tag}}</td>
               <td>
                 <a href="project.Url">{{project.Url}}</a>
-              </td>              
+              </td>
             </tr>
           </tbody>
         </table>
       </div>
-    </div>
-  </div>
-  <div class="split right">
-    <div class="centered">
-      <app-invites [currentUserId]="getUserId()"></app-invites>
     </div>
   </div>
 </div>

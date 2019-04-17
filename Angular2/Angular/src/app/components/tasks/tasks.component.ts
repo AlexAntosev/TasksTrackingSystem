@@ -25,13 +25,11 @@ export class TasksComponent implements OnInit {
 
   public taskList: Task[];
   public usersInProject: UserWithRole[];
-
   public orderByField = 'Name';
   public reverseSort = false;
 
   @Input()
   public projectId: number;
-
   @Output()
   public chooseTaskEventEmitter = new EventEmitter<Task>();
 
@@ -50,10 +48,9 @@ export class TasksComponent implements OnInit {
   }
 
   public deleteTask(taskId: number): void {
-    this.service.deleteTask(taskId)
-      .subscribe(() => {
+    this.service.deleteTask(taskId).subscribe(() => {
         this.taskList = this.taskList.filter(task => task.Id !== taskId)
-      })
+      });
   }
 
   public chooseTask(task: Task): void {
@@ -99,6 +96,7 @@ export class TasksComponent implements OnInit {
       ExecutorId: 0
     }
     modalRef.componentInstance.task = newTask as Task;
+    modalRef.componentInstance.editing = false;
     modalRef.componentInstance.saveEntry
       .subscribe(
       (t) => {

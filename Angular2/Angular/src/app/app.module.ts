@@ -30,7 +30,6 @@ import { TaskDetailsResolver } from 'src/app/components/task-details/task-detail
 import { CommentsComponent } from './components/comments/comments.component';
 import { CommentsService } from 'src/app/services/comments.service';
 import { ErrorService } from 'src/app/services/error.service';
-import { NotificationService } from 'src/app/services/notification.service';
 import { ServerErrorInterceptor } from 'src/app/core/interceptors/server-error-interceptor';
 import { ProjectEditComponent } from 'src/app/components/projects/project-edit/project-edit.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
@@ -40,6 +39,8 @@ import { AlertComponent } from './components/alert/alert.component';
 import { AlertService } from 'src/app/services/alert.service';
 import { TaskEditComponent } from './components/tasks/task-edit/task-edit.component';
 import { HomeComponent } from './components/home/home.component';
+import { AdminModule } from 'src/app/components/admin/admin.module';
+import { AdminGuard } from 'src/app/core/guard/admin.guard';
 
 @NgModule({
   declarations: [
@@ -77,6 +78,7 @@ import { HomeComponent } from './components/home/home.component';
     MatInputModule,
     HttpClientModule,
     ReactiveFormsModule,
+    AdminModule,
     NgbModule,
     AppRoutingModule
   ],
@@ -91,7 +93,7 @@ import { HomeComponent } from './components/home/home.component';
     TokenService,
     CurrentUserInitializerService,
     ErrorService,
-    NotificationService,
+    AdminGuard,
     AlertService,
     { provide: Window, useValue: window },
     {

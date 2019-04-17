@@ -29,22 +29,17 @@ export class UsersComponent implements OnInit {
   constructor(private service: UsersService, private inviteService: InvitesService, private accountService: AccountService) { }
 
   ngOnInit() {
-    this.service.getUsersWithRolesByProjectId(this.projectId).subscribe(
-      
-      users => {
-        this.userList = users;
-      }
-    );
-    
-    //all users
+    this.service.getUsersWithRolesByProjectId(this.projectId).subscribe(users => {
+      this.userList = users;
+    });
     this.service.getAllUsers().subscribe(users => this.allUsers = users)
   }
 
   public sendInviteToUser() {
     let invite: any = {
-      AuthorId: this.accountService.getCurrentUserWithRole().User.Id,  
-      ProjectId: this.projectId,  
-      ReceiverId: this.newUserId,  
+      AuthorId: this.accountService.getCurrentUserWithRole().User.Id,
+      ProjectId: this.projectId,
+      ReceiverId: this.newUserId,
       Time: formatDate(Date.now(), 'yyyy-MM-dd', 'en'),
       Role: this.newRole
     }
@@ -64,22 +59,19 @@ export class UsersComponent implements OnInit {
     this.inviteService.deleteInvite(inviteId).subscribe(
       invite => {
         this.inviteList = this.inviteList.filter(i => i.Id !== inviteId)
-      }
-    );
+      });
   }
 
-  
+
   public removeUser(userId: number) {
     this.service.removeUserFromProject(userId, this.projectId)
-    .subscribe(
+      .subscribe(
       () => {
         this.userList = this.userList.filter(u => u.Id !== userId)
-      }
-    );
+      });
   }
 
-
-  public getRole(){
+  public getRole() {
     return this.accountService.getCurrentUserWithRole().Role
   }
 }

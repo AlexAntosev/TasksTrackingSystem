@@ -2,11 +2,12 @@
   <nav class="navbar navbar-expand-md navbar-dark">
     <div class="navbar-collapse">
       <h3>Tasks:</h3>
-      <input name="searchTask" #searchTask="ngModel"  [(ngModel)]="searchTaskName" placeholder="Search task by name">
+      <input name="searchTask" #searchTask="ngModel" [(ngModel)]="searchTaskName" placeholder="Search task by name" class="form-control mr-sm-2"
+        type="search" aria-label="Search">
     </div>
     <div class="nav justify-content-end">
       <div class="ml-auto">
-          <button title="Create task" class="btn btn-outline-info" (click)="openCreateModal()" *ngIf="getRole() == 2">Create task</button>
+        <button title="Create task" class="btn btn-outline-info" (click)="openCreateModal()" *ngIf="getRole() == 2 || getRole() == 1">Create task</button>
       </div>
     </div>
   </nav>
@@ -23,22 +24,24 @@
         <tr *ngFor="let task of taskList | searchingFilter : searchTaskName">
           <td (click)="chooseTask(task)">{{task.Name}}</td>
           <td>
-            <div *ngIf="task.Priority === 0">
-              <div class="bg-primary" style="width: 25px; height: 25px;">
+            <nav class="navbar navbar-expand-md navbar-dark">
+              <div *ngIf="task.Priority === 0" class="navbar-collapse">
+                <div class="bg-primary" style="width: 25px; height: 25px;"></div>
+                <div style="margin-left:10px">Low</div>
               </div>
-            </div>
-            <div *ngIf="task.Priority === 1">
-              <div class="bg-success" style="width: 25px; height: 25px;">
+              <div *ngIf="task.Priority === 1" class="navbar-collapse">
+                <div class="bg-success" style="width: 25px; height: 25px;"></div>
+                <div style="margin-left:10px">Middle</div>
               </div>
-            </div>
-            <div *ngIf="task.Priority === 2">
-              <div class="bg-warning" style="width: 25px; height: 25px;">
+              <div *ngIf="task.Priority === 2" class="navbar-collapse">
+                <div class="bg-warning" style="width: 25px; height: 25px;"></div>
+                <div style="margin-left:10px">High</div>
               </div>
-            </div>
-            <div *ngIf="task.Priority === 3">
-              <div class="bg-danger" style="width: 25px; height: 25px;">
+              <div *ngIf="task.Priority === 3" class="navbar-collapse">
+                <div class="bg-danger" style="width: 25px; height: 25px;"></div>
+                <div style="margin-left:10px">Blocker</div>
               </div>
-            </div>
+            </nav>
           </td>
           <td>
             <button class="btn btn-sm btn-outline-danger" (click)="deleteTask(task.Id)">Delete</button>

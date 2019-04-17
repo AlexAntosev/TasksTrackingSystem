@@ -6,31 +6,39 @@
         <h3>Sign up</h3>
         <form>
           <div class="form-group">
-            <input name="UserName" #UserName="ngModel" [(ngModel)]="newUserName" class="form-control" placeholder="Your Username *"  [ngClass]="{'is-invalid': UserName.invalid && (UserName.dirty || UserName.touched)}" required>
+            <input name="UserName" #UserName="ngModel" [(ngModel)]="newUserName" class="form-control" placeholder="Your Username *" [ngClass]="{'is-invalid': UserName.invalid && (UserName.dirty || UserName.touched)}"
+              required>
             <div class="invalid-feedback" *ngIf="UserName.invalid && UserName.touched">This field is required</div>
           </div>
           <div class="form-group">
-            <input name="FirstName" #FirstName="ngModel" [(ngModel)]="newFirstName" class="form-control" placeholder="Your Firstname *" [ngClass]="{'is-invalid': FirstName.invalid && (FirstName.dirty || FirstName.touched)}" required>
+            <input name="FirstName" #FirstName="ngModel" [(ngModel)]="newFirstName" class="form-control" placeholder="Your Firstname *"
+              [ngClass]="{'is-invalid': FirstName.invalid && (FirstName.dirty || FirstName.touched)}" required>
             <div class="invalid-feedback" *ngIf="FirstName.invalid && FirstName.touched">This field is required</div>
           </div>
           <div class="form-group">
-            <input name="LastName" #LastName="ngModel" [(ngModel)]="newLastName" class="form-control" placeholder="Your Lastname *" [ngClass]="{'is-invalid': LastName.invalid && (LastName.dirty || LastName.touched)}" required>
+            <input name="LastName" #LastName="ngModel" [(ngModel)]="newLastName" class="form-control" placeholder="Your Lastname *" [ngClass]="{'is-invalid': LastName.invalid && (LastName.dirty || LastName.touched)}"
+              required>
             <div class="invalid-feedback" *ngIf="LastName.invalid && LastName.touched">This field is required</div>
           </div>
           <div class="form-group">
-            <input name="Position" #Position="ngModel" [(ngModel)]="newPosition" class="form-control" placeholder="Your Position *" [ngClass]="{'is-invalid': Position.invalid && (Position.dirty || Position.touched)}" required>
+            <input name="Position" #Position="ngModel" [(ngModel)]="newPosition" class="form-control" placeholder="Your Position *" [ngClass]="{'is-invalid': Position.invalid && (Position.dirty || Position.touched)}"
+              required>
             <div class="invalid-feedback" *ngIf="Position.invalid && Position.touched">This field is required</div>
           </div>
           <div class="form-group">
-            <input name="Email" #Email="ngModel" [(ngModel)]="newEmail" class="form-control" placeholder="Your Email *" [ngClass]="{'is-invalid': Email.invalid && (Email.dirty || Email.touched)}" required>
+            <input name="Email" #Email="ngModel" [(ngModel)]="newEmail" class="form-control" placeholder="Your Email *" [ngClass]="{'is-invalid': Email.invalid && (Email.dirty || Email.touched)}"
+              required>
             <div class="invalid-feedback" *ngIf="Email.invalid && Email.touched">This field is required</div>
           </div>
           <div class="form-group">
-            <input type="password" name="Password" #Password="ngModel" [(ngModel)]="newPassword" class="form-control" placeholder="Your Password *" [ngClass]="{'is-invalid': Password.invalid && (Password.dirty || Password.touched)}" required>
+            <input type="password" name="Password" #Password="ngModel" [(ngModel)]="newPassword" class="form-control" placeholder="Your Password *"
+              [ngClass]="{'is-invalid': Password.invalid && (Password.dirty || Password.touched)}" required>
             <div class="invalid-feedback" *ngIf="Password.invalid && Password.touched">This field is required</div>
           </div>
           <div class="form-group">
-            <input type="password" name="ConfirmPassword" #ConfirmPassword="ngModel" [(ngModel)]="newConfirmPassword" class="form-control" placeholder="Confirm Password *" [ngClass]="{'is-invalid': ConfirmPassword.invalid && (ConfirmPassword.dirty || ConfirmPassword.touched)}" required>
+            <input type="password" name="ConfirmPassword" #ConfirmPassword="ngModel" [(ngModel)]="newConfirmPassword" class="form-control"
+              placeholder="Confirm Password *" [ngClass]="{'is-invalid': ConfirmPassword.invalid && (ConfirmPassword.dirty || ConfirmPassword.touched)}"
+              required>
             <div class="invalid-feedback" *ngIf="ConfirmPassword.invalid && ConfirmPassword.touched">This field is required</div>
           </div>
           <div class="form-group">

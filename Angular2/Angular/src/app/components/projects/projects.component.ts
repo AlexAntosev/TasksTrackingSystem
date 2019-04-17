@@ -16,97 +16,44 @@ import { CurrentUserInitializerService } from 'src/app/services/current-user-ini
 })
 export class ProjectsComponent implements OnInit {
   public projectList: Project[];
-  public isAvailable: boolean = false;
 
   constructor(private service: ProjectsService,
     private router: Router,
     private accountService: AccountService,
-    private modalServie: NgbModal,
+    private modalService: NgbModal,
     private userService: UsersService,
     private userInitializeService: CurrentUserInitializerService) {
   }
 
-  ngOnInit() {    
-    this.userInitializeService.currentProjectId = 0;
-    this.userInitializeService.loadCurrentUser().then(
-      () => {
-        this.isAvailable = true
-      }
-    );
-    this.GetAllProjects();
+  ngOnInit() {
+    this.getCurrentUserProjects();
   }
 
-  public deleteProject(projectId: number) {
-    this.service.deleteProject(projectId)
-      .subscribe(() => {
-        this.projectList = this.projectList.filter(project => project.Id !== projectId)
-      });
+  public getAllProjects(): void {
+    this.service.getAllProjects().subscribe(projectList => this.projectList = projectList);
   }
 
-  public GetAllProjects() {
-    this.service.getAllProjects().subscribe(
-      projectList => {
-        this.projectList = projectList;
-      }
-    );
-  }
-
-  public GetCurrentUserProjects() {
-    debugger;
-    this.service.GetCurrentUserProjects(this.accountService.getCurrentUserWithRole().User).subscribe(
-      projectList => {
-        this.projectList = projectList;
-      }
-    );
-  }
-
-  public openEditModal(project: Project) {
-
-    let newProject = {
-      Name: project.Name,
-      Tag: project.Tag,
-      Url: project.Url
-    }
-
-    const modalRef = this.modalServie.open(ProjectEditComponent);
-    modalRef.componentInstance.project = newProject;
-    modalRef.componentInstance.saveEntry
-      .subscribe(
-      (p) => {
-        this.service.editProject(project.Id, p).subscribe(
-          () => { this.GetAllProjects() }
-        );
-
-      }
-      );
-  }
+  public getCurrentUserProjects(): void {
+    this.service.GetCurrentUserProjects(this.accountService.getCurrentUserWithRole().User)
+      .subscribe(projectList => this.projectList = projectList);
+  }  
 
   public openCreateModal() {
-
-    let newProject = {
+    const newProject = {
       Name: '',
       Tag: '',
       Url: ''
     }
-
-    const modalRef = this.modalServie.open(ProjectEditComponent);
+    const modalRef = this.modalService.open(ProjectEditComponent);
     modalRef.componentInstance.project = newProject;
-    modalRef.componentInstance.saveEntry
-      .subscribe(
-      (p) => {
-        this.service.createProject(p).subscribe(
-          createdProject => {
-            this.GetAllProjects();
-            this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUserWithRole().User.Id, Role.Admin).subscribe();
-          }
-        );
-      }
-      );
-  }
 
-  public getUserId(){
-    let id = this.accountService.getCurrentUserWithRole().User.Id
-    console.log(id);
-    return id;
+    modalRef.componentInstance.saveEntry
+      .subscribe(p => {
+        debugger;
+        this.service.createProject(p).subscribe(createdProject => {
+          this.getCurrentUserProjects();
+          this.userService.addUserToProject(createdProject.Id, this.accountService.getCurrentUserWithRole().User.Id, Role.Admin).subscribe();
+        });
+      });
   }
 }

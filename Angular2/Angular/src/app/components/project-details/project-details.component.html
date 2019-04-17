@@ -1,5 +1,13 @@
 <div *ngIf="isAvailable">
-  <h1 class="main-name">{{selectedProject.Name}}</h1>
+  <nav class="navbar navbar-expand-md">
+    <div class="navbar-collapse">
+      <h1 class="main-name">{{selectedProject.Name}}</h1>
+    </div>
+    <div class="nav justify-content-end">
+      <button title="Edit project" class="btn btn-outline-info" (click)="openEditModal(selectedProject)">Edit project</button>
+      <button title="Delete project" class="btn btn-outline-danger" (click)="deleteProject(selectedProject.Id)" style="margin-left:10px">Delete project</button>
+    </div>
+  </nav>
   <hr>
   <div class="flex-container">
     <div class="flex-item">
@@ -19,5 +27,4 @@
 </ng-template>
 
 <ng-template #TaskIsNotSelected>
-  <h1>SELECT TASK PLZ!</h1>
 </ng-template>

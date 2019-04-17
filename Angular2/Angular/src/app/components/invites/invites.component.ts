@@ -12,6 +12,7 @@ import { UsersService } from 'src/app/services/users.service';
 export class InvitesComponent implements OnInit {
 
   public inviteList: Invite[];
+
   @Input()
   public currentUserId: number;
 
@@ -22,27 +23,21 @@ export class InvitesComponent implements OnInit {
   }
 
   public submitInvite(invite: Invite): void {
-    this.userService.addUserToProjectByInvite(invite).subscribe(
-      (user) => {
-        this.cancelInvite(invite.Id);
-      }
-    );
+    this.userService.addUserToProjectByInvite(invite).subscribe(user => {
+      this.cancelInvite(invite.Id);
+    });
   }
 
   public cancelInvite(inviteId: number): void {
-    this.inviteService.deleteInvite(inviteId).subscribe(
-      (invite) => {
-        this.inviteList = this.inviteList.filter(i => i.Id !== inviteId);
-      }
-    );
+    this.inviteService.deleteInvite(inviteId).subscribe(invite => {
+      this.inviteList = this.inviteList.filter(i => i.Id !== inviteId);
+    });
   }
 
   public RefreshInvites() {
     this.inviteService.getAllInvitesByReceiverId(this.currentUserId)
-    .subscribe(
-      invites => {
+      .subscribe(invites => {
         this.inviteList = invites;
-      }
-    )
+      });
   }
 }

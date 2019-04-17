@@ -7,6 +7,11 @@ import { AccountService } from 'src/app/services/account.service';
 import { CurrentUserInitializerService } from 'src/app/services/current-user-initializer.service';
 import { UserWithRole } from 'src/app/models/user-with-role';
 import { TokenService } from 'src/app/services/token.service';
+import { ProjectEditComponent } from 'src/app/components/projects/project-edit/project-edit.component';
+import { UsersService } from 'src/app/services/users.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { Role } from 'src/app/models/role.enum';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-project-details',
@@ -15,27 +20,53 @@ import { TokenService } from 'src/app/services/token.service';
 })
 export class ProjectDetailsComponent implements OnInit {
 
-  selectedProject : Project;
+  selectedProject: Project;
   currentTask: Task;
-  isAvailable : boolean = false;
+  isAvailable: boolean = false;
 
-  constructor(private service : ProjectsService, private route: ActivatedRoute, private userInitializeService: CurrentUserInitializerService, private tokenService: TokenService) {
-    
-   }
+  constructor(private service: ProjectsService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private userInitializeService: CurrentUserInitializerService,
+    private tokenService: TokenService,
+    private userService: UsersService,
+    private modalService: NgbModal,
+    private accountService: AccountService) {
+
+  }
 
   ngOnInit() {
     this.selectedProject = this.route.snapshot.data['project'];
     this.userInitializeService.currentProjectId = this.selectedProject.Id;
-    
-    this.userInitializeService.loadCurrentUser().then(
-      () => {
-        this.isAvailable = true
-      }
-    );
+
+    this.userInitializeService.loadCurrentUser().then(() => {
+        this.isAvailable = true;
+      });
   }
 
-  public onChooseTaskEvent(task: Task){
+  public onChooseTaskEvent(task: Task) {
     this.currentTask = task;
   }
 
+  public openEditModal(project: Project) {
+    const editProject = {
+      Name: project.Name,
+      Tag: project.Tag,
+      Url: project.Url
+    }
+    const modalRef = this.modalService.open(ProjectEditComponent);
+    modalRef.componentInstance.project = editProject;
+
+    modalRef.componentInstance.saveEntry
+      .subscribe(p => {
+        this.service.editProject(project.Id, p).subscribe();
+      });
+  }
+
+  public deleteProject(projectId: number): void {
+    this.service.deleteProject(projectId)
+      .subscribe(() => {
+        this.router.navigate(['/home']);
+      });
+  }
 }

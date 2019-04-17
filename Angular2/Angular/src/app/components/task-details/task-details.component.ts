@@ -29,7 +29,6 @@ export class TaskDetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    console.log(this.selectedTask);
   }
 
   public openEditModal(task: Task) {
@@ -49,6 +48,7 @@ export class TaskDetailsComponent implements OnInit {
     }
     const modalRef = this.modalService.open(TaskEditComponent);
     modalRef.componentInstance.task = newTask;
+    modalRef.componentInstance.editing = true;
     modalRef.componentInstance.saveEntry
       .subscribe(
       (t) => {

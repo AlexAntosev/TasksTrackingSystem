@@ -26,8 +26,6 @@ export class CurrentUserInitializerService {
         .get<UserWithRole>(this.rootURL + '/api/Account/Current/' + this.currentProjectId)
         .subscribe(currentUserwithRole => {
           this.currentUserWithRole = currentUserwithRole as UserWithRole;
-          console.log(currentUserwithRole.User);
-          console.log(currentUserwithRole.Role);
           this.currentUserWithRole.User.Role = this.tokenService.fetchToken().payload.role;
           resolve(true);
         }, error => {

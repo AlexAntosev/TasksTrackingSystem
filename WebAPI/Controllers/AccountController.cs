@@ -1,8 +1,10 @@
-﻿using BLL.DTO;
+﻿using AutoMapper;
+using BLL.DTO;
 using BLL.Infrastructure;
 using BLL.Interfaces;
 using DAL.Entities;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.IdentityModel.Tokens;
 using System;
@@ -16,8 +18,6 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Configuration;
 using System.Web.Http;
-using AutoMapper;
-using Microsoft.AspNet.Identity.EntityFramework;
 using WebAPI.Models;
 using UserWithRoleDTO = BLL.DTO.UserWithRoleDTO;
 
@@ -98,14 +98,12 @@ namespace WebAPI.Controllers
         public async Task<IHttpActionResult> GetCurrentUserAsync(int projectId = 0)
         {
             AuthenticationUser user = await UserManager.FindByIdAsync(User.Identity.GetUserId());
-            string currentUserId = user?.Id;
-
-            if (currentUserId == null)
+            if (user?.Id == null)
             {
                 return Unauthorized();
             }
 
-            User currentAppUser = await _userService.GetUserByAuthenticationIdAsync(currentUserId);
+            User currentAppUser = await _userService.GetUserByAuthenticationIdAsync(user.Id);
             UserDTO currentAppUserDTO = _mapper.Map<User, UserDTO>(currentAppUser);
 
             UserWithRole userWithRole = await _userWithRoleService.GetUserWithRoleByUserIdAndProjectIdAsync(currentAppUser.Id, projectId);
@@ -125,6 +123,25 @@ namespace WebAPI.Controllers
         {
             var authenticationManager = HttpContext.Current.Request.GetOwinContext().Authentication;
             authenticationManager.SignOut();
+
+            return Ok();
+        }
+
+        [AllowAnonymous]
+        [HttpPut]
+        [Route("MakeAdmin")]
+        public async Task<IHttpActionResult> MakeAdmin(int userId)
+        {
+            User appUser = await _userService.GetUserByIdAsync(userId);
+            if (appUser == null)
+            {
+                return NotFound();
+            }
+
+            AuthenticationUser user = await UserManager.FindByIdAsync(appUser.AuthenticationUserId);
+
+            await EnsureRoleAsync("Admin");
+            await UserManager.AddToRoleAsync(user.Id, "Admin");
 
             return Ok();
         }
@@ -242,11 +259,11 @@ namespace WebAPI.Controllers
             if (!adminRoleExists)
             {
                 var adminRole = new IdentityRole(roleName);
-                await _roleManager.CreateAsync(adminRole);
+                await RoleManager.CreateAsync(adminRole);
             }
             else
             {
-                await _roleManager.FindByNameAsync(roleName);
+                await RoleManager.FindByNameAsync(roleName);
             }
         }
 

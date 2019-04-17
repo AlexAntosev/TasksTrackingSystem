@@ -62,4 +62,10 @@ export class UsersService {
         catchError(this.errorService.handleError)
       );
   }
+
+  public deleteUser(userId: number): Observable<void> {
+    return this.http.delete<void>(this.url + '/Users/' + userId).pipe(
+      catchError(this.errorService.handleError)
+    )
+  }
 }

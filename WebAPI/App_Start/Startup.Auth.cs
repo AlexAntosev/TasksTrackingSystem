@@ -21,6 +21,7 @@ namespace WebAPI
             app.CreatePerOwinContext(CompanyContext.Create);
             app.CreatePerOwinContext<ApplicationUserManager>(ApplicationUserManager.Create);
             app.CreatePerOwinContext<ApplicationSignInManager>(ApplicationSignInManager.Create);
+            app.CreatePerOwinContext<ApplicationRoleManager>(ApplicationRoleManager.Create);
 
             WebConfigurationManager.AppSettings["jwt:aud"] = "http://localhost:4200";
             string audience = WebConfigurationManager.AppSettings["jwt:aud"];

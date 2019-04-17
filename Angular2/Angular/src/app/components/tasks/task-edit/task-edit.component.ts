@@ -17,6 +17,7 @@ export class TaskEditComponent implements OnInit {
 
   @Input()
   public task: Task;
+  public editing: boolean = false;
   public usersInProject: UserWithRole[];
 
   @Output() 
@@ -25,7 +26,6 @@ export class TaskEditComponent implements OnInit {
   constructor(private modalService: NgbModal, private userService: UsersService) { }
 
   ngOnInit() {
-    console.log(this.task);
     this.RefreshUsers();
   }
 

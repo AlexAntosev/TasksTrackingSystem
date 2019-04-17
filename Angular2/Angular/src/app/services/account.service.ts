@@ -26,7 +26,6 @@ export class AccountService {
   public tokenSignature: string = "tokenInfo";
   public isSignIn: boolean;
   public signInUser: User;
-
   private currentUserWithRole$: BehaviorSubject<UserWithRole>;
 
   constructor(private http: HttpClient,

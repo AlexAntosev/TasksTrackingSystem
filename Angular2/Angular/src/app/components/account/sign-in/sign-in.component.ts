@@ -21,7 +21,6 @@ export class SignInComponent implements OnInit {
   public newPassword: string;
   public loginForm: FormGroup;
 
-
   constructor(private formBuilder: FormBuilder , private service: AccountService, private router: Router, private alertService: AlertService) { }
 
   ngOnInit() {
@@ -32,15 +31,9 @@ export class SignInComponent implements OnInit {
   }
 
   public signIn(): void {
-    
-    // if (this.loginForm.invalid) {
-    //   this.alertService.error("Wrong email or/and password.");
-    //   return;
-    // }
-
     this.service.signIn(this.newEmail, this.newPassword)
       .subscribe(data => {
-        this.router.navigate(['/projects']);
+        this.router.navigate(['/home']);
       },
       error => {
         this.alertService.error(error);

@@ -24,7 +24,7 @@ namespace WebAPI.Controllers
         }
 
         
-
+        [AllowAnonymous]
         [HttpGet]
         public async Task<IHttpActionResult> GetAllUsersAsync()
         {
